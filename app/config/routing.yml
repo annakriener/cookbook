@@ -1,0 +1,4 @@
+cookbook:
+    resource: "@CookbookBundle/Controller/"
+    type:     annotation
+    prefix:   /

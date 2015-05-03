@@ -1,0 +1,26 @@
+{% extends 'CookbookBundle:default:base.html.twig' %}
+
+{% block main %}
+    <main>
+        <div class="container cb-recipe">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="cb-recipe-image" src="{{ asset('img/pancakes.jpg') }}" alt="pancakes" title="Pancakes">
+                </div>
+                <div class="col-md-9">
+                    {% include 'CookbookBundle:recipe:recipe-info.html.twig' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    {% include 'CookbookBundle:recipe:ingredients.html.twig' %}
+                </div>
+                <div class="col-md-8">
+                    {% include 'CookbookBundle:recipe:preparation.html.twig' %}
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}
