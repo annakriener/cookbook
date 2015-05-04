@@ -1,0 +1,66 @@
+<?php
+
+namespace CookbookBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="recipe")
+ */
+class Recipe {
+
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string")
+     */
+    protected $title;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $author;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $source;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    protected $category;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    protected $duration;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $servings;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $preparation;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $instruction;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $image;
+}

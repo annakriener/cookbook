@@ -3,9 +3,13 @@
 namespace CookbookBundle\Controller;
 
 use CookbookBundle\Entity\Recipe;
+use CookbookBundle\Entity\Category;
+use CookbookBundle\Form\Type\CategoryType;
+use CookbookBundle\Form\Type\RecipeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller {
     /**
@@ -25,22 +29,38 @@ class DefaultController extends Controller {
     /**
      * @Route("/addRecipe", name="addRecipe")
      */
-    public function addRecipeAction() {
-        // create a recipe and give it some dummy data for this example
+    public function addRecipeAction(Request $request) {
+        // create a recipe
         $recipe = new Recipe();
-        $form = $this->createFormBuilder($recipe)
-            ->add('title', 'text')
-            ->add('author', 'text')
-            ->add('source', 'text')
-            ->add('duration', 'text')
-            ->add('servings', 'text')
-            ->add('preparation', 'textarea')
-            ->add('instruction', 'textarea')
-            ->add('imageURL', 'text')
-            ->add('save', 'submit', array('label' => 'Create Recipe'))
-            ->getForm();
+        $category = new Category();
+
+        // create a new form of type Recipe
+        $form = $this->createForm(new RecipeType(), $recipe);
+        $categoryForm = $this->createForm(new CategoryType(), $category);
+
+        $form->handleRequest($request);
+        $categoryForm->handleRequest($request);
+
+        if ($form->isValid()) {
+            // perform some action, such as saving the task to the database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($recipe);
+            $em->flush();
+
+            return $this->redirectToRoute('recipe');
+        }
+
+        if ($categoryForm->isValid()) {
+            // perform some action, such as saving the task to the database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('addRecipe');
+        }
+
         return $this->render('CookbookBundle:recipe:addRecipe.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $form->createView(), 'categoryForm' => $categoryForm->createView()
         ));
     }
 }
