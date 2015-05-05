@@ -23,7 +23,9 @@ class RecipeType extends AbstractType {
             ->add('category', 'entity', array(
                 'class' => 'CookbookBundle:Category',
                 'property' => 'name',
-                'label' => 'Category: '
+                'label' => 'Category: ',
+                'placeholder' => 'Choose a category',
+                'empty_data' => 'null'
             ))
             ->add('servings', 'integer', array('label' => 'Yields: '))
             ->add('preparation', 'textarea', array('label' => 'Preparation: '))

@@ -35,32 +35,39 @@ class DefaultController extends Controller {
         $category = new Category();
 
         // create a new form of type Recipe
-        $form = $this->createForm(new RecipeType(), $recipe);
+        $recipeForm = $this->createForm(new RecipeType(), $recipe);
         $categoryForm = $this->createForm(new CategoryType(), $category);
 
-        $form->handleRequest($request);
-        $categoryForm->handleRequest($request);
+        if($request->isMethod('POST')) {
+            if($request->request->has('recipe')) {
+                $recipeForm->handleRequest($request);
+                if ($recipeForm->isValid()) {
+                    // perform some action, such as saving the task to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($recipe);
+                    $em->flush();
 
-        if ($form->isValid()) {
-            // perform some action, such as saving the task to the database
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($recipe);
-            $em->flush();
+                    return $this->redirectToRoute('addRecipe');
+                }
 
-            return $this->redirectToRoute('recipe');
+            }
+
+            if($request->request->has('category')) {
+                $categoryForm->handleRequest($request);
+                if ($categoryForm->isValid()) {
+                    // perform some action, such as saving the task to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($category);
+                    $em->flush();
+
+                    return $this->redirectToRoute('addRecipe');
+                }
+            }
         }
 
-        if ($categoryForm->isValid()) {
-            // perform some action, such as saving the task to the database
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($category);
-            $em->flush();
-
-            return $this->redirectToRoute('addRecipe');
-        }
-
-        return $this->render('CookbookBundle:recipe:addRecipe.html.twig', array(
-            'form' => $form->createView(), 'categoryForm' => $categoryForm->createView()
+        return $this->render('CookbookBundle:recipe-input-system:base.html.twig', array(
+            'recipeForm' => $recipeForm->createView(),
+            'categoryForm' => $categoryForm->createView()
         ));
     }
 }

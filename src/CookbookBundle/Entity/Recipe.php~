@@ -3,33 +3,58 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
+ * Recipe
+ *
  * @ORM\Table(name="recipe")
+ * @ORM\Entity
  */
 class Recipe {
 
     /**
-     * @ORM\Column(type="integer")
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string")
+     * @var string
+     *
+     * @Assert\NotBlank(
+     *      message = "Title cannot be blank"
+     * )
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Title cannot be longer than 100 characters"
+     * )
+     * @ORM\Column(name="title", type="string", length=100)
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @var string
+     *
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Author cannot be longer than 50 characters"
+     * )
+     * @ORM\Column(name="author", type="string", length=50, nullable=true)
      */
     protected $author;
 
     /**
-     * @ORM\Column(type="string")
+     * @var string
+     *
+     * @Assert\Length(
+     *      max = 200,
+     *      maxMessage = "Source cannot be longer than 200 characters"
+     * )
+     * @ORM\Column(name="source", type="string", length=200, nullable=true)
      */
     protected $source;
 
@@ -40,27 +65,57 @@ class Recipe {
     protected $category;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="recipe")
+     */
+    protected $tags;
+
+    /**
+     * @Assert\Time()
+     * @ORM\Column(name="duration", type="time")
      */
     protected $duration;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var integer
+     *
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 99,
+     *      minMessage = "Recipe should make at least 1 serving",
+     *      maxMessage = "Recipe cannot make more than 99 servings"
+     * )
+     * @ORM\Column(name="servings", type="integer")
      */
     protected $servings;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="recipe")
+     */
+    protected $ingredients;
+
+    /**
+     * @ORM\Column(name="preparation", type="text", nullable=true)
      */
     protected $preparation;
 
     /**
-     * @ORM\Column(type="text")
+     * @Assert\NotBlank(
+     *      message = "Instruction cannot be blank"
+     * )
+     * @ORM\Column(name="instruction", type="text")
      */
     protected $instruction;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="image", type="text", nullable=true)
      */
     protected $image;
+
+
+    /*
+    * -------------------
+    * AUTO-GENERATED CODE
+    * -------------------
+    */
+
 }

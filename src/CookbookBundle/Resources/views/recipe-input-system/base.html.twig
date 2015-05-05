@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>{% block title %}Recipe Input System!{% endblock %}</title>
+
+        <!-- STYLESHEET -->
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}"/>
+        {% block stylesheets %}{% endblock %}
+
+        <!-- FAVICON -->
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    </head>
+
+    <body>
+        {% include 'CookbookBundle:recipe-input-system:addRecipe.html.twig' %}
+        <br>
+        {% include 'CookbookBundle:recipe-input-system:addCategory.html.twig' %}
+        <!-- JAVASCRIPT -->
+        <script src="{{ asset('js/script.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

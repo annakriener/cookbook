@@ -2,25 +2,37 @@
 
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
+ * Category
+ *
  * @ORM\Table(name="category")
+ * @ORM\Entity
  */
 class Category {
 
     /**
-     * @ORM\Column(type="integer")
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string")
+     * @var string
+     *
+     * @Assert\NotBlank(
+     *      message="Category name cannot be blank"
+     * )
+     * @Assert\Length(
+     *      max = 30,
+     *      maxMessage = "Category name cannot be longer than 30 characters"
+     * )
+     * @ORM\Column(name="name", type="string", length=30)
      */
     protected $name;
 
@@ -29,14 +41,20 @@ class Category {
      */
     protected $recipes;
 
-    public function __construct() {
-        $this->recipes = new ArrayCollection();
+
+    /*
+     * -------------------
+     * AUTO-GENERATED CODE
+     * -------------------
+     */
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recipes = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-
-    // -----------------------------------
-    // AUTO-GENERATED getters and setters
-    // -----------------------------------
 
     /**
      * Get id
