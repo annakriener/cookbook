@@ -1,5 +1,10 @@
-<div class="col-md-4">
+{% form_theme recipeForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme ingredientForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme tagForm 'bootstrap_3_layout.html.twig' %}
+
+<div class="col-md-8">
     {{ form_start(recipeForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
         {{ form_errors(recipeForm) }}
 
         {{ form_row(recipeForm.title) }}
@@ -9,15 +14,25 @@
         {{ form_row(recipeForm.category) }}
 
         {% for ingredient in recipeForm.recipe_ingredient_references %}
-            {{ form_row(ingredient.amount) }}
-            {{ form_row(ingredient.measurement) }}
+            <div class="col-sm-4">
+                {{ form_row(ingredient.amount) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_row(ingredient.measurement) }}
+            </div>
         {% endfor %}
-        {{ form_widget(ingredientForm) }}
+        <div class="col-sm-4">
+            {{ form_widget(ingredientForm) }}
+        </div>
 
-        {% for tag in recipeForm.recipe_tag_references %}
-            {{ form_row(tag.classification) }}
-        {% endfor %}
+        <div class="col-sm-6">
         {{ form_widget(tagForm) }}
+        </div>
+        {% for tag in recipeForm.recipe_tag_references %}
+            <div class="col-sm-6">
+            {{ form_row(tag.classification) }}
+            </div>
+        {% endfor %}
 
         {{ form_row(recipeForm.servings) }}
         {{ form_row(recipeForm.preparation) }}

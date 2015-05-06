@@ -11,14 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class RecipeTagType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            /*
-            ->add('tag', 'collection', array(
-            'type' => new TagType(),
-            'label' => 'Tag: ',
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false))
-            */
             ->add('classification', 'entity', array(
                 'class' => 'CookbookBundle:Classification',
                 'property' => 'name',
