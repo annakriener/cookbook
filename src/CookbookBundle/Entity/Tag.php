@@ -3,11 +3,12 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Tag
  *
- * @ORM\Table(name="tag")
+ * @ORM\Table(name="tag", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Tag {
@@ -34,6 +35,11 @@ class Tag {
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="tag")
+     */
+    private $recipe_tag_references;
+
 
     /*
      * -------------------
@@ -41,6 +47,13 @@ class Tag {
      * -------------------
      */
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recipe_tag_references = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -73,5 +86,38 @@ class Tag {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add recipe_tag_references
+     *
+     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
+     * @return Tag
+     */
+    public function addRecipeTagReference(RecipeTagReference $recipeTagReferences)
+    {
+        $this->recipe_tag_references[] = $recipeTagReferences;
+    
+        return $this;
+    }
+
+    /**
+     * Remove recipe_tag_references
+     *
+     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
+     */
+    public function removeRecipeTagReference(RecipeTagReference $recipeTagReferences)
+    {
+        $this->recipe_tag_references->removeElement($recipeTagReferences);
+    }
+
+    /**
+     * Get recipe_tag_references
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRecipeTagReferences()
+    {
+        return $this->recipe_tag_references;
     }
 }

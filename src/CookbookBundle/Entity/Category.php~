@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Category
  *
- * @ORM\Table(name="category")
+ * @ORM\Table(name="category", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Category {
@@ -48,77 +48,4 @@ class Category {
      * -------------------
      */
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->recipes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Category
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Add recipes
-     *
-     * @param \CookbookBundle\Entity\Recipe $recipes
-     * @return Category
-     */
-    public function addRecipe(\CookbookBundle\Entity\Recipe $recipes)
-    {
-        $this->recipes[] = $recipes;
-    
-        return $this;
-    }
-
-    /**
-     * Remove recipes
-     *
-     * @param \CookbookBundle\Entity\Recipe $recipes
-     */
-    public function removeRecipe(\CookbookBundle\Entity\Recipe $recipes)
-    {
-        $this->recipes->removeElement($recipes);
-    }
-
-    /**
-     * Get recipes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getRecipes()
-    {
-        return $this->recipes;
-    }
 }

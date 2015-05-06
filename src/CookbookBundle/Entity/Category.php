@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Category
  *
- * @ORM\Table(name="category")
+ * @ORM\Table(name="category", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Category {
@@ -53,7 +53,7 @@ class Category {
      */
     public function __construct()
     {
-        $this->recipes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     /**
@@ -95,7 +95,7 @@ class Category {
      * @param \CookbookBundle\Entity\Recipe $recipes
      * @return Category
      */
-    public function addRecipe(\CookbookBundle\Entity\Recipe $recipes)
+    public function addRecipe(Recipe $recipes)
     {
         $this->recipes[] = $recipes;
     
@@ -107,7 +107,7 @@ class Category {
      *
      * @param \CookbookBundle\Entity\Recipe $recipes
      */
-    public function removeRecipe(\CookbookBundle\Entity\Recipe $recipes)
+    public function removeRecipe(Recipe $recipes)
     {
         $this->recipes->removeElement($recipes);
     }

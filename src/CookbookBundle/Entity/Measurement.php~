@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Measurement
  *
- * @ORM\Table(name="measurement")
+ * @ORM\Table(name="measurement", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Measurement {
@@ -33,6 +33,10 @@ class Measurement {
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="measurement")
+     */
+    private $recipe_ingredient_references;
 
     /*
      * -------------------
@@ -40,37 +44,4 @@ class Measurement {
      * -------------------
      */
 
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Measurement
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 }

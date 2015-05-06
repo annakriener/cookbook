@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RecipeIngredientReference
  *
- * @ORM\Table(name="recipe_ingredient_reference")
+ * @ORM\Table(name="recipe_ingredient_reference", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class RecipeIngredientReference {
@@ -21,7 +21,7 @@ class RecipeIngredientReference {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients")
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_ingredient_references")
      * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
      **/
     private $recipe;
@@ -34,13 +34,13 @@ class RecipeIngredientReference {
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Measurement")
+     * @ORM\ManyToOne(targetEntity="Measurement", inversedBy="recipe_ingredient_references")
      * @ORM\JoinColumn(name="measurement_id", referencedColumnName="id")
      **/
     private $measurement;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ingredient")
+     * @ORM\ManyToOne(targetEntity="Ingredient", inversedBy="recipe_ingredient_references")
      * @ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")
      **/
     private $ingredient;
@@ -150,7 +150,8 @@ class RecipeIngredientReference {
      *
      * @return \CookbookBundle\Entity\Ingredient 
      */
-    public function getIngredient() {
+    public function getIngredient()
+    {
         return $this->ingredient;
     }
 }

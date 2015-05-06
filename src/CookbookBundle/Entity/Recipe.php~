@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Recipe
  *
- * @ORM\Table(name="recipe")
+ * @ORM\Table(name="recipe", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Recipe {
@@ -59,7 +59,7 @@ class Recipe {
     protected $source;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes" )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
@@ -67,7 +67,7 @@ class Recipe {
     /**
      * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="recipe")
      */
-    protected $tags;
+    protected $recipe_tag_references;
 
     /**
      * @Assert\Time()
@@ -91,7 +91,7 @@ class Recipe {
     /**
      * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="recipe")
      */
-    protected $ingredients;
+    protected $recipe_ingredient_references;
 
     /**
      * @ORM\Column(name="preparation", type="text", nullable=true)

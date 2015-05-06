@@ -3,11 +3,12 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Tag
  *
- * @ORM\Table(name="tag")
+ * @ORM\Table(name="tag", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Tag {
@@ -34,6 +35,11 @@ class Tag {
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="tag")
+     */
+    private $recipe_tag_references;
+
 
     /*
      * -------------------
@@ -41,37 +47,4 @@ class Tag {
      * -------------------
      */
 
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Tag
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 }

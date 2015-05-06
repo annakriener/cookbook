@@ -3,11 +3,12 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Ingredient
  *
- * @ORM\Table(name="ingredient")
+ * @ORM\Table(name="ingredient", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Ingredient {
@@ -33,6 +34,11 @@ class Ingredient {
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="ingredient")
+     */
+    private $recipe_ingredient_references;
+
 
     /*
      * -------------------
@@ -40,6 +46,13 @@ class Ingredient {
      * -------------------
      */
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recipe_ingredient_references = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -72,5 +85,38 @@ class Ingredient {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add recipe_ingredient_references
+     *
+     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
+     * @return Ingredient
+     */
+    public function addRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
+    {
+        $this->recipe_ingredient_references[] = $recipeIngredientReferences;
+    
+        return $this;
+    }
+
+    /**
+     * Remove recipe_ingredient_references
+     *
+     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
+     */
+    public function removeRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
+    {
+        $this->recipe_ingredient_references->removeElement($recipeIngredientReferences);
+    }
+
+    /**
+     * Get recipe_ingredient_references
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRecipeIngredientReferences()
+    {
+        return $this->recipe_ingredient_references;
     }
 }

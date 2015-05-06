@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RecipeTagReference
  *
- * @ORM\Table(name="recipe_tag_reference")
+ * @ORM\Table(name="recipe_tag_reference", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class RecipeTagReference {
@@ -21,19 +21,19 @@ class RecipeTagReference {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="tags")
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_tag_references")
      * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
      **/
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tag")
+     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="recipe_tag_references")
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      **/
     private $tag;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Classification")
+     * @ORM\ManyToOne(targetEntity="Classification", inversedBy="recipe_tag_references")
      * @ORM\JoinColumn(name="classification_id", referencedColumnName="id")
      **/
     private $classification;
@@ -62,7 +62,7 @@ class RecipeTagReference {
      * @param \CookbookBundle\Entity\Recipe $recipe
      * @return RecipeTagReference
      */
-    public function setRecipe(\CookbookBundle\Entity\Recipe $recipe = null)
+    public function setRecipe(Recipe $recipe = null)
     {
         $this->recipe = $recipe;
     
@@ -85,17 +85,17 @@ class RecipeTagReference {
      * @param \CookbookBundle\Entity\Tag $tag
      * @return RecipeTagReference
      */
-    public function setTag(\CookbookBundle\Entity\Tag $tag = null)
+    public function setTag(Tag $tag = null)
     {
         $this->tag = $tag;
-
+    
         return $this;
     }
 
     /**
      * Get tag
      *
-     * @return \CookbookBundle\Entity\Tag
+     * @return \CookbookBundle\Entity\Tag 
      */
     public function getTag()
     {
@@ -108,7 +108,7 @@ class RecipeTagReference {
      * @param \CookbookBundle\Entity\Classification $classification
      * @return RecipeTagReference
      */
-    public function setClassification(\CookbookBundle\Entity\Classification $classification = null)
+    public function setClassification(Classification $classification = null)
     {
         $this->classification = $classification;
     

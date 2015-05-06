@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Recipe
  *
- * @ORM\Table(name="recipe")
+ * @ORM\Table(name="recipe", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
 class Recipe {
@@ -59,7 +59,7 @@ class Recipe {
     protected $source;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes" )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
@@ -67,7 +67,7 @@ class Recipe {
     /**
      * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="recipe")
      */
-    protected $tags;
+    protected $recipe_tag_references;
 
     /**
      * @Assert\Time()
@@ -91,7 +91,7 @@ class Recipe {
     /**
      * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="recipe")
      */
-    protected $ingredients;
+    protected $recipe_ingredient_references;
 
     /**
      * @ORM\Column(name="preparation", type="text", nullable=true)
@@ -123,8 +123,8 @@ class Recipe {
      */
     public function __construct()
     {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ingredients = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recipe_tag_references = new ArrayCollection();
+        $this->recipe_ingredient_references = new ArrayCollection();
     }
 
     /**
@@ -345,68 +345,68 @@ class Recipe {
     }
 
     /**
-     * Add tags
+     * Add recipe_tag_references
      *
-     * @param \CookbookBundle\Entity\RecipeTagReference $tags
+     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
      * @return Recipe
      */
-    public function addTag(RecipeTagReference $tags)
+    public function addRecipeTagReference(RecipeTagReference $recipeTagReferences)
     {
-        $this->tags[] = $tags;
+        $this->recipe_tag_references[] = $recipeTagReferences;
     
         return $this;
     }
 
     /**
-     * Remove tags
+     * Remove recipe_tag_references
      *
-     * @param \CookbookBundle\Entity\RecipeTagReference $tags
+     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
      */
-    public function removeTag(RecipeTagReference $tags)
+    public function removeRecipeTagReference(RecipeTagReference $recipeTagReferences)
     {
-        $this->tags->removeElement($tags);
+        $this->recipe_tag_references->removeElement($recipeTagReferences);
     }
 
     /**
-     * Get tags
+     * Get recipe_tag_references
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTags()
+    public function getRecipeTagReferences()
     {
-        return $this->tags;
+        return $this->recipe_tag_references;
     }
 
     /**
-     * Add ingredients
+     * Add recipe_ingredient_references
      *
-     * @param \CookbookBundle\Entity\RecipeIngredientReference $ingredients
+     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
      * @return Recipe
      */
-    public function addIngredient(RecipeIngredientReference $ingredients)
+    public function addRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
     {
-        $this->ingredients[] = $ingredients;
+        $this->recipe_ingredient_references[] = $recipeIngredientReferences;
     
         return $this;
     }
 
     /**
-     * Remove ingredients
+     * Remove recipe_ingredient_references
      *
-     * @param \CookbookBundle\Entity\RecipeIngredientReference $ingredients
+     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
      */
-    public function removeIngredient(RecipeIngredientReference $ingredients)
+    public function removeRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
     {
-        $this->ingredients->removeElement($ingredients);
+        $this->recipe_ingredient_references->removeElement($recipeIngredientReferences);
     }
 
     /**
-     * Get ingredients
+     * Get recipe_ingredient_references
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getIngredients()
+    public function getRecipeIngredientReferences()
     {
-        return $this->ingredients;
+        return $this->recipe_ingredient_references;
     }
 }
