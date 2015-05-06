@@ -1,0 +1,8 @@
+<div class="col-md-4">
+    {{ form_start(classificationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            {{ form_errors(classificationForm) }}
+        </div>
+        {{ form_row(classificationForm.name) }}
+    {{ form_end(classificationForm) }}
+</div>

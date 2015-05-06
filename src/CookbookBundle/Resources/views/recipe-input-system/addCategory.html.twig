@@ -1,5 +1,8 @@
-{{ form(categoryForm, {'attr': {'novalidate': 'novalidate'}}) }}
-{{ form_start(categoryForm) }}
-    {{ form_errors(categoryForm) }}
-    {{ form_row(categoryForm.name) }}
-{{ form_end(categoryForm) }}
+<div class="col-md-4">
+    {{ form_start(categoryForm, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            {{ form_errors(categoryForm) }}
+        </div>
+        {{ form_row(categoryForm.name) }}
+    {{ form_end(categoryForm) }}
+</div>

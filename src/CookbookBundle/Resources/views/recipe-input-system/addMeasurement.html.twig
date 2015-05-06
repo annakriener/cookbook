@@ -1,0 +1,8 @@
+<div class="col-md-4">
+    {{ form_start(measurementForm, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            {{ form_errors(measurementForm) }}
+        </div>
+        {{ form_row(measurementForm.name) }}
+    {{ form_end(measurementForm) }}
+</div>

@@ -14,9 +14,9 @@
     </head>
 
     <body>
-        {% include 'CookbookBundle:recipe-input-system:addRecipe.html.twig' %}
-        <br>
-        {% include 'CookbookBundle:recipe-input-system:addCategory.html.twig' %}
+        {% include 'CookbookBundle:default:header.html.twig'%}
+        {% include 'CookbookBundle:recipe-input-system:main.html.twig' %}
+        {% include 'CookbookBundle:default:footer.html.twig' %}
         <!-- JAVASCRIPT -->
         <script src="{{ asset('js/script.js') }}"></script>
         {% block javascripts %}{% endblock %}

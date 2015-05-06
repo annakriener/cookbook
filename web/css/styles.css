@@ -6591,6 +6591,10 @@ button.close {
   width: 100%;
 }
 
+.cb-ris-form-row {
+  margin: 60px 0 60px 0;
+}
+
 hr {
   margin: 0;
 }

@@ -327,7 +327,7 @@ class Recipe {
      * @param \CookbookBundle\Entity\Category $category
      * @return Recipe
      */
-    public function setCategory(\CookbookBundle\Entity\Category $category = null)
+    public function setCategory(Category $category = null)
     {
         $this->category = $category;
     
@@ -350,7 +350,7 @@ class Recipe {
      * @param \CookbookBundle\Entity\RecipeTagReference $tags
      * @return Recipe
      */
-    public function addTag(\CookbookBundle\Entity\RecipeTagReference $tags)
+    public function addTag(RecipeTagReference $tags)
     {
         $this->tags[] = $tags;
     
@@ -362,7 +362,7 @@ class Recipe {
      *
      * @param \CookbookBundle\Entity\RecipeTagReference $tags
      */
-    public function removeTag(\CookbookBundle\Entity\RecipeTagReference $tags)
+    public function removeTag(RecipeTagReference $tags)
     {
         $this->tags->removeElement($tags);
     }
@@ -383,7 +383,7 @@ class Recipe {
      * @param \CookbookBundle\Entity\RecipeIngredientReference $ingredients
      * @return Recipe
      */
-    public function addIngredient(\CookbookBundle\Entity\RecipeIngredientReference $ingredients)
+    public function addIngredient(RecipeIngredientReference $ingredients)
     {
         $this->ingredients[] = $ingredients;
     
@@ -395,7 +395,7 @@ class Recipe {
      *
      * @param \CookbookBundle\Entity\RecipeIngredientReference $ingredients
      */
-    public function removeIngredient(\CookbookBundle\Entity\RecipeIngredientReference $ingredients)
+    public function removeIngredient(RecipeIngredientReference $ingredients)
     {
         $this->ingredients->removeElement($ingredients);
     }

@@ -27,6 +27,11 @@ class RecipeType extends AbstractType {
                 'placeholder' => 'Choose a category',
                 'empty_data' => 'null'
             ))
+            ->add('ingredients', 'collection', array(
+                'type' => new RecipeIngredientType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false))
             ->add('servings', 'integer', array('label' => 'Yields: '))
             ->add('preparation', 'textarea', array('label' => 'Preparation: '))
             ->add('instruction', 'textarea', array('label' => 'Instruction: '))
