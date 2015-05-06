@@ -13,6 +13,7 @@
             {{ form_row(ingredient.measurement) }}
         {% endfor %}
         {{ form_widget(ingredientForm) }}
+
         {% for tag in recipeForm.recipe_tag_references %}
             {{ form_row(tag.classification) }}
         {% endfor %}
@@ -23,11 +24,4 @@
         {{ form_row(recipeForm.instruction) }}
         {{ form_row(recipeForm.image) }}
     {{ form_end(recipeForm) }}
-</div>
-
-<div class="col-md-3">
-
-</div>
-<div class="col-md-3">
-
 </div>
