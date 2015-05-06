@@ -21,7 +21,7 @@ class RecipeIngredientReference {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_ingredient_references")
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_ingredient_references", cascade={"all"})
      * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
      **/
     private $recipe;
@@ -34,13 +34,13 @@ class RecipeIngredientReference {
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Measurement", inversedBy="recipe_ingredient_references")
+     * @ORM\ManyToOne(targetEntity="Measurement", inversedBy="recipe_ingredient_references", cascade={"all"})
      * @ORM\JoinColumn(name="measurement_id", referencedColumnName="id")
      **/
     private $measurement;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Ingredient", inversedBy="recipe_ingredient_references")
+     * @ORM\ManyToOne(targetEntity="Ingredient", inversedBy="recipe_ingredient_references", cascade={"all"})
      * @ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")
      **/
     private $ingredient;

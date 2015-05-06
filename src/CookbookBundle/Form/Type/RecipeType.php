@@ -9,6 +9,8 @@
 namespace CookbookBundle\Form\Type;
 
 
+use CookbookBundle\Entity\Ingredient;
+use CookbookBundle\Entity\RecipeIngredientReference;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -27,11 +29,21 @@ class RecipeType extends AbstractType {
                 'placeholder' => 'Choose a category',
                 'empty_data' => 'null'
             ))
-            ->add('ingredients', 'collection', array(
-                'type' => new RecipeIngredientType(),
+
+            ->add('recipe_tag_references', 'collection', array(
+                'type' => new RecipeTagType(),
+                'label' => 'Tags: ',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false))
+
+             ->add('recipe_ingredient_references', 'collection', array(
+                'type' => new RecipeIngredientType(),
+                'label' => 'Ingredients: ',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false))
+
             ->add('servings', 'integer', array('label' => 'Yields: '))
             ->add('preparation', 'textarea', array('label' => 'Preparation: '))
             ->add('instruction', 'textarea', array('label' => 'Instruction: '))

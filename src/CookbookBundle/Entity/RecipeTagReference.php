@@ -21,19 +21,19 @@ class RecipeTagReference {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_tag_references")
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_tag_references", cascade={"all"})
      * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
      **/
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="recipe_tag_references")
+     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="recipe_tag_references", cascade={"all"})
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      **/
     private $tag;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Classification", inversedBy="recipe_tag_references")
+     * @ORM\ManyToOne(targetEntity="Classification", inversedBy="recipe_tag_references", cascade={"all"})
      * @ORM\JoinColumn(name="classification_id", referencedColumnName="id")
      **/
     private $classification;

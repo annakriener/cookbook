@@ -1,4 +1,4 @@
-<div class="col-md-5">
+<div class="col-md-4">
     {{ form_start(recipeForm, {'attr': {'novalidate': 'novalidate'}}) }}
         {{ form_errors(recipeForm) }}
 
@@ -7,10 +7,27 @@
         {{ form_row(recipeForm.source) }}
         {{ form_row(recipeForm.duration) }}
         {{ form_row(recipeForm.category) }}
+
+        {% for ingredient in recipeForm.recipe_ingredient_references %}
+            {{ form_row(ingredient.amount) }}
+            {{ form_row(ingredient.measurement) }}
+        {% endfor %}
+        {{ form_widget(ingredientForm) }}
+        {% for tag in recipeForm.recipe_tag_references %}
+            {{ form_row(tag.classification) }}
+        {% endfor %}
+        {{ form_widget(tagForm) }}
+
         {{ form_row(recipeForm.servings) }}
-        {{ form_row(recipeForm.ingredients) }}
         {{ form_row(recipeForm.preparation) }}
         {{ form_row(recipeForm.instruction) }}
         {{ form_row(recipeForm.image) }}
     {{ form_end(recipeForm) }}
+</div>
+
+<div class="col-md-3">
+
+</div>
+<div class="col-md-3">
+
 </div>
