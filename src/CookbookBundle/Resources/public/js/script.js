@@ -2,10 +2,14 @@
  *
  */
 $('#highlight').on('click', function(){
+    console.log("highlight funktion assigned");
+    $('#preparation').off('mouseup');
     $('#preparation').on('mouseup', highlightTxt);
 });
 
 $('#takenote').on('click', function(){
+    console.log("takenote funktion assigned");
+    $('#preparation').off('mouseup');
     $('#preparation').on('mouseup', takeNote);
 });
 
