@@ -11530,20 +11530,54 @@ if (typeof jQuery === 'undefined') {
 /**
  *
  */
-$('#highlight').on('click', function(){
-    console.log("highlight funktion assigned");
+$('#crossout').on('click', function(){
+    var cname = $(this).attr('class');
     $('#preparation').off('mouseup');
-    $('#preparation').on('mouseup', highlightTxt);
+    $('#preparation').on('mouseup', formatTxt(cname));
+
+});
+
+$('#yellow').on('click', function(){
+    var cname = $(this).attr('class');
+    $('#preparation').off('mouseup');
+    $('#preparation').on('mouseup', formatTxt(cname));
+});
+
+$('#cyan').on('click', function(){
+    var cname = $(this).attr('class');
+    $('#preparation').off('mouseup');
+    $('#preparation').on('mouseup', formatTxt(cname));
+});
+
+$('#pink').on('click', function(){
+    var cname = $(this).attr('class');
+    $('#preparation').off('mouseup');
+    $('#preparation').on('mouseup', formatTxt(cname));
 });
 
 $('#takenote').on('click', function(){
-    console.log("takenote funktion assigned");
+
     $('#preparation').off('mouseup');
     $('#preparation').on('mouseup', takeNote);
 });
+$('#save').on('click', function(){
+    saveAnnotations();
+});
+
+
+$('#hide').on('click', function(){
+    if ($('#hide').text() == "show") {
+        $('#hide').text("hide");
+        $(".cb-an-f-off").show();
+    } else {
+        $('#hide').text("show");
+        $(".cb-an-f-off").hide();
+    }
+
+});
 
 // hightlighting of text
-function highlightTxt() {
+function formatTxt(fClassName) {
     var txt = '';
     var selObj;
     if (window.getSelection)
@@ -11556,7 +11590,8 @@ function highlightTxt() {
             var selNode = selObj.anchorNode;
 
             if (selNode.nodeType == 3) {
-
+                var parent = selNode.parentNode;
+                if ($(parent).hasClass("cb-timer")) {return;}
                 // indices
                 var offset = selObj.anchorOffset;
                 var endStartIndex = offset + txt.length;
@@ -11590,7 +11625,8 @@ function highlightTxt() {
                     $(selNode).before(startChild);
                 }
 
-                middleString = "<span class=\"cb-an-f-highlight\">" + middleString + "</span>";
+                //middleString = "<span class=\"cb-an-f-off\">" + middleString + "</span>";
+                middleString = "<span class=\"" + fClassName + "\">" + middleString + "</span>";
                 $(selNode).before(middleString);
 
                 if (endString.length > 0){
@@ -11599,7 +11635,7 @@ function highlightTxt() {
                 }
 
                 // remove selNode, we don't need it any more
-                var parent = selNode.parentNode;
+
                 parent.removeChild(selNode);
                 combineEqualElements(parent);
             }
@@ -11678,6 +11714,7 @@ function takeNote() {
             var selNode = selObj.anchorNode;
 
             var parent = selNode.parentNode;
+            if ($(parent).hasClass("cb-timer")) {return;}
             var isNote = parent.getAttribute("contenteditable");
             // TODO: check here if somehow possible if there is a contenteditable span away by +/-1 offset? and then jump into this one?
 

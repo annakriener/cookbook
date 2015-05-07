@@ -12,7 +12,28 @@
 .cb-an-f-highlight {
 
   background-color: #fffe70;
-//  font-weight: bold;
+//
+}
+
+.cb-an-c-yellow{
+  background-color: #fffe70;
+}
+
+.cb-an-c-cyan{
+  background-color: #a5fffa;
+}
+
+.cb-an-c-pink{
+  background-color: #f0b7ff;
+}
+
+.cb-an-f-bold{
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.cb-an-f-off{
+  text-decoration: line-through;
 }
 
 [contenteditable="true"] {
@@ -22,7 +43,7 @@
 }
 
 
-.timer {
+.cb-timer {
   background-color:#44c767;
   -moz-border-radius:8px;
   -webkit-border-radius:8px;
@@ -30,18 +51,25 @@
   display:inline-block;
   cursor:pointer;
   color:#ffffff;
-  font-family:Arial;
-  font-size:17px;
-  padding:0px 6px;
+  font-size: 1em;
+  padding:0px 6px 0px 30px;
   text-decoration:none;
-  text-shadow:0px 1px 0px #2f6627;
   margin-left: 4px;
   margin-right: 4px;
+
+  // TODO: fix image display for firefox + opera (works great with chrome & safari)
+  background-image: url('../img/cb_timer.png');
+  background-size: 15px 15px;
+  background-position-x: 6px;
+  background-position-y: center;
+  background-repeat: no-repeat;
+
 }
-.timer:hover {
+.cb-timer:hover {
   background-color:#5cbf2a;
 }
-.timer:active {
+.cb-timer:active {
   position:relative;
   top:1px;
 }
+
