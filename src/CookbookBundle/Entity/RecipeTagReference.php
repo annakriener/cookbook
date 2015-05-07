@@ -1,7 +1,7 @@
 <?php
 
 namespace CookbookBundle\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +33,9 @@ class RecipeTagReference {
     private $tag;
 
     /**
+     * @Assert\Type(type="CookbookBundle\Entity\Measurement")
+     * @Assert\Valid()
+     *
      * @ORM\ManyToOne(targetEntity="Classification", inversedBy="recipe_tag_references", cascade={"all"})
      * @ORM\JoinColumn(name="classification_id", referencedColumnName="id")
      **/

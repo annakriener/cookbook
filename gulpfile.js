@@ -41,6 +41,12 @@ gulp.task('img', function() {
         .pipe(gulp.dest('web/img'));
 });
 
+gulp.task('fonts', function() {
+    return gulp.src(['bower_components/bootstrap/dist/fonts/*.*',
+        basePath +'/fonts/**/*.*'])
+        .pipe(gulp.dest('web/fonts'));
+});
+
 gulp.task('watch', function() {
     gulp.watch(basePath + '/js/**/*.js', ['js']);
     gulp.watch(basePath + '/less/**/*.less', ['css']);
@@ -48,4 +54,4 @@ gulp.task('watch', function() {
 });
 
 //define executable tasks when running "gulp" command
-gulp.task('default', ['js', 'css', 'img', 'watch']);
+gulp.task('default', ['js', 'css', 'img', 'fonts', 'watch']);

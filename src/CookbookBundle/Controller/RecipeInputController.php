@@ -63,7 +63,8 @@ class RecipeInputController extends Controller {
                 $recipeForm->handleRequest($request);
                 $ingredientForm->handleRequest($request);
                 $tagForm->handleRequest($request);
-                if ($recipeForm->isValid()) {
+
+                if ($recipeForm->isValid() && $ingredientForm->isValid() && $tagForm->isValid()) {
                     // saving the recipe to the database
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($recipe);

@@ -1,7 +1,7 @@
 <?php
 
 namespace CookbookBundle\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,12 +34,18 @@ class RecipeIngredientReference {
     private $amount;
 
     /**
+     * @Assert\Type(type="Measurement")
+     * @Assert\Valid()
+     *
      * @ORM\ManyToOne(targetEntity="Measurement", inversedBy="recipe_ingredient_references", cascade={"all"})
      * @ORM\JoinColumn(name="measurement_id", referencedColumnName="id")
      **/
     private $measurement;
 
     /**
+     * @Assert\Type(type="CookbookBundle\Entity\Ingredient")
+     * @Assert\Valid()
+     *
      * @ORM\ManyToOne(targetEntity="Ingredient", inversedBy="recipe_ingredient_references", cascade={"all"})
      * @ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")
      **/

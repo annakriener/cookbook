@@ -59,12 +59,15 @@ class Recipe {
     protected $source;
 
     /**
+     * @Assert\Type(type="CookbookBundle\Entity\Category")
+     * @Assert\Valid()
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes" )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="recipe")
      */
     protected $recipe_tag_references;
@@ -77,7 +80,9 @@ class Recipe {
 
     /**
      * @var integer
-     *
+     * @Assert\NotBlank(
+     *      message = "Servings cannot be blank"
+     * )
      * @Assert\Range(
      *      min = 1,
      *      max = 99,
