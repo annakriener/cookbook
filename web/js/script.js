@@ -11571,9 +11571,8 @@ $('#hide').on('click', function(){
         $(".cb-an-f-off").show();
     } else {
         $('#hide').text("show");
-        $(".cb-an-f-off").hide();
+        $(".cb-an-f-off").not("button").hide();
     }
-
 });
 
 // hightlighting of text
@@ -11625,7 +11624,6 @@ function formatTxt(fClassName) {
                     $(selNode).before(startChild);
                 }
 
-                //middleString = "<span class=\"cb-an-f-off\">" + middleString + "</span>";
                 middleString = "<span class=\"" + fClassName + "\">" + middleString + "</span>";
                 $(selNode).before(middleString);
 
@@ -11635,7 +11633,6 @@ function formatTxt(fClassName) {
                 }
 
                 // remove selNode, we don't need it any more
-
                 parent.removeChild(selNode);
                 combineEqualElements(parent);
             }
@@ -11741,12 +11738,83 @@ function takeNote() {
     }
 };
 
-function removeFormatting(){
-    // 1. check range
-}
-
 function saveAnnotations(){
+
     // 1. save contenteditable notes
     // 2. save formattings (highlight, crossed, underlined,..)
 
+    // per step? per instructions? jetzt erstmal testweise den preparation div als gesamtes in JSON übersetzen.
+    var paragraphs = $('#preparation').children("p");
+    //$(children).css("background-color", "blue"); // nur testweise - funktionniert genau wie gewollt, juhu!
+
+    var serializedParagraphs = [];
+    for(var i=0; i < paragraphs.length; ++i){
+        var sP = getSerializedChildren(paragraphs[i]);
+        serializedParagraphs.push(sP);
+    }
+    // TODO: save in JSON object
+
+}
+
+function r_serializeChild(child) {
+
+    console.log("node type: " + child.nodeType + " node name: " + child.nodeName);
+
+
+    /*
+    * Node Types:
+    * 0: indexNode, refers to part of original text, contains length of the part (startIndex = summation of lengths of preceding indexNodes)
+    * 1: textNode, is a text written by user
+    * 2: nestedNode, is a not contenteditable span with 1 or more child nodes that may have children themselves
+    * 3: noteNode, is a contenteditable span with 1 or more child nodes that may have children themselves
+    * 4: timerNode, is a not contenteditable span with a time value
+    * */
+
+
+    if (child.nodeType == 3){ // RECURSION BASE ! ( check if its a textnode )
+        if ($(child.parentNode).is("[contenteditable='true']")) {
+            var jsonObj = { "type": 1, "txt": child.nodeValue };
+            return jsonObj; // JSON object mit Type:2, text: child.nodeValue;
+        }
+        else { // it's a recipe text
+            var jsonObj = { "type": 0, "length": child.nodeValue.length };
+            return jsonObj;
+        }
+    } else if (child.nodeType == 1) { // check if Element node to be on safe side
+
+        if(child.hasAttribute("contenteditable")) { // contenteditable span
+
+
+            var serializedChildren = getSerializedChildren(child);
+            var jsonObj = { "type": 3, "children": serializedChildren };
+            return jsonObj;
+
+        } else if ($(child).hasClass("cb-timer")) { // it's a timer!
+
+            var jsonObj = { "type": 4, "h": 0, "m": 5, "s": 0 }; // TODO: use actual values derived from nodeValue
+            return jsonObj;
+
+        } else {
+            var serializedChildren = getSerializedChildren(child);
+            var classname = $(child).attr('class');
+            var jsonObj = { "type": 2, "children": serializedChildren, "class": classname };
+            return jsonObj;
+
+        }
+    }
+}
+
+function getSerializedChildren(parent) {
+
+    var serializedChildren = [];
+
+    var children = parent.childNodes;
+    // check if child itself has children - do this with a recursive function
+    for(var j=0; j < children.length; ++j) {
+        var serializedChild = r_serializeChild(children[j]);
+        if (serializedChild != null || serializedChild != undefined)
+            serializedChildren.push(serializedChild);
+    }
+
+    return serializedChildren;
 }
