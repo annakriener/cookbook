@@ -225,6 +225,7 @@ function saveAnnotations(){
         console.log("not null");
     }
 
+    // TODO: save serializedInstructions in DB for this user
 }
 
 function r_serializeChild(child) {
@@ -245,7 +246,7 @@ function r_serializeChild(child) {
             return jsonObj; // JSON object mit Type:2, text: child.nodeValue;
         }
         else { // it's a recipe text
-            var jsonObj = { "type": 0, "length": child.nodeValue.length };
+            var jsonObj = { "type": 0, "len": child.nodeValue.length };
             return jsonObj;
         }
     } else if (child.nodeType == 1) { // check if Element node to be on safe side
@@ -296,3 +297,100 @@ function getSerializedChildren(children) {
 
     return serializedChildren;
 }
+
+
+function renderInstructions() {
+
+    // 1. check if there are Annotations for the instructions
+
+    // first retrieve the instructions array from Database
+    var stepsOriginal = []; // TODO
+    var stepsAnnoted = []; //TODO
+
+
+    if (stepsOriginal.length == stepsAnnoted.length) {
+        // ok!
+        for (var step = 0; step < stepsOriginal.length; ++step) {
+            // document create div fuer den step
+
+            var originalPs = stepsOriginal[step];
+            var annotedPs = stepsAnnoted[step].children;
+
+
+            for (var p = 0; p < originalPs.length; ++p) { // go through paragraphs per step
+                // document create p
+                var pNode = $('<p />');
+
+                var contentOriginal = originalPs[p];
+                var contentAnnoted = annotedPs[p].children;
+                var an_index = 0;
+
+                for (var c = 0; c < contentOriginal.length; ++c) {
+                    if (contentOriginal[c].type == 1) { // text
+
+                        var oC_index = 0;
+                        while (oC_index < contentOriginal[c].txt.length && an_index < contentAnnoted.length) {
+                            oC_index = r_appendChild(pNode, contentAnnoted[an_index], oC_index, contentOriginal[c].txt);
+                            ++an_index;
+                        }
+
+                    } else if (contentOriginal[c].type == 4) { // timer
+                        while (r_appendChild(pNode, contentAnnoted[an_index], true, contentOriginal[c])){
+                            ++an_index;
+                        }
+                    }
+                }
+
+
+                while (an_index < contentAnnoted.length) { // don't forget contenteditable spans at the very end of a paragraph
+                    oC_index = r_appendChild(pNode, contentAnnoted[an_index], 0, "");
+                    ++an_index;
+                }
+            }
+        }
+    }
+}
+
+function r_appendChild(parentNode, child, index, content){
+    switch (child.type) {
+        case 0: // recursion base
+            var text = content.substr(index, child.len);
+            var textnode = document.createTextNode(text);         // Create a text node
+            parentNode.appendChild(textnode);
+            return (index + child.len);
+
+        case 1: // recursion base
+            var textnode = document.createTextNode(child.txt);
+            parentNode.appendChild(textnode);
+            return index;
+
+        case 2: // span with class, not contenteditable
+            var span = $('<span />').addClass(child.class);
+            var children = child.children;
+
+            for (var i=0; i < children.length; ++i) {
+                index = r_appendChild(span, children[i], index, content);
+            }
+            parentNode.appendChild(span);
+            return index;
+        case 3: // span with attribute contenteditable
+            var span = $('<span />').attr("contenteditable", "true");
+            var children = child.children;
+
+            for (var i=0; i < children.length; ++i) {
+                index = r_appendChild(span, children[i], index, content);
+            }
+            parentNode.appendChild(span);
+            return index;
+        case 4: // timer
+            // alternatively: get timer values from content param
+            var span = $().addClass("cb-timer").html(child.h + ":" + child.m + ":" + child.s);
+            parentNode.appendChild(span);
+            return false;
+        default:
+            return index;
+    }
+
+}
+
+
