@@ -104,6 +104,11 @@ class Recipe {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
+     * @Assert\Count(
+     *      min = "1",
+     *      minMessage = "You must specify at least one ingredient",
+     * )
+     *
      * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
      */
     protected $ingredients;

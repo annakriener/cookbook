@@ -1,11 +1,7 @@
-/**
- * Created by Anna Kriener on 07.05.2015.
- */
-
 var $ingredientCollectionHolder;
 
 // setup an "add a ingredient" link
-var $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn">Add a ingredient</button>');
+var $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
 var $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
 
 jQuery(document).ready(function() {
@@ -56,7 +52,7 @@ jQuery(document).ready(function() {
     }
 
     function addIngredientFormDeleteButton(ingredientFormDiv) {
-        var $removeIngredientFormButton = $('<button class="btn btn-default">X</button>');
+        var $removeIngredientFormButton = $('<button class="btn btn-xs">X</button>');
         ingredientFormDiv.append($removeIngredientFormButton);
 
         $removeIngredientFormButton.on('click', function (e) {

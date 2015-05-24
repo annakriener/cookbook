@@ -10,7 +10,7 @@ class RecipeType extends AbstractType {
             ->add('title', 'text', array('label' => 'Title: '))
             ->add('author', 'text', array('label' => 'Author: '))
             ->add('source', 'text', array('label' => 'Source: '))
-            ->add('duration', 'time', array('label' => 'Duration: '))
+            ->add('duration', 'time', array('label' => 'Duration: (hh:mm)'))
 
             ->add('category', 'entity', array(
                 'class'         => 'CookbookBundle:Category',
@@ -22,24 +22,27 @@ class RecipeType extends AbstractType {
 
             ->add('tags', 'collection', array(
                 'type'          => new RecipeTagType(),
-                'label'         => 'Tags: ',
+                'label'         => 'Tags:',
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
-                'by_reference'  => false
+                'by_reference'  => false,
+                'delete_empty'  => true,
+                'options' => array('label' => false)
             ))
 
             ->add('ingredients', 'collection', array(
                 'type'          => new RecipeIngredientType(),
-                'label'         => 'Ingredients: ',
+                'label'         => 'Ingredients:',
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
-                'by_reference'  => false
+                'by_reference'  => false,
+                'options' => array('label' => false)
             ))
 
-            ->add('servings', 'integer', array('label' => 'Yields: '))
-            ->add('preparation', 'textarea', array('label' => 'Preparation: '))
+            ->add('servings', 'integer', array('label' => 'Yields:'))
+            ->add('preparation', 'textarea', array('label' => 'Preparation:'))
 
             ->add('instructions', 'collection', array(
                 'type'          => 'textarea',
@@ -47,7 +50,9 @@ class RecipeType extends AbstractType {
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
-                'by_reference'  => false
+                'delete_empty'  => true,
+                'by_reference'  => false,
+                'options' => array('label' => "Step:")
             ))
 
             ->add('image', 'text', array('label' => 'Image: '))

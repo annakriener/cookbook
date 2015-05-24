@@ -15,13 +15,16 @@ class RecipeIngredientType extends AbstractType
         $builder
             ->add('amount', 'text', array('label' => 'Quantity:'))
             ->add('measurement', 'entity', array(
-                'class' => 'CookbookBundle:Measurement',
-                'property' => 'name',
-                'label' => 'Measurement: ',
-                'placeholder' => 'Choose a Measurement',
-                'empty_data' => 'null'
+                'class'         => 'CookbookBundle:Measurement',
+                'property'      => 'name',
+                'label'         => 'Measurement: ',
+                'placeholder'   => 'Choose a Measurement',
+                'required'      => false,
+                'empty_data'    => null
             ))
-            ->add('ingredient', new IngredientType());
+            ->add('ingredient', new IngredientType(), array(
+                'label' => false
+            ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -15,14 +15,16 @@ class RecipeTagType extends AbstractType{
                 'by_reference'  => false
             ))
             */
-            ->add('tag', new TagType())
+            ->add('tag', new TagType(), array(
+                'label' => false)
+            )
             ->add('classification', 'entity', array(
                 'class'         => 'CookbookBundle:Classification',
                 'property'      => 'name',
                 'label'         => 'Classification: ',
                 'placeholder'   => 'Choose a Classification',
-                'empty_data'    => 'null',
-                'required'      => false
+                'required'      => false,
+                'empty_data'    => null
             ));
     }
 
