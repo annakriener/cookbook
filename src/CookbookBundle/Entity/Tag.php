@@ -31,15 +31,9 @@ class Tag {
      *      max = 30,
      *      maxMessage = "Tag name cannot be longer than 30 characters"
      * )
-     * @ORM\Column(name="name", type="string", length=30)
+     * @ORM\Column(name="name", type="string", length=30, nullable=true)
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="tag")
-     */
-    private $recipe_tag_references;
-
 
     /*
      * -------------------
@@ -47,13 +41,6 @@ class Tag {
      * -------------------
      */
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->recipe_tag_references = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -86,38 +73,5 @@ class Tag {
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add recipe_tag_references
-     *
-     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
-     * @return Tag
-     */
-    public function addRecipeTagReference(RecipeTagReference $recipeTagReferences)
-    {
-        $this->recipe_tag_references[] = $recipeTagReferences;
-    
-        return $this;
-    }
-
-    /**
-     * Remove recipe_tag_references
-     *
-     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
-     */
-    public function removeRecipeTagReference(RecipeTagReference $recipeTagReferences)
-    {
-        $this->recipe_tag_references->removeElement($recipeTagReferences);
-    }
-
-    /**
-     * Get recipe_tag_references
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getRecipeTagReferences()
-    {
-        return $this->recipe_tag_references;
     }
 }

@@ -34,25 +34,12 @@ class Ingredient {
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="ingredient")
-     */
-    private $recipe_ingredient_references;
-
-
     /*
      * -------------------
      * AUTO-GENERATED CODE
      * -------------------
      */
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->recipe_ingredient_references = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -85,38 +72,5 @@ class Ingredient {
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add recipe_ingredient_references
-     *
-     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
-     * @return Ingredient
-     */
-    public function addRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
-    {
-        $this->recipe_ingredient_references[] = $recipeIngredientReferences;
-    
-        return $this;
-    }
-
-    /**
-     * Remove recipe_ingredient_references
-     *
-     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
-     */
-    public function removeRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
-    {
-        $this->recipe_ingredient_references->removeElement($recipeIngredientReferences);
-    }
-
-    /**
-     * Get recipe_ingredient_references
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getRecipeIngredientReferences()
-    {
-        return $this->recipe_ingredient_references;
     }
 }

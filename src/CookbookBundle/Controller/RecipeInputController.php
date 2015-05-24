@@ -8,17 +8,17 @@ use CookbookBundle\Entity\Measurement;
 use CookbookBundle\Entity\Classification;
 use CookbookBundle\Entity\Ingredient;
 
-use CookbookBundle\Entity\RecipeIngredientReference;
-use CookbookBundle\Entity\RecipeTagReference;
-use CookbookBundle\Entity\Tag;
-use CookbookBundle\Form\Type\TagType;
+use CookbookBundle\Entity\RecipeIngredient;
+use CookbookBundle\Entity\RecipeTag;
+
+use CookbookBundle\Form\Type\RecipeTagType;
+
 use CookbookBundle\Form\Type\IngredientType;
 use CookbookBundle\Form\Type\RecipeType;
 use CookbookBundle\Form\Type\CategoryType;
 use CookbookBundle\Form\Type\MeasurementType;
 use CookbookBundle\Form\Type\ClassificationType;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,50 +28,48 @@ class RecipeInputController extends Controller {
      * @Route("/addRecipe", name="addRecipe")
      */
     public function addRecipeAction(Request $request) {
-        // create a recipe
+        // create new entities
         $recipe = new Recipe();
+        //$ingredient = new Ingredient();
         $category = new Category();
         $measurement = new Measurement();
         $classification = new Classification();
 
-        $ingredient = new Ingredient();
-        $tag = new Tag();
+        //$recipe_ingredient = new RecipeIngredient();
+        //$recipe_tag = new RecipeTag();
 
-        $recipe_ingredient_reference = new RecipeIngredientReference();
-        $recipe_tag_reference = new RecipeTagReference();
+        // set recipe in relational entities
+        //$recipe_ingredient->setRecipe($recipe);
+        //$recipe_tag->setRecipe($recipe);
 
-        $recipe_ingredient_reference->setRecipe($recipe);
-        $recipe_tag_reference->setRecipe($recipe);
+        // set relational ingredients and tags in recipe
+        //$recipe->addIngredient($recipe_ingredient);
+        //$recipe->addTag($recipe_tag);
 
-        $recipe->addRecipeIngredientReference($recipe_ingredient_reference);
-        $recipe->addRecipeTagReference($recipe_tag_reference);
-
-        // create a new form of type Recipe
+        // create new forms
         $recipeForm = $this->createForm(new RecipeType(), $recipe);
+        //$ingredientForm = $this->createForm(new IngredientType(), $ingredient);
         $categoryForm = $this->createForm(new CategoryType(), $category);
         $measurementForm = $this->createForm(new MeasurementType(), $measurement);
         $classificationForm = $this->createForm(new ClassificationType(), $classification);
 
-        $ingredientForm = $this->createForm(new IngredientType(), $ingredient);
-        $tagForm = $this->createForm(new TagType(), $tag);
-
-        $recipe_ingredient_reference->setIngredient($ingredient);
-        $recipe_tag_reference->setTag($tag);
+        // set ingredient and tag in relational entities
+        //$recipe_ingredient->setIngredient($ingredient);
 
         if($request->isMethod('POST')) {
             if($request->request->has('recipe')) {
-                $recipeForm->handleRequest($request);
-                $ingredientForm->handleRequest($request);
-                $tagForm->handleRequest($request);
 
-                if ($recipeForm->isValid() && $ingredientForm->isValid() && $tagForm->isValid()) {
+                $recipeForm->handleRequest($request);
+                //$ingredientForm->handleRequest($request);
+
+                if ($recipeForm->isValid() /*&& $ingredientForm->isValid()*/) {
                     // saving the recipe to the database
                     $em = $this->getDoctrine()->getManager();
+
                     $em->persist($recipe);
-                    $em->persist($recipe_ingredient_reference);
-                    $em->persist($recipe_tag_reference);
-                    $em->persist($ingredient);
-                    $em->persist($tag);
+                    //$em->persist($recipe_ingredient);
+                    //$em->persist($recipe_tag);
+                    //$em->persist($ingredient);
                     $em->flush();
 
                     return $this->redirectToRoute('addRecipe');
@@ -94,7 +92,7 @@ class RecipeInputController extends Controller {
             if($request->request->has('measurement')) {
                 $measurementForm->handleRequest($request);
                 if ($measurementForm->isValid()) {
-                    // saving the category to the database
+                    // saving the measurement to the database
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($measurement);
                     $em->flush();
@@ -106,7 +104,7 @@ class RecipeInputController extends Controller {
             if($request->request->has('classification')) {
                 $classificationForm->handleRequest($request);
                 if ($classificationForm->isValid()) {
-                    // saving the category to the database
+                    // saving the classification to the database
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($classification);
                     $em->flush();
@@ -117,14 +115,12 @@ class RecipeInputController extends Controller {
         }
 
         return $this->render('CookbookBundle:recipe-input-system:base.html.twig', array(
+
             'recipeForm' => $recipeForm->createView(),
+            //'ingredientForm' => $ingredientForm->createView(),
             'categoryForm' => $categoryForm->createView(),
             'measurementForm' => $measurementForm->createView(),
             'classificationForm' => $classificationForm->createView(),
-            'ingredientForm' => $ingredientForm->createView(),
-            'tagForm' => $tagForm->createView()
         ));
     }
-
-
 }

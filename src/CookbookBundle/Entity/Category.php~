@@ -48,4 +48,77 @@ class Category {
      * -------------------
      */
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Category
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Add recipes
+     *
+     * @param \CookbookBundle\Entity\Recipe $recipes
+     * @return Category
+     */
+    public function addRecipe(Recipe $recipes)
+    {
+        $this->recipes[] = $recipes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove recipes
+     *
+     * @param \CookbookBundle\Entity\Recipe $recipes
+     */
+    public function removeRecipe(Recipe $recipes)
+    {
+        $this->recipes->removeElement($recipes);
+    }
+
+    /**
+     * Get recipes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRecipes()
+    {
+        return $this->recipes;
+    }
 }

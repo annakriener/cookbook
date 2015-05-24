@@ -3,6 +3,7 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Classification
@@ -34,15 +35,43 @@ class Classification {
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="classification")
-     */
-    private $recipe_tag_references;
-
     /*
      * -------------------
      * AUTO-GENERATED CODE
      * -------------------
      */
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Classification
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

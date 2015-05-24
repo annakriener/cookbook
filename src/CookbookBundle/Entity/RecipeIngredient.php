@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RecipeIngredientReference
  *
- * @ORM\Table(name="recipe_ingredient_reference", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
+ * @ORM\Table(name="recipe_ingredient", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
-class RecipeIngredientReference {
+class RecipeIngredient {
     /**
      * @var integer
      *
@@ -21,7 +21,9 @@ class RecipeIngredientReference {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipe_ingredient_references", cascade={"all"})
+     * @Assert\Type(type="CookbookBundle\Entity\Recipe")
+     *
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients", cascade={"all"})
      * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
      **/
     private $recipe;
@@ -34,7 +36,9 @@ class RecipeIngredientReference {
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Measurement", inversedBy="recipe_ingredient_references", cascade={"all"})
+     * @Assert\Type(type="CookbookBundle\Entity\Measurement")
+     *
+     * @ORM\ManyToOne(targetEntity="Measurement", cascade={"all"})
      * @ORM\JoinColumn(name="measurement_id", referencedColumnName="id", nullable=true)
      **/
     private $measurement;
@@ -43,7 +47,7 @@ class RecipeIngredientReference {
      * @Assert\Type(type="CookbookBundle\Entity\Ingredient")
      * @Assert\Valid()
      *
-     * @ORM\ManyToOne(targetEntity="Ingredient", inversedBy="recipe_ingredient_references", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Ingredient", cascade={"all"})
      * @ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")
      **/
     private $ingredient;
@@ -70,7 +74,7 @@ class RecipeIngredientReference {
      * Set amount
      *
      * @param float $amount
-     * @return RecipeIngredientReference
+     * @return RecipeIngredient
      */
     public function setAmount($amount)
     {
@@ -93,7 +97,7 @@ class RecipeIngredientReference {
      * Set recipe
      *
      * @param \CookbookBundle\Entity\Recipe $recipe
-     * @return RecipeIngredientReference
+     * @return RecipeIngredient
      */
     public function setRecipe(Recipe $recipe = null)
     {
@@ -116,7 +120,7 @@ class RecipeIngredientReference {
      * Set measurement
      *
      * @param \CookbookBundle\Entity\Measurement $measurement
-     * @return RecipeIngredientReference
+     * @return RecipeIngredient
      */
     public function setMeasurement(Measurement $measurement = null)
     {
@@ -139,7 +143,7 @@ class RecipeIngredientReference {
      * Set ingredient
      *
      * @param \CookbookBundle\Entity\Ingredient $ingredient
-     * @return RecipeIngredientReference
+     * @return RecipeIngredient
      */
     public function setIngredient(Ingredient $ingredient = null)
     {

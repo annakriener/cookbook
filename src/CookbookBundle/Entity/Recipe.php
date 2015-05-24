@@ -43,6 +43,7 @@ class Recipe {
      *      max = 50,
      *      maxMessage = "Author cannot be longer than 50 characters"
      * )
+     *
      * @ORM\Column(name="author", type="string", length=50, nullable=true)
      */
     protected $author;
@@ -54,32 +55,39 @@ class Recipe {
      *      max = 200,
      *      maxMessage = "Source cannot be longer than 200 characters"
      * )
+     *
      * @ORM\Column(name="source", type="string", length=200, nullable=true)
      */
     protected $source;
 
     /**
+     * @var \CookbookBundle\Entity\Category
+     *
      * @Assert\Type(type="CookbookBundle\Entity\Category")
      * @Assert\Valid()
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes" )
+     *
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes", cascade={"persist"} )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="RecipeTag", mappedBy="recipe", cascade={"persist"} )
      */
-    protected $recipe_tag_references;
+    protected $tags;
 
     /**
      * @Assert\Time()
+     *
      * @ORM\Column(name="duration", type="time")
      */
     protected $duration;
 
     /**
      * @var integer
+     *
      * @Assert\NotBlank(
      *      message = "Servings cannot be blank"
      * )
@@ -94,9 +102,11 @@ class Recipe {
     protected $servings;
 
     /**
-     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="recipe")
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
      */
-    protected $recipe_ingredient_references;
+    protected $ingredients;
 
     /**
      * @ORM\Column(name="preparation", type="text", nullable=true)
@@ -104,18 +114,21 @@ class Recipe {
     protected $preparation;
 
     /**
-     * @Assert\NotBlank(
-     *      message = "Instruction cannot be blank"
+     * @var Array
+     *
+     * @Assert\Count(
+     *      min = "1",
+     *      minMessage = "You must specify at least one step",
      * )
-     * @ORM\Column(name="instruction", type="text")
+     *
+     * @ORM\Column(name="instructions", type="json_array")
      */
-    protected $instruction;
+    protected $instructions;
 
     /**
      * @ORM\Column(name="image", type="text", nullable=true)
      */
     protected $image;
-
 
     /*
     * -------------------
@@ -128,8 +141,9 @@ class Recipe {
      */
     public function __construct()
     {
-        $this->recipe_tag_references = new ArrayCollection();
-        $this->recipe_ingredient_references = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
+        $this->instructions = array();
     }
 
     /**
@@ -281,26 +295,71 @@ class Recipe {
     }
 
     /**
-     * Set instruction
+     * Set instructions
      *
-     * @param string $instruction
+     * @param array $instructions
      * @return Recipe
      */
-    public function setInstruction($instruction)
+    public function setInstructions($instructions)
     {
-        $this->instruction = $instruction;
+        $this->instructions = $instructions;
     
         return $this;
     }
 
     /**
-     * Get instruction
+     * Get instructions
      *
-     * @return string 
+     * @return array 
      */
-    public function getInstruction()
+    public function getInstructions()
     {
-        return $this->instruction;
+        return $this->instructions;
+    }
+
+    /**
+     * Add instruction
+     *
+     * @param $instruction
+     * @return Recipe
+     */
+    public function addInstruction($instruction) {
+        $step = array();
+        $paragraphs = preg_split("/\R/", $instruction);
+
+        foreach ($paragraphs as $paragraph) {
+            $parts = preg_split("/TIMER/", $paragraph);
+
+            $children = array();
+
+            foreach ($parts as $part) {
+                if (preg_match("/(2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/", $part)) {
+                    $time = preg_split("/:/", $part);
+                    $children[] = array("type" => 4, "h" => intval($time[0]), "m" => intval($time[1]), "s" => intval($time[2]));
+                    //$step[] = array("type" => 4, "h" => $time[0], "m" => $time[1], "s" => $time[2]);
+                } else {
+                    $children[] = array("type" => 1, "txt" => $part);
+                    //$step[] = array("type" => 1, "txt" => $part);
+                }
+            }
+
+            //$step[] = array('type' => 5, 'children' => $children);
+            $step[] = $children;
+        }
+
+        $this->instructions[] = json_decode(json_encode($step));
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param $instruction
+     */
+    public function removeInstruction($instruction) {
+        if (in_array($instruction, $this->instructions)) {
+            unset($this->instructions[array_search($instruction, $this->instructions)]);
+        }
     }
 
     /**
@@ -350,68 +409,62 @@ class Recipe {
     }
 
     /**
-     * Add recipe_tag_references
+     * Add tag
      *
-     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
+     * @param \CookbookBundle\Entity\RecipeTag $tag
      * @return Recipe
      */
-    public function addRecipeTagReference(RecipeTagReference $recipeTagReferences)
-    {
-        $this->recipe_tag_references[] = $recipeTagReferences;
-    
+    public function addTag(RecipeTag $tag) {
+        $this->tags[] = $tag;
+        $tag->setRecipe($this);
         return $this;
     }
 
     /**
-     * Remove recipe_tag_references
+     * Remove tag
      *
-     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
+     * @param \CookbookBundle\Entity\RecipeTag $tag
      */
-    public function removeRecipeTagReference(RecipeTagReference $recipeTagReferences)
-    {
-        $this->recipe_tag_references->removeElement($recipeTagReferences);
+    public function removeTag(RecipeTag $tag) {
+        $this->tags->removeElement($tag);
     }
 
     /**
-     * Get recipe_tag_references
+     * Get tags
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getRecipeTagReferences()
-    {
-        return $this->recipe_tag_references;
+    public function getTags() {
+        return $this->tags;
     }
 
     /**
-     * Add recipe_ingredient_references
+     * Add ingredient
      *
-     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
+     * @param \CookbookBundle\Entity\RecipeIngredient $ingredient
      * @return Recipe
      */
-    public function addRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
-    {
-        $this->recipe_ingredient_references[] = $recipeIngredientReferences;
-    
+    public function addIngredient(RecipeIngredient $ingredient) {
+        $this->ingredients[] = $ingredient;
+        $ingredient->setRecipe($this);
         return $this;
     }
 
     /**
-     * Remove recipe_ingredient_references
+     * Remove ingredient
      *
-     * @param \CookbookBundle\Entity\RecipeIngredientReference $recipeIngredientReferences
+     * @param \CookbookBundle\Entity\RecipeIngredient $ingredient
      */
-    public function removeRecipeIngredientReference(RecipeIngredientReference $recipeIngredientReferences)
-    {
-        $this->recipe_ingredient_references->removeElement($recipeIngredientReferences);
+    public function removeIngredient(RecipeIngredient $ingredient) {
+        $this->ingredients->removeElement($ingredient);
     }
 
     /**
-     * Get recipe_ingredient_references
+     * Get ingredients
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getRecipeIngredientReferences()
-    {
-        return $this->recipe_ingredient_references;
+    public function getIngredients() {
+        return $this->ingredients;
     }
 }

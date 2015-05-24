@@ -11528,6 +11528,225 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /**
+ * Created by Anna Kriener on 07.05.2015.
+ */
+
+var $ingredientCollectionHolder;
+
+// setup an "add a ingredient" link
+var $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn">Add a ingredient</button>');
+var $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+
+jQuery(document).ready(function() {
+    // Get the ul that holds the collection of ingredients
+    $ingredientCollectionHolder = $('div#recipe_ingredients');
+
+    // add a delete link to all of the existing ingredient form div elements
+    $ingredientCollectionHolder.find('div').each(function() {
+        addIngredientFormDeleteButton($(this));
+    });
+
+    // add the "add a ingredient" button and div to the ingredients div
+    $ingredientCollectionHolder.append($newIngredientButtonDiv);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $ingredientCollectionHolder.data('index', $ingredientCollectionHolder.find(':input').length);
+
+    $addIngredientButton.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new ingredient form (see next code block)
+        addIngredientForm($ingredientCollectionHolder, $newIngredientButtonDiv);
+    });
+
+    function addIngredientForm($ingredientCollectionHolder, $newIngredientButtonDiv) {
+        // Get the data-prototype explained earlier
+        var prototype = $ingredientCollectionHolder.data('prototype');
+
+        // get the new index
+        var index = $ingredientCollectionHolder.data('index');
+
+        console.log(index);
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newIngredientForm = prototype.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $ingredientCollectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a ingredient" link li
+        var $newIngredientFormDiv = $('<div></div>').append(newIngredientForm);
+        $newIngredientButtonDiv.before($newIngredientFormDiv);
+
+        // add a delete link to the new form
+        addIngredientFormDeleteButton($newIngredientFormDiv);
+    }
+
+    function addIngredientFormDeleteButton(ingredientFormDiv) {
+        var $removeIngredientFormButton = $('<button class="btn btn-default">X</button>');
+        ingredientFormDiv.append($removeIngredientFormButton);
+
+        $removeIngredientFormButton.on('click', function (e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the ingredient form
+            ingredientFormDiv.remove();
+        });
+    }
+
+    //addIngredientForm($ingredientCollectionHolder, $newIngredientButtonDiv);
+});
+
+/**
+ * Created by Anna Kriener on 07.05.2015.
+ */
+
+var $instructionCollectionHolder;
+
+// setup an "add a step" link
+var $addInstructionButton = $('<button class="cb-ris-add-instruction-button btn-default btn">Add a step</button>');
+var $newInstructionButtonDiv = $('<div></div>').append($addInstructionButton);
+
+jQuery(document).ready(function() {
+    // Get the ul that holds the collection of steps
+    $instructionCollectionHolder = $('div#recipe_instructions');
+
+    // add a delete link to all of the existing instruction form div elements
+    $instructionCollectionHolder.find('div').each(function() {
+        addInstructionFormDeleteButton($(this));
+    });
+
+    // add the "add a step" button and div to the instructions div
+    $instructionCollectionHolder.append($newInstructionButtonDiv);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $instructionCollectionHolder.data('index', $instructionCollectionHolder.find(':input').length);
+
+    $addInstructionButton.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new step form (see next code block)
+        addInstructionForm($instructionCollectionHolder, $newInstructionButtonDiv);
+    });
+
+    function addInstructionForm($instructionCollectionHolder, $newStepButtonDiv) {
+        // Get the data-prototype explained earlier
+        var prototype = $instructionCollectionHolder.data('prototype');
+
+        // get the new index
+        var index = $instructionCollectionHolder.data('index');
+
+        console.log(index);
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newInstructionForm = prototype.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $instructionCollectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a step" link li
+        var $newInstructionFormDiv = $('<div></div>').append(newInstructionForm);
+        $newStepButtonDiv.before($newInstructionFormDiv);
+
+        // add a delete link to the new form
+        addInstructionFormDeleteButton($newInstructionFormDiv);
+    }
+
+    function addInstructionFormDeleteButton(instructionFormDiv) {
+        var $removeFormButton = $('<button class="btn btn-default">X</button>');
+        instructionFormDiv.append($removeFormButton);
+
+        $removeFormButton.on('click', function (e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the step form
+            instructionFormDiv.remove();
+        });
+    }
+
+    //addInstructionForm($instructionCollectionHolder, $newStepButtonDiv);
+});
+
+/**
+ * Created by Anna Kriener on 07.05.2015.
+ */
+
+var $tagCollectionHolder;
+
+// setup an "add a tag" link
+var $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn">Add a tag</button>');
+var $newTagButtonDiv = $('<div></div>').append($addTagButton);
+
+jQuery(document).ready(function() {
+    // Get the ul that holds the collection of tags
+    $tagCollectionHolder = $('div#recipe_tags');
+
+    // add a delete link to all of the existing tag form div elements
+    $tagCollectionHolder.find('div').each(function() {
+        addTagFormDeleteButton($(this));
+    });
+
+    // add the "add a tag" button and div to the tags div
+    $tagCollectionHolder.append($newTagButtonDiv);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $tagCollectionHolder.data('index', $tagCollectionHolder.find(':input').length);
+
+    $addTagButton.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addTagForm($tagCollectionHolder, $newTagButtonDiv);
+    });
+
+    function addTagForm($tagCollectionHolder, $newTagButtonDiv) {
+        // Get the data-prototype explained earlier
+        var prototype = $tagCollectionHolder.data('prototype');
+
+        // get the new index
+        var index = $tagCollectionHolder.data('index');
+
+        console.log(index);
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newTagForm = prototype.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $tagCollectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newTagFormDiv = $('<div></div>').append(newTagForm);
+        $newTagButtonDiv.before($newTagFormDiv);
+
+        // add a delete link to the new form
+        addTagFormDeleteButton($newTagFormDiv);
+    }
+
+    function addTagFormDeleteButton(tagFormDiv) {
+        var $removeTagFormButton = $('<button class="btn btn-default">X</button>');
+        tagFormDiv.append($removeTagFormButton);
+
+        $removeTagFormButton.on('click', function (e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the tag form
+            tagFormDiv.remove();
+        });
+    }
+
+    //addTagForm($tagCollectionHolder, $newTagButtonDiv);
+});
+
+/**
  * Created by Anna Kriener on 30.04.2015.
  */
 $('#cb-anna').on('click', function(){

@@ -35,24 +35,12 @@ class Classification {
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="classification")
-     */
-    private $recipe_tag_references;
-
     /*
      * -------------------
      * AUTO-GENERATED CODE
      * -------------------
      */
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->recipe_tag_references = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -85,38 +73,5 @@ class Classification {
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add recipe_tag_references
-     *
-     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
-     * @return Classification
-     */
-    public function addRecipeTagReference(RecipeTagReference $recipeTagReferences)
-    {
-        $this->recipe_tag_references[] = $recipeTagReferences;
-    
-        return $this;
-    }
-
-    /**
-     * Remove recipe_tag_references
-     *
-     * @param \CookbookBundle\Entity\RecipeTagReference $recipeTagReferences
-     */
-    public function removeRecipeTagReference(RecipeTagReference $recipeTagReferences)
-    {
-        $this->recipe_tag_references->removeElement($recipeTagReferences);
-    }
-
-    /**
-     * Get recipe_tag_references
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getRecipeTagReferences()
-    {
-        return $this->recipe_tag_references;
     }
 }

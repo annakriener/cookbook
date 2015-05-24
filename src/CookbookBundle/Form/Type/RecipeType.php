@@ -1,16 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Anna Kriener
- * Date: 04.05.2015
- * Time: 15:51
- */
-
 namespace CookbookBundle\Form\Type;
-
-
-use CookbookBundle\Entity\Ingredient;
-use CookbookBundle\Entity\RecipeIngredientReference;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -22,31 +11,45 @@ class RecipeType extends AbstractType {
             ->add('author', 'text', array('label' => 'Author: '))
             ->add('source', 'text', array('label' => 'Source: '))
             ->add('duration', 'time', array('label' => 'Duration: '))
+
             ->add('category', 'entity', array(
-                'class' => 'CookbookBundle:Category',
-                'property' => 'name',
-                'label' => 'Category: ',
-                'placeholder' => 'Choose a category',
-                'empty_data' => 'null'
+                'class'         => 'CookbookBundle:Category',
+                'property'      => 'name',
+                'label'         => 'Category: ',
+                'placeholder'   => 'Choose a category',
+                'empty_data'    => 'null'
             ))
 
-            ->add('recipe_tag_references', 'collection', array(
-                'type' => new RecipeTagType(),
-                'label' => 'Tags: ',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false))
+            ->add('tags', 'collection', array(
+                'type'          => new RecipeTagType(),
+                'label'         => 'Tags: ',
+                'prototype'     => true,
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false
+            ))
 
-             ->add('recipe_ingredient_references', 'collection', array(
-                'type' => new RecipeIngredientType(),
-                'label' => 'Ingredients: ',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false))
+            ->add('ingredients', 'collection', array(
+                'type'          => new RecipeIngredientType(),
+                'label'         => 'Ingredients: ',
+                'prototype'     => true,
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false
+            ))
 
             ->add('servings', 'integer', array('label' => 'Yields: '))
             ->add('preparation', 'textarea', array('label' => 'Preparation: '))
-            ->add('instruction', 'textarea', array('label' => 'Instruction: '))
+
+            ->add('instructions', 'collection', array(
+                'type'          => 'textarea',
+                'label'         => 'Instructions:',
+                'prototype'     => true,
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false
+            ))
+
             ->add('image', 'text', array('label' => 'Image: '))
             ->add('save', 'submit', array('label' => 'Create Recipe'));
     }

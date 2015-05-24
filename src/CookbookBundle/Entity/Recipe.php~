@@ -43,6 +43,7 @@ class Recipe {
      *      max = 50,
      *      maxMessage = "Author cannot be longer than 50 characters"
      * )
+     *
      * @ORM\Column(name="author", type="string", length=50, nullable=true)
      */
     protected $author;
@@ -54,23 +55,32 @@ class Recipe {
      *      max = 200,
      *      maxMessage = "Source cannot be longer than 200 characters"
      * )
+     *
      * @ORM\Column(name="source", type="string", length=200, nullable=true)
      */
     protected $source;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes" )
+     * @var \CookbookBundle\Entity\Category
+     *
+     * @Assert\Type(type="CookbookBundle\Entity\Category")
+     * @Assert\Valid()
+     *
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="recipes", cascade={"persist"} )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="RecipeTagReference", mappedBy="recipe")
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="RecipeTag", mappedBy="recipe", cascade={"persist"} )
      */
-    protected $recipe_tag_references;
+    protected $tags;
 
     /**
      * @Assert\Time()
+     *
      * @ORM\Column(name="duration", type="time")
      */
     protected $duration;
@@ -78,6 +88,9 @@ class Recipe {
     /**
      * @var integer
      *
+     * @Assert\NotBlank(
+     *      message = "Servings cannot be blank"
+     * )
      * @Assert\Range(
      *      min = 1,
      *      max = 99,
@@ -89,9 +102,11 @@ class Recipe {
     protected $servings;
 
     /**
-     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="recipe")
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
      */
-    protected $recipe_ingredient_references;
+    protected $ingredients;
 
     /**
      * @ORM\Column(name="preparation", type="text", nullable=true)
@@ -99,12 +114,14 @@ class Recipe {
     protected $preparation;
 
     /**
-     * @Assert\NotBlank(
-     *      message = "Instruction cannot be blank"
+     * @Assert\Count(
+     *      min = "1",
+     *      minMessage = "You must specify at least one step",
      * )
-     * @ORM\Column(name="instruction", type="text")
+     *
+     * @ORM\Column(name="instructions", type="json_array")
      */
-    protected $instruction;
+    protected $instructions;
 
     /**
      * @ORM\Column(name="image", type="text", nullable=true)

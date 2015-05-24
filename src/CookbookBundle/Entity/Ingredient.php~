@@ -3,6 +3,7 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Ingredient
@@ -33,16 +34,43 @@ class Ingredient {
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="ingredient")
-     */
-    private $recipe_ingredient_references;
-
-
     /*
      * -------------------
      * AUTO-GENERATED CODE
      * -------------------
      */
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Ingredient
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

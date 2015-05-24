@@ -3,6 +3,7 @@
 namespace CookbookBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Measurement
@@ -33,15 +34,43 @@ class Measurement {
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RecipeIngredientReference", mappedBy="measurement")
-     */
-    private $recipe_ingredient_references;
-
     /*
      * -------------------
      * AUTO-GENERATED CODE
      * -------------------
      */
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Measurement
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }
