@@ -4,19 +4,21 @@
         {% for ingr in ingredients %}
             <li>
                 <input type="checkbox">
-                {% if ingr.amount %}
-                    <span>
-                        {{ ingr.amount }}
-                    </span>
-                {% endif %}
+                <span>
+                    {% if ingr.amount %}
+                        <span>
+                            {{ ingr.amount }}
+                        </span>
+                    {% endif %}
 
-                {% if ingr.measurement %}
-                    <span>
+                    {% if ingr.measurement %}
+                        <span>
                         {{ ingr.measurement.name }}
                     </span>
-                {% endif %}
+                    {% endif %}
 
-                <span>{{ ingr.ingredient.name }}</span>
+                    <span>{{ ingr.ingredient.name }}</span>
+                </span>
             </li>
         {% endfor %}
     </ul>
