@@ -11561,7 +11561,8 @@ $('#takenote').on('click', function(){
     $('#preparation').on('mouseup', takeNote);
 });
 $('#save').on('click', function(){
-    saveAnnotations();
+    testIt();
+    //saveAnnotations();
 });
 
 
@@ -11744,15 +11745,18 @@ function saveAnnotations(){
     // 2. save formattings (highlight, crossed, underlined,..)
 
     // per step? per instructions? jetzt erstmal testweise den preparation div als gesamtes in JSON übersetzen.
-    var instructions = $('#preparation');//.children("p");
+    var instructions = $('#preparation').children("ol").children("li");//.children("p");
     //$(children).css("background-color", "blue"); // nur testweise - funktionniert genau wie gewollt, juhu!
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
+    console.log(JSON.stringify(serializedInstructions));
 
     if (serializedInstructions != null) {
         console.log("not null");
     }
+
+    return serializedInstructions;
 
     // TODO: save serializedInstructions in DB for this user
 }
@@ -11766,7 +11770,7 @@ function r_serializeChild(child) {
     * 3: noteNode, is a contenteditable span with 1 or more child nodes that may have children themselves
     * 4: timerNode, is a not contenteditable span with a time value
     * 5: pNode, is a paragraph
-    * 6: stepNode
+    * 6: stepNode (li)
     * */
 
     if (child.nodeType == 3){ // RECURSION BASE ! ( check if its a textnode )
@@ -11786,7 +11790,7 @@ function r_serializeChild(child) {
             return jsonObj;
         }
 
-        else if ($(child).is("div")) { // TODO: use specific div (class?) if neccessary
+        else if ($(child).is("li")) { // TODO: use specific div (class?) if neccessary
             var serializedChildren = getSerializedChildren($(child).children("p"));
             var jsonObj = { "type": 6, "children": serializedChildren };
             return jsonObj;
@@ -11828,19 +11832,24 @@ function getSerializedChildren(children) {
 }
 
 
-function renderInstructions() {
+function renderInstructions(original, annoted, parentNode) {
 
     // 1. check if there are Annotations for the instructions
 
     // first retrieve the instructions array from Database
-    var stepsOriginal = []; // TODO
-    var stepsAnnoted = []; //TODO
+    var stepsOriginal = original; // TODO
+    var stepsAnnoted = annoted; //TODO
+
+    var orderedList = $('<ol />');
+    parentNode.append(orderedList);
 
 
     if (stepsOriginal.length == stepsAnnoted.length) {
         // ok!
         for (var step = 0; step < stepsOriginal.length; ++step) {
             // document create div fuer den step
+            var liNode = $('<li />');
+            orderedList.append(liNode);
 
             var originalPs = stepsOriginal[step];
             var annotedPs = stepsAnnoted[step].children;
@@ -11849,6 +11858,7 @@ function renderInstructions() {
             for (var p = 0; p < originalPs.length; ++p) { // go through paragraphs per step
                 // document create p
                 var pNode = $('<p />');
+                liNode.append(pNode);
 
                 var contentOriginal = originalPs[p];
                 var contentAnnoted = annotedPs[p].children;
@@ -11864,9 +11874,9 @@ function renderInstructions() {
                         }
 
                     } else if (contentOriginal[c].type == 4) { // timer
-                        while (r_appendChild(pNode, contentAnnoted[an_index], true, contentOriginal[c])){
-                            ++an_index;
+                        while (r_appendChild(pNode, contentAnnoted[an_index++], true, contentOriginal[c])){
                         }
+
                     }
                 }
 
@@ -11881,16 +11891,18 @@ function renderInstructions() {
 }
 
 function r_appendChild(parentNode, child, index, content){
-    switch (child.type) {
+    var s = child.type;
+    switch (s) {
         case 0: // recursion base
+            console.log("recursion base");
             var text = content.substr(index, child.len);
-            var textnode = document.createTextNode(text);         // Create a text node
-            parentNode.appendChild(textnode);
+            var textnode = document.createTextNode(text);
+            parentNode.append(textnode);
             return (index + child.len);
 
         case 1: // recursion base
             var textnode = document.createTextNode(child.txt);
-            parentNode.appendChild(textnode);
+            parentNode.append(textnode);
             return index;
 
         case 2: // span with class, not contenteditable
@@ -11900,7 +11912,7 @@ function r_appendChild(parentNode, child, index, content){
             for (var i=0; i < children.length; ++i) {
                 index = r_appendChild(span, children[i], index, content);
             }
-            parentNode.appendChild(span);
+            parentNode.append(span);
             return index;
         case 3: // span with attribute contenteditable
             var span = $('<span />').attr("contenteditable", "true");
@@ -11909,17 +11921,30 @@ function r_appendChild(parentNode, child, index, content){
             for (var i=0; i < children.length; ++i) {
                 index = r_appendChild(span, children[i], index, content);
             }
-            parentNode.appendChild(span);
+            parentNode.append(span);
             return index;
         case 4: // timer
             // alternatively: get timer values from content param
-            var span = $().addClass("cb-timer").html(child.h + ":" + child.m + ":" + child.s);
-            parentNode.appendChild(span);
+            var span = $('<span />').addClass("cb-timer").html(child.h + ":" + child.m + ":" + child.s);
+            parentNode.append(span);
             return false;
         default:
             return index;
     }
-
 }
 
 
+function testIt(){
+    var db = [[
+        [{"type":1,"txt": "Bake cake in oven for 40 minutes "},{"type":4,"h":0,"m":5,"s":0},
+            {"type":1,"txt":" at 180 degrees Celsius. The ingredients above reflect 3 Servings, but the instructions reflect the as-posted 4 Servings. You may need to adjust the times, temperatures or quantities mentioned in the recipe below as needed."}],
+        [{"type":1, "txt":"This is another paragraph. Just for testing purposes. Nothing important to read here."}]],
+        [[{"type":1,"txt":"Sift dry ingredients. Blend together egg yolks and yogurt, mix well; add to dry ingredients, add margarine and mix together lightly. Add blueberries. Fold in egg whites. Bake on hot griddle until golden on both sides."}]
+    ]];
+
+    var annoted = saveAnnotations();
+    var div = $('<div />').attr("id", "copy");
+    $('#preparation').append(div);
+
+    renderInstructions(db, annoted, div);
+}
