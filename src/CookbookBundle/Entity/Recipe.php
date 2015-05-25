@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Recipe
  *
  * @ORM\Table(name="recipe", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CookbookBundle\Entity\RecipeRepository")
  */
 class Recipe {
 

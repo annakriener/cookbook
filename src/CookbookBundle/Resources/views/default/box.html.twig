@@ -1,5 +1,7 @@
 {% block box %}
-    <section class="cb-box">
-          Test-Recipe
-    </section>
+    <a href="recipe/{{ recipe.id }}" title="{{ recipe.id }}">
+        <section class="cb-box">
+            {{ recipe.title }}
+        </section>
+    </a>
 {% endblock %}

@@ -1,8 +1,26 @@
 {% block recipeinfo %}
     <section>
-        <p>Author Name</p>
-        <h1>Blueberry Yogurt Pancakes</h1>
-        <p>Ready in 20 minutes</p>
-        <p>serves 4</p>
+        {% if recipe.author %}
+            <p>
+                {{ recipe.author }}
+            </p>
+        {% endif %}
+
+        <h1>{{ recipe.title }}</h1>
+        <time>Ready in {{ duration }}</time>
+        <p>serves {{ recipe.servings }}</p>
+
+        <p>Category: {{ recipe.category.name }}</p>
+        {% if recipe.tags|length > 0 %}
+            <p>Tags:<br>
+            {% for tag in recipe.tags %}
+                {% if tag.classification %}
+                    {{ tag.classification.name }}:
+                {% endif %}
+                {{ tag.tag.name }}
+            {% endfor %}
+            </p>
+        {% endif %}
+
     </section>
 {% endblock %}

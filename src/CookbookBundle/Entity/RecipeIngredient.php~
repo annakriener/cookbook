@@ -99,7 +99,7 @@ class RecipeIngredient {
      * @param \CookbookBundle\Entity\Recipe $recipe
      * @return RecipeIngredient
      */
-    public function setRecipe(\CookbookBundle\Entity\Recipe $recipe = null)
+    public function setRecipe(Recipe $recipe = null)
     {
         $this->recipe = $recipe;
     
@@ -122,7 +122,7 @@ class RecipeIngredient {
      * @param \CookbookBundle\Entity\Measurement $measurement
      * @return RecipeIngredient
      */
-    public function setMeasurement(\CookbookBundle\Entity\Measurement $measurement = null)
+    public function setMeasurement(Measurement $measurement = null)
     {
         $this->measurement = $measurement;
     
@@ -145,7 +145,7 @@ class RecipeIngredient {
      * @param \CookbookBundle\Entity\Ingredient $ingredient
      * @return RecipeIngredient
      */
-    public function setIngredient(\CookbookBundle\Entity\Ingredient $ingredient = null)
+    public function setIngredient(Ingredient $ingredient = null)
     {
         $this->ingredient = $ingredient;
     

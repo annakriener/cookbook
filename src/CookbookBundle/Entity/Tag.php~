@@ -31,7 +31,7 @@ class Tag {
      *      max = 30,
      *      maxMessage = "Tag name cannot be longer than 30 characters"
      * )
-     * @ORM\Column(name="name", type="string", length=30, nullable=true)
+     * @ORM\Column(name="name", type="string", length=30)
      */
     private $name;
 

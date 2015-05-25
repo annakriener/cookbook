@@ -23,7 +23,7 @@ class RecipeTag {
     /**
      * @Assert\Type(type="CookbookBundle\Entity\Recipe")
      *
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="tags", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="tags", cascade={"persist"})
      * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
      **/
     private $recipe;
@@ -31,7 +31,7 @@ class RecipeTag {
     /**
      * @Assert\Type(type="CookbookBundle\Entity\Tag")
      *
-     * @ORM\ManyToOne(targetEntity="Tag", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Tag", cascade={"persist"})
      * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      **/
     private $tag;
@@ -39,7 +39,7 @@ class RecipeTag {
     /**
      * @Assert\Type(type="CookbookBundle\Entity\Classification")
      *
-     * @ORM\ManyToOne(targetEntity="Classification", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Classification", cascade={"persist"})
      * @ORM\JoinColumn(name="classification_id", referencedColumnName="id", nullable=true)
      **/
     private $classification;
@@ -68,7 +68,7 @@ class RecipeTag {
      * @param \CookbookBundle\Entity\Recipe $recipe
      * @return RecipeTag
      */
-    public function setRecipe(\CookbookBundle\Entity\Recipe $recipe = null)
+    public function setRecipe(Recipe $recipe = null)
     {
         $this->recipe = $recipe;
     
@@ -91,7 +91,7 @@ class RecipeTag {
      * @param \CookbookBundle\Entity\Tag $tag
      * @return RecipeTag
      */
-    public function setTag(\CookbookBundle\Entity\Tag $tag = null)
+    public function setTag(Tag $tag = null)
     {
         $this->tag = $tag;
     
@@ -114,7 +114,7 @@ class RecipeTag {
      * @param \CookbookBundle\Entity\Classification $classification
      * @return RecipeTag
      */
-    public function setClassification(\CookbookBundle\Entity\Classification $classification = null)
+    public function setClassification(Classification $classification = null)
     {
         $this->classification = $classification;
     
