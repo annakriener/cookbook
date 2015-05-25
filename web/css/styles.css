@@ -6641,6 +6641,19 @@ button.close {
   position: relative;
   top: 1px;
 }
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+.cb-ingr-checkbox {
+  float: left;
+  width: 8%;
+}
+.cb-ingr {
+  float: left;
+  width: 90%;
+  padding-bottom: 10px;
+}
 
 hr {
   margin: 0;

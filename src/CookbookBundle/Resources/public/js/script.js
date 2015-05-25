@@ -1,5 +1,5 @@
 /**
- *
+ * INSTRUCTIONS - STEPS and their annotations
  */
 $('#crossout').on('click', function(){
     var cname = $(this).attr('class');
@@ -212,12 +212,8 @@ function takeNote() {
 
 function saveAnnotations(){
 
-    // 1. save contenteditable notes
-    // 2. save formattings (highlight, crossed, underlined,..)
-
     // per step? per instructions? jetzt erstmal testweise den preparation div als gesamtes in JSON übersetzen.
-    var instructions = $('#preparation').children("ol").children("li");//.children("p");
-    //$(children).css("background-color", "blue"); // nur testweise - funktionniert genau wie gewollt, juhu!
+    var instructions = $('#preparation').children("ol").children("li");
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
@@ -261,7 +257,7 @@ function r_serializeChild(child) {
             return jsonObj;
         }
 
-        else if ($(child).is("li")) { // TODO: use specific div (class?) if neccessary
+        else if ($(child).is("li")) {
             var serializedChildren = getSerializedChildren($(child).children("p"));
             var jsonObj = { "type": 6, "children": serializedChildren };
             return jsonObj;
@@ -302,10 +298,9 @@ function getSerializedChildren(children) {
     return serializedChildren;
 }
 
-
 function renderInstructions(original, annoted, parentNode) {
 
-    // 1. check if there are Annotations for the instructions
+    //TODO: check if there are Annotations for the instructions
 
     // first retrieve the instructions array from Database
     var stepsOriginal = original; // TODO
@@ -316,18 +311,14 @@ function renderInstructions(original, annoted, parentNode) {
 
 
     if (stepsOriginal.length == stepsAnnoted.length) {
-        // ok!
         for (var step = 0; step < stepsOriginal.length; ++step) {
-            // document create div fuer den step
             var liNode = $('<li />');
             orderedList.append(liNode);
 
             var originalPs = stepsOriginal[step];
             var annotedPs = stepsAnnoted[step].children;
 
-
             for (var p = 0; p < originalPs.length; ++p) { // go through paragraphs per step
-                // document create p
                 var pNode = $('<p />');
                 liNode.append(pNode);
 
@@ -345,12 +336,9 @@ function renderInstructions(original, annoted, parentNode) {
                         }
 
                     } else if (contentOriginal[c].type == 4) { // timer
-                        while (r_appendChild(pNode, contentAnnoted[an_index++], true, contentOriginal[c])){
-                        }
-
+                        while (r_appendChild(pNode, contentAnnoted[an_index++], true, contentOriginal[c])){/*empty on purpose*/}
                     }
                 }
-
 
                 while (an_index < contentAnnoted.length) { // don't forget contenteditable spans at the very end of a paragraph
                     oC_index = r_appendChild(pNode, contentAnnoted[an_index], 0, "");

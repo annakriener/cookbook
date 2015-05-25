@@ -11528,7 +11528,40 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /**
- *
+ * INGREDIENTS - and their annotations
+ */
+
+// AMOUNT
+$('span.cb-ingr-amount').on('mousedown', function(){
+    if (!$(this).is("[contenteditable='true']")){
+        // remember the original amount
+        var amount = getTextContent(this);
+        $(this).on('mouseup', function(){
+            $(this).attr("contenteditable","true");
+            $(this).focus();
+            $(this).on('blur', {arg1: amount}, checkIfChanged);
+        });
+    }
+
+});
+
+function checkIfChanged(e) {
+    var text = getTextContent(this);
+    if (e.data.arg1 == text) { // unset contenteditable if amount has not changed
+        $(this).attr("contenteditable","false");
+    } else if (!isNumber(text)) {
+        this.innerHTML = e.data.arg1;
+        $(this).attr("contenteditable","false");
+    } else {
+        this.innerHTML = parseFloat(text);
+    }
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+/**
+ * INSTRUCTIONS - STEPS and their annotations
  */
 $('#crossout').on('click', function(){
     var cname = $(this).attr('class');
@@ -11741,12 +11774,8 @@ function takeNote() {
 
 function saveAnnotations(){
 
-    // 1. save contenteditable notes
-    // 2. save formattings (highlight, crossed, underlined,..)
-
     // per step? per instructions? jetzt erstmal testweise den preparation div als gesamtes in JSON übersetzen.
-    var instructions = $('#preparation').children("ol").children("li");//.children("p");
-    //$(children).css("background-color", "blue"); // nur testweise - funktionniert genau wie gewollt, juhu!
+    var instructions = $('#preparation').children("ol").children("li");
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
@@ -11790,7 +11819,7 @@ function r_serializeChild(child) {
             return jsonObj;
         }
 
-        else if ($(child).is("li")) { // TODO: use specific div (class?) if neccessary
+        else if ($(child).is("li")) {
             var serializedChildren = getSerializedChildren($(child).children("p"));
             var jsonObj = { "type": 6, "children": serializedChildren };
             return jsonObj;
@@ -11831,10 +11860,9 @@ function getSerializedChildren(children) {
     return serializedChildren;
 }
 
-
 function renderInstructions(original, annoted, parentNode) {
 
-    // 1. check if there are Annotations for the instructions
+    //TODO: check if there are Annotations for the instructions
 
     // first retrieve the instructions array from Database
     var stepsOriginal = original; // TODO
@@ -11845,18 +11873,14 @@ function renderInstructions(original, annoted, parentNode) {
 
 
     if (stepsOriginal.length == stepsAnnoted.length) {
-        // ok!
         for (var step = 0; step < stepsOriginal.length; ++step) {
-            // document create div fuer den step
             var liNode = $('<li />');
             orderedList.append(liNode);
 
             var originalPs = stepsOriginal[step];
             var annotedPs = stepsAnnoted[step].children;
 
-
             for (var p = 0; p < originalPs.length; ++p) { // go through paragraphs per step
-                // document create p
                 var pNode = $('<p />');
                 liNode.append(pNode);
 
@@ -11874,12 +11898,9 @@ function renderInstructions(original, annoted, parentNode) {
                         }
 
                     } else if (contentOriginal[c].type == 4) { // timer
-                        while (r_appendChild(pNode, contentAnnoted[an_index++], true, contentOriginal[c])){
-                        }
-
+                        while (r_appendChild(pNode, contentAnnoted[an_index++], true, contentOriginal[c])){/*empty on purpose*/}
                     }
                 }
-
 
                 while (an_index < contentAnnoted.length) { // don't forget contenteditable spans at the very end of a paragraph
                     oC_index = r_appendChild(pNode, contentAnnoted[an_index], 0, "");
@@ -11947,4 +11968,11 @@ function testIt(){
     $('#preparation').append(div);
 
     renderInstructions(db, annoted, div);
+}
+
+function getTextContent(elementNode){ // innerText is not supported by Firefox (uses textContent instead)
+    var hasInnerText = (elementNode.innerText != undefined) ? true : false;
+
+    if(!hasInnerText){ return elementNode.textContent; }
+    else { return elementNode.innerText; }
 }
