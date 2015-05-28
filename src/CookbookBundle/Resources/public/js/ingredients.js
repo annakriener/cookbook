@@ -13,7 +13,6 @@ $('span.cb-ingr-amount').on('mousedown', function(){
             $(this).on('blur', {arg1: amount}, checkIfChanged);
         });
     }
-
 });
 
 function checkIfChanged(e) {

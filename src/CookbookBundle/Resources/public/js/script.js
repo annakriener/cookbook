@@ -241,7 +241,7 @@ function r_serializeChild(child) {
     * */
 
     if (child.nodeType == 3){ // RECURSION BASE ! ( check if its a textnode )
-        if ($(child.parentNode).is("[contenteditable='true']")) {
+        if ((child.parentNode).isContentEditable){//($(child.parentNode).is("[contenteditable='true']")) {
             var jsonObj = { "type": 1, "txt": child.nodeValue };
             return jsonObj; // JSON object mit Type:2, text: child.nodeValue;
         }
@@ -263,7 +263,7 @@ function r_serializeChild(child) {
             return jsonObj;
         }
 
-        else if(child.hasAttribute("contenteditable")) { // contenteditable span
+        else if ($(child).is("[contenteditable='true']")){
             var serializedChildren = getSerializedChildren(child.childNodes);
             var jsonObj = { "type": 3, "children": serializedChildren };
             return jsonObj;
