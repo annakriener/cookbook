@@ -20,7 +20,9 @@
             {% include 'CookbookBundle:default:main.html.twig' %}
         {% endblock %}
         {% include 'CookbookBundle:default:footer.html.twig' %}
+        {% block login %}
 
+        {% endblock %}
         <!-- JAVASCRIPT -->
         <script src="{{ asset('js/script.js') }}"></script>
         {% block javascripts %}{% endblock %}

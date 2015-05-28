@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class RecipeOutputController extends Controller {
 
     /**
-     * @Route("/getRecipes", name="getRecipes")
+     * @Route("/", name="homepage")
      */
     public function getRecipesAction() {
         $em = $this->getDoctrine()->getManager();
@@ -20,7 +20,7 @@ class RecipeOutputController extends Controller {
     }
 
     /**
-     * @Route("/recipe/{id}", name="getRecipe")
+     * @Route("/recipe/{id}", name="recipe_detail")
      */
     public function getRecipeAction($id) {
         $recipe = $this->getDoctrine()->getRepository('CookbookBundle:Recipe')->find($id);
