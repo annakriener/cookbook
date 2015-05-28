@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class RecipeOutputController extends Controller {
 
     /**
-     * @Route("/getRecipes", name="getRecipes")
+     * @Route("/", name="homepage")
      */
     public function getRecipesAction() {
         $em = $this->getDoctrine()->getManager();
