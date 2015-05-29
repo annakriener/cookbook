@@ -1,0 +1,10 @@
+{% form_theme categoryForm 'bootstrap_3_layout.html.twig' %}
+
+<div class="col-md-4">
+    {{ form_start(categoryForm, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            {{ form_errors(categoryForm) }}
+        </div>
+        {{ form_row(categoryForm.name) }}
+    {{ form_end(categoryForm) }}
+</div>

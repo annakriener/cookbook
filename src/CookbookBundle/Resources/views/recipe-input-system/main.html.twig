@@ -1,0 +1,15 @@
+{% block main %}
+    <main>
+        <div class="container">
+            <div class="row cb-ris-form-row">
+                {% include 'CookbookBundle:recipe-input-system:addRecipe.html.twig' %}
+            </div>
+            <div class="row cb-ris-form-row">
+                {% include 'CookbookBundle:recipe-input-system:addCategory.html.twig' %}
+                {% include 'CookbookBundle:recipe-input-system:addMeasurement.html.twig'%}
+                {% include 'CookbookBundle:recipe-input-system:addClassification.html.twig'%}
+            </div>
+        </div>
+    </main>
+    <hr>
+{% endblock %}

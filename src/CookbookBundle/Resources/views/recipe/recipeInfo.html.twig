@@ -1,0 +1,26 @@
+{% block recipeinfo %}
+    <section>
+        {% if recipe.author %}
+            <p>
+                {{ recipe.author }}
+            </p>
+        {% endif %}
+
+        <h1>{{ recipe.title }}</h1>
+        <time>Ready in {{ duration }}</time>
+        <p>serves {{ recipe.servings }}</p>
+
+        <p>Category: {{ recipe.category.name }}</p>
+        {% if recipe.tags|length > 0 %}
+            <p>Tags:<br>
+            {% for tag in recipe.tags %}
+                {% if tag.classification %}
+                    {{ tag.classification.name }}:
+                {% endif %}
+                {{ tag.tag.name }}
+            {% endfor %}
+            </p>
+        {% endif %}
+
+    </section>
+{% endblock %}

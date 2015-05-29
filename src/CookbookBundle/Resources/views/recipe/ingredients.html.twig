@@ -1,15 +1,27 @@
 {% block ingredients %}
     <h2>Ingredients</h2>
     <ul>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">414</span> ml Flour</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">7</span> ml Sugar</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">10</span>ml Baking Powder and Pistacios and Bananans and red strawberries and sugarwater</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">5</span> ml Baking Soda</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">3</span> Egg yolks ; beaten</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">3</span> Egg whites ; beaten stiff</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">44</span> ml Margarine ; melted</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">532</span> ml Low fat plain yogurt</span></li>
-        <li><input type="checkbox" class="cb-ingr-checkbox"/><span class="cb-ingr"><span class="cb-ingr-amount">237</span> ml Blueberries</span></li>
+        {% for ingr in ingredients %}
+            <li>
+                <input type="checkbox">
+                <span class="cb-ingr">
+                    {% if ingr.amount %}
+                        <span class="cb-ingr-amount">
+                            {{ ingr.amount }}
+                        </span>
+                    {% endif %}
+
+                    {% if ingr.measurement %}
+                        <span>
+                        {{ ingr.measurement.name }}
+                    </span>
+                    {% endif %}
+
+                    <span>{{ ingr.ingredient.name }}</span>
+                </span>
+            </li>
+        {% endfor %}
+
     </ul>
     <button id="createShoppingList">Add to Shopping List</button>
 {% endblock %}

@@ -12,12 +12,10 @@
 
         <div class="container">
             <div class="row cb-main">
-                {% for j in range(0, 1) %}
-                    {% for i in range(0, 2) %}
-                        <div class="col-md-4">
-                            {% include 'CookbookBundle:default:box.html.twig' %}
-                        </div>
-                    {% endfor %}
+                {% for recipe in recipes %}
+                    <div class="col-md-4">
+                        {% include 'CookbookBundle:default:box.html.twig' %}
+                    </div>
                 {% endfor %}
             </div>
         </div>

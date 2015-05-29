@@ -1,4 +1,10 @@
 {% block preparation %}
+
+    {% if recipe.preparation %}
+        <h2>Preparation</h2>
+        <p>{{ recipe.preparation }}</p>
+    {%  endif %}
+
     <div><button id="yellow" class="cb-an-c-yellow">yellow</button>
         <button id="cyan" class="cb-an-c-cyan">cyan</button>
         <button id="pink" class="cb-an-c-pink">pink</button>

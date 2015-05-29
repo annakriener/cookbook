@@ -1,0 +1,18 @@
+{% block instructions %}
+    <h2>Instructions</h2>
+    <ol>
+        {% for step in recipe.instructions %}
+            <li>
+                {% for paragraph in  step %}
+                    <p>
+                        {% for part in paragraph %}
+                            {% for json in part %}
+                                {{ json }}
+                            {% endfor %}
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

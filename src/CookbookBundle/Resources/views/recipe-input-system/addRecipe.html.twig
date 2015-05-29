@@ -1,0 +1,27 @@
+{% form_theme recipeForm 'bootstrap_3_layout.html.twig' %}
+
+<div class="col-md-6">
+    <h1>Add recipe</h1>
+
+    {{ form_start(recipeForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        {{ form_errors(recipeForm) }}
+
+        {{ form_row(recipeForm.title) }}
+        {{ form_row(recipeForm.author) }}
+        {{ form_row(recipeForm.source) }}
+        {{ form_row(recipeForm.duration) }}
+
+        {{ form_row(recipeForm.category) }}
+
+        {{ form_row(recipeForm.tags) }}
+
+        {{ form_row(recipeForm.servings) }}
+        {{ form_row(recipeForm.ingredients) }}
+
+        {{ form_row(recipeForm.preparation) }}
+        {{ form_row(recipeForm.instructions) }}
+
+        {{ form_row(recipeForm.image) }}
+    {{ form_end(recipeForm) }}
+</div>
