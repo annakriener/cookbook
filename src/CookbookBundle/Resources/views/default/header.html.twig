@@ -1,16 +1,43 @@
 {% block header %}
     <header class="container-fluid">
         <div class="row cb-header">
-            <div class="col-lg-3 col-md-3">
 
+            <div class="col-lg-3 col-md-3">
                 <img class="cb-logo" src="{{ asset('img/logo.png') }}" title="Logo" alt="Logo" width="75">
                 <h1 class="cb-h1" id="cb-anna">Cookbook</h1>
             </div>
+
             <div class="col-lg-3 col-lg-push-6">
                 <div class="cb-header-links">
-                    <button onclick="foo()" class="btn btn-default"><img src="{{ asset('img/cookbook.png') }}" width="20" alt="Cookbook"></button>
-                    <button class="btn btn-default"><img src="{{ asset('img/calender.png') }}" width="20" alt="Menu"></button>
-                    <a href="/login" class="btn btn-default">Login</a>
+
+                    <button onclick="foo()" class="btn btn-default"><img src="{{ asset('img/my_recipes.png') }}" width="20" alt="My Recipes" title="My Recipes"></button>
+                    <button class="btn btn-default"><img src="{{ asset('img/my_menu_planner.png') }}" width="20" alt="Menu" title="My Menu Planner"></button>
+                    <button class="btn btn-default"><img src="{{ asset('img/my_shopping_list.png') }}" width="20" alt="My Shopping List" title="My Shopping List"></button>
+
+                    {% if app.user %}
+                        <div class="dropdown" id="cb-um-user-dropdown">
+                            <button class="btn btn-default" id="cb-um-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('img/user.png') }}" width="20" alt="user">
+                                {{ app.user.username }}
+                                <span class="caret"></span>
+                            </button>
+
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="cb-um-dropdown">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="/logout">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {% if not app.user %}
+                        <a href="/login" class="btn btn-default">Login</a>
+                        <a href="/register" class="btn btn-default">Register</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -101,7 +101,7 @@ class RecipeInputController extends Controller {
             }
         }
 
-        return $this->render('CookbookBundle:recipe-input-system:base.html.twig', array(
+        return $this->render('CookbookBundle:recipe-input-system:recipeInput.html.twig', array(
             'recipeForm' => $recipeForm->createView(),
             'categoryForm' => $categoryForm->createView(),
             'measurementForm' => $measurementForm->createView(),

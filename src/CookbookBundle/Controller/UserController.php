@@ -21,13 +21,13 @@ class UserController extends Controller {
      */
     public function registerAction() {
         $registration = new Registration();
-        $form = $this->createForm(new RegistrationType(), $registration, array(
+        $registerForm = $this->createForm(new RegistrationType(), $registration, array(
             'action' => $this->generateUrl('account_create'),
         ));
 
         return $this->render(
             'CookbookBundle:user-management:register.html.twig',
-            array('form' => $form->createView())
+            array('registerForm' => $registerForm->createView())
         );
     }
 
@@ -36,13 +36,11 @@ class UserController extends Controller {
      */
     public function createAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $registerForm = $this->createForm(new RegistrationType(), new Registration());
+        $registerForm->handleRequest($request);
 
-        $form = $this->createForm(new RegistrationType(), new Registration());
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $registration = $form->getData();
+        if ($registerForm->isValid()) {
+            $registration = $registerForm->getData();
             $user = $registration->getUser();
             $plainPassword = $user->getPassword();
 
@@ -58,7 +56,7 @@ class UserController extends Controller {
 
         return $this->render(
             'CookbookBundle:user-management:register.html.twig',
-            array('form' => $form->createView())
+            array('registerForm' => $registerForm->createView())
         );
     }
 
