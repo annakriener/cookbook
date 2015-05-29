@@ -28,7 +28,7 @@ class RecipeOutputController extends Controller {
         $duration = date_format($duration, 'H:i:s');
         $ingredients = $recipe->getIngredients();
 
-        return $this->render('CookbookBundle:recipe:recipe.html.twig', array(
+        return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
             'recipe' => $recipe,
             'duration' => $duration,
             'ingredients' => $ingredients,

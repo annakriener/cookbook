@@ -3,7 +3,7 @@
 security:
     # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        #Symfony\Component\Security\Core\User\User: plaintext
         CookbookBundle\Entity\User:
             algorithm: bcrypt
 
@@ -14,11 +14,11 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        #in_memory:
+        #    memory:
+        #        users:
+        #            user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+        #            admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
         cookbook_db_provider:
             entity:
@@ -35,36 +35,39 @@ security:
             security: false
 
         # the login page has to be accessible for everybody
-        demo_login:
-            pattern:  ^/demo/secured/login$
-            security: false
+        #demo_login:
+        #    pattern:  ^/demo/secured/login$
+        #    security: false
 
         # secures part of the application
-        demo_secured_area:
-            pattern:    ^/demo/secured/
+        #demo_secured_area:
+        #    pattern:    ^/demo/secured/
             # it's important to notice that in this case _demo_security_check and _demo_login
             # are route names and that they are specified in the AcmeDemoBundle
-            form_login:
-                check_path: _demo_security_check
-                login_path: _demo_login
-            logout:
-                path:   _demo_logout
-                target: _demo
+        #    form_login:
+        #        check_path: _demo_security_check
+        #        login_path: _demo_login
+        #    logout:
+        #        path:   _demo_logout
+         #       target: _demo
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
 
-        default:
+        main:
             pattern:    ^/
-            anonymous: ~
+            anonymous: true
             provider: cookbook_db_provider
             form_login:
                 login_path: /login
                 check_path: /login_check
+                always_use_default_target_path: false
+                default_target_path: /
                 csrf_provider: security.csrf.token_manager
             logout:
                 path:   /logout
                 target: /
+            security: true
 
     # with these settings you can restrict or allow access for different parts
     # of your application based on roles, ip, host or methods

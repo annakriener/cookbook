@@ -20,6 +20,10 @@ class UserController extends Controller {
      * @Route("/register", name="account_register")
      */
     public function registerAction() {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $registration = new Registration();
         $registerForm = $this->createForm(new RegistrationType(), $registration, array(
             'action' => $this->generateUrl('account_create'),
@@ -35,6 +39,10 @@ class UserController extends Controller {
      * @Route("/register/create", name="account_create")
      */
     public function createAction(Request $request) {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $registerForm = $this->createForm(new RegistrationType(), new Registration());
         $registerForm->handleRequest($request);
@@ -65,6 +73,10 @@ class UserController extends Controller {
      */
     public function loginAction(Request $request)
     {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
