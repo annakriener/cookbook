@@ -1,27 +1,28 @@
 {% block ingredients %}
     <h2>Ingredients</h2>
     <ul>
+        {% spaceless %}
         {% for ingr in ingredients %}
+            {% set amount = "  " %}
+            {% if ingr.amount %}
+                {% set amount = ingr.amount %}
+            {% endif %}
+
+            {% set measurement = "" %}
+            {% if ingr.measurement %}
+                {% set measurement = " " ~ ingr.measurement.name %}
+            {% endif %}
+
+            {% set ingredient = " " ~ ingr.ingredient.name %}
+
+
             <li>
-                <input type="checkbox">
-                <span class="cb-ingr">
-                    {% if ingr.amount %}
-                        <span class="cb-ingr-amount">
-                            {{ ingr.amount }}
-                        </span>
-                    {% endif %}
-
-                    {% if ingr.measurement %}
-                        <span>
-                        {{ ingr.measurement.name }}
-                    </span>
-                    {% endif %}
-
-                    <span>{{ ingr.ingredient.name }}</span>
-                </span>
+                <input type="checkbox" class="cb-ingr-checkbox"/>
+                <span class="cb-ingr"><span class="cb-ingr-amount">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
             </li>
-        {% endfor %}
 
+        {% endfor %}
+        {% endspaceless %}
     </ul>
     <button id="createShoppingList">Add to Shopping List</button>
 {% endblock %}
