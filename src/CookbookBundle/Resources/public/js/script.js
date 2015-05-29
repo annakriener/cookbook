@@ -1,6 +1,9 @@
 /**
  * INSTRUCTIONS - STEPS and their annotations
  */
+
+
+
 $('#crossout').on('click', function(){
     var cname = $(this).attr('class');
     $('#preparation').off('mouseup');
@@ -212,8 +215,9 @@ function takeNote() {
 
 function saveAnnotations(){
 
-    // per step? per instructions? jetzt erstmal testweise den preparation div als gesamtes in JSON übersetzen.
-    var instructions = $('#preparation').children("ol").children("li");
+    var recipe_id = $("#recipe_container").attr("title");
+    var usern = "UserName"; //TODO get current username or userid
+    var instructions = $('#preparation').children("li");
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
@@ -223,6 +227,7 @@ function saveAnnotations(){
         console.log("not null");
     }
 
+    var jsonObj = { "instructions": serializedInstructions, ingredients: []};
     return serializedInstructions;
 
     // TODO: save serializedInstructions in DB for this user

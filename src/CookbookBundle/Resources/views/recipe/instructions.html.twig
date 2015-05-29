@@ -1,18 +1,23 @@
 {% block instructions %}
     <h2>Instructions</h2>
-    <ol>
+
+    <ol id="preparation">
+        {% spaceless %}
         {% for step in recipe.instructions %}
             <li>
                 {% for paragraph in  step %}
                     <p>
-                        {% for part in paragraph %}
-                            {% for json in part %}
-                                {{ json }}
-                            {% endfor %}
-                        {% endfor %}
+                    {%- for part in paragraph -%}
+                        {%- if part.type == 1 -%}
+                            {{- part.txt -}}
+                        {%- elseif part.type == 4 -%}
+                            <span class="cb-timer">{{- part.h }}:{{ part.m }}:{{ part.s -}}</span>
+                        {%- endif -%}
+                    {%- endfor -%}
                     </p>
                 {% endfor %}
             </li>
         {% endfor %}
+        {% endspaceless %}
     </ol>
 {% endblock %}
