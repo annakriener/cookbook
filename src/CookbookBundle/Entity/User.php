@@ -85,6 +85,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @var Array
+     *
+     * @ORM\Column(name="shopping_list", type="json_array", nullable=true)
+     */
+    private $shoppingList;
 
     public function __construct()
     {
@@ -278,5 +284,28 @@ class User implements AdvancedUserInterface, \Serializable
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set shoppingList
+     *
+     * @param array $shoppingList
+     * @return User
+     */
+    public function setShoppingList($shoppingList)
+    {
+        $this->shoppingList = $shoppingList;
+    
+        return $this;
+    }
+
+    /**
+     * Get shoppingList
+     *
+     * @return array 
+     */
+    public function getShoppingList()
+    {
+        return $this->shoppingList;
     }
 }

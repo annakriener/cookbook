@@ -3,6 +3,7 @@
 namespace CookbookBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,10 +12,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * User
  *
  * @ORM\Table(name="user", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CookbookBundle\Entity\UserRepository")
  * @UniqueEntity(fields="email", message="Email already taken")
+ * @UniqueEntity(fields="username", message="Username already taken")
  */
-class User implements UserInterface, \Serializable {
+class User implements AdvancedUserInterface, \Serializable
+{
     /**
      * @var integer
      *
@@ -82,8 +85,15 @@ class User implements UserInterface, \Serializable {
      */
     private $isActive;
 
+    /**
+     * @var Array
+     *
+     * @ORM\Column(name="shopping_list", type="json_array", nullable=true)
+     */
+    private $shoppingList;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
     }
@@ -127,6 +137,26 @@ class User implements UserInterface, \Serializable {
     {
     }
 
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
     /**
      * @see \Serializable::serialize()
      */
@@ -137,6 +167,7 @@ class User implements UserInterface, \Serializable {
             $this->username,
             $this->password,
             // $this->salt,
+            $this->isActive
         ));
     }
 
@@ -149,7 +180,8 @@ class User implements UserInterface, \Serializable {
             $this->id,
             $this->username,
             $this->password,
-            // $this->salt
+            // $this->salt,
+            $this->isActive
             ) = unserialize($serialized);
     }
 
@@ -162,7 +194,7 @@ class User implements UserInterface, \Serializable {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -178,7 +210,7 @@ class User implements UserInterface, \Serializable {
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
@@ -191,7 +223,7 @@ class User implements UserInterface, \Serializable {
     public function setSalt($salt)
     {
         $this->salt = $salt;
-    
+
         return $this;
     }
 
@@ -204,7 +236,7 @@ class User implements UserInterface, \Serializable {
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
@@ -217,14 +249,14 @@ class User implements UserInterface, \Serializable {
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -240,14 +272,14 @@ class User implements UserInterface, \Serializable {
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
-    
+
         return $this;
     }
 
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
