@@ -21,23 +21,19 @@ class RecipeAnnotation {
      */
     protected $id;
 
+
+
     /**
-     * @var integer
      *
-     * @Assert\NotBlank(
-     *      message="Recipe id cannot be blank"
-     * )
-     * @ORM\Column(name="recipe_id", type="integer")
-     */
-    protected $recipe_id;
+     * @ORM\ManyToOne(targetEntity="Recipe", cascade={"persist"})
+     * @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
+     **/
+    protected $recipe;
 
 
     /**
      * @var integer
      *
-     * @Assert\NotBlank(
-     *      message="User id cannot be blank"
-     * )
      * @ORM\Column(name="user_id", type="integer")
      */
     protected $user_id;
@@ -87,15 +83,33 @@ class RecipeAnnotation {
      */
     public function getRecipeId()
     {
-        return $this->recipe_id;
+        return $this->recipe;
     }
 
     /**
-     * @param int $recipe_id
+     * @return int
      */
-    public function setRecipeId($recipe_id)
+    public function getUserId()
     {
-        $this->recipe_id = $recipe_id;
+        return $this->user_id;
+    }
+
+    /**
+     * @param int $user_id
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
+
+
+
+    /**
+     * @param int $recipe
+     */
+    public function setRecipe($recipe)
+    {
+        $this->recipe = $recipe;
     }
 
     /**

@@ -11807,8 +11807,8 @@ $('#takenote').on('click', function(){
     $('#preparation').on('mouseup', takeNote);
 });
 $('#save').on('click', function(){
-    testIt();
-    //saveAnnotations();
+    //testIt();
+    saveAnnotations();
 });
 
 
@@ -11986,21 +11986,33 @@ function takeNote() {
 };
 
 function saveAnnotations(){
+// http://stackoverflow.com/questions/8324976/serializing-array-of-objects
 
     var recipe_id = $("#recipe_container").attr("title");
-    var usern = "UserName"; //TODO get current username or userid
+    var user = 0; //TODO get current username or userid
     var instructions = $('#preparation').children("li");
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
     console.log(JSON.stringify(serializedInstructions));
+    var dataInstructions = { "data": serializedInstructions };//JSON.stringify(serializedInstructions); // use JSON.parse(dataInstructions); to undo stringify
+    var serializedIngredients = [];// TODO fill array
+    var dataIngredients = { "data": serializedIngredients};
 
     if (serializedInstructions != null) {
         console.log("not null");
     }
 
-    var jsonObj = { "instructions": serializedInstructions, ingredients: []};
-    return serializedInstructions;
+//    var jsonObj = { "instructions": serializedInstructions, ingredients: []};
+  //  return serializedInstructions;
+
+    alert("about to save");
+    $.post('/saveAnnotations', {
+        recipe_id : recipe_id,
+        user_id : user,
+        instructions : serializedInstructions,//jQuery.param(dataInstructions),
+        ingredients : serializedIngredients//jQuery.param(dataIngredients)
+    });
 
     // TODO: save serializedInstructions in DB for this user
 }
