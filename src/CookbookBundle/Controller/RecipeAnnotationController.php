@@ -5,9 +5,9 @@ namespace CookbookBundle\Controller;
 
 use CookbookBundle\Entity\RecipeAnnotation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // do not delete this line!
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 
 
@@ -16,45 +16,33 @@ class RecipeAnnotationController extends Controller {
      * @Route("/saveAnnotations", name="saveAnnotations")
      */
     public function saveAnnotations() {
-        echo "hello !!";
-        // create new entities
-        $recipeAnnotation = new RecipeAnnotation();
-        $recID = intval($_POST['recipe_id']);
-        $userID = intval($_POST['user_id']);
+
+        $annotationID = $_POST['annotation_id'];
         $instr = $_POST['instructions'];
-       // $instrJS = decode($instr);
-        $ingredient = $_POST['ingredients'];
+        $ingr = $_POST['ingredients'];
 
-        echo "recipe id:";
-        var_dump($recID);
-        echo "user id:";
-        var_dump($userID);
-        echo "instructions:  ";
-        var_dump($instr);
+        $recipeAnnotation = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:RecipeAnnotation')->findOneById($annotationID);
 
-        $recipeAnnotation->setRecipe($recID);
-        $recipeAnnotation->setUserId($userID);
+        if ($recipeAnnotation == NULL) {
 
-        $recipeAnnotation->setInstructions($instr);
-        $recipeAnnotation->setIngredients($ingredient);
+            $recID = intval($_POST['recipe_id']);
+            $userID = intval($_POST['user_id']);
+            $recipeAnnotation = new RecipeAnnotation();
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($recipeAnnotation);
-        $em->flush();
-        /*
-         *         recipe_id : recipe_id,
-        user_id : user,
-        instructions : serializedInstructions,
-        ingredients : serializedIngredients*/
+            $recipe = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:Recipe')->findOneById($recID);
+            //$user = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:User')->findOneById($userID);
+            $recipeAnnotation->setRecipe($recipe);
+            $recipeAnnotation->setUserId($userID);
+        }
+            $recipeAnnotation->setInstructions($instr);
+            $recipeAnnotation->setIngredients($ingr);
 
-        //if ($request->isMethod('POST')) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($recipeAnnotation);
+            $em->flush();
 
-           // $recipeAnnotation->setRecipe($request->get("recipe_id"));
-           // $recipeAnnotation->setIngredients($request->get("ingredients"));
-           // $recipeAnnotation->setInstructions($request->get("instructions"));
 
-        return new Response($recipeAnnotation->getId(), Response::HTTP_OK);
-
-       // }
+        // ACHTUNG, jedes echo oder error ist wird vor die response angehängt und ist genauso eine response
+        return new Response($recipeAnnotation->getId());//, Response::HTTP_OK);
     }
 }

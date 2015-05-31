@@ -216,6 +216,7 @@ function takeNote() {
 function saveAnnotations(){
 // http://stackoverflow.com/questions/8324976/serializing-array-of-objects
 
+    var annotation_id = $("#an-tools").attr("title");
     var recipe_id = $("#recipe_container").attr("title");
     var user = 0; //TODO get current username or userid
     var instructions = $('#preparation').children("li");
@@ -224,25 +225,22 @@ function saveAnnotations(){
     var serializedInstructions = getSerializedChildren(instructions);
     console.log(JSON.stringify(serializedInstructions));
     var dataInstructions = { "data": serializedInstructions };//JSON.stringify(serializedInstructions); // use JSON.parse(dataInstructions); to undo stringify
-    var serializedIngredients = [];// TODO fill array
-    var dataIngredients = { "data": serializedIngredients};
+    var serializedIngredients = [{"type":100}];// TODO fill array
+
 
     if (serializedInstructions != null) {
         console.log("not null");
     }
 
-//    var jsonObj = { "instructions": serializedInstructions, ingredients: []};
-  //  return serializedInstructions;
-
-    alert("about to save");
     $.post('/saveAnnotations', {
+        annotation_id: annotation_id,
         recipe_id : recipe_id,
         user_id : user,
         instructions : serializedInstructions,//jQuery.param(dataInstructions),
         ingredients : serializedIngredients//jQuery.param(dataIngredients)
+    }).done(function(data){ // data is the response
+        $("#an-tools").attr("title", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
     });
-
-    // TODO: save serializedInstructions in DB for this user
 }
 
 function r_serializeChild(child) {
