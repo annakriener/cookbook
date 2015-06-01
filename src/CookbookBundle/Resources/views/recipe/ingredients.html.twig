@@ -1,6 +1,6 @@
 {% block ingredients %}
     <h2>Ingredients</h2>
-    <ul>
+    <ul id="ingredients">
         {% spaceless %}
         {% for ingr in ingredients %}
             {% set amount = "  " %}
@@ -16,6 +16,9 @@
             {% set ingredient = " " ~ ingr.ingredient.name %}
 
 
+            {%- if annotations -%}
+            {%- else -%}
+            {%- endif -%}
             <li>
                 <input type="checkbox" class="cb-ingr-checkbox"/>
                 <span class="cb-ingr"><span class="cb-ingr-amount">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>

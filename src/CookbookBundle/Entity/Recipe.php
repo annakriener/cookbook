@@ -343,13 +343,16 @@ class Recipe {
                     $children[] = array("type" => 4, "h" => intval($time[0]), "m" => intval($time[1]), "s" => intval($time[2]));
                     //$step[] = array("type" => 4, "h" => $time[0], "m" => $time[1], "s" => $time[2]);
                 } else {
-                    $children[] = array("type" => 1, "txt" => $part);
+                    if ($part != "") {
+                        $children[] = array("type" => 1, "txt" => $part);
+                    }
                     //$step[] = array("type" => 1, "txt" => $part);
                 }
             }
-
             //$step[] = array('type' => 5, 'children' => $children);
-            $step[] = $children;
+            if (count($children) > 0) {
+                $step[] = $children;
+            }
         }
 
         $this->instructions[] = json_decode(json_encode($step));

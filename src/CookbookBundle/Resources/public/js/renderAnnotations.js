@@ -56,7 +56,6 @@ function r_appendChild(parentNode, child, index, content){
     var s = parseInt(child.type);
     switch (s) {
         case 0: // recursion base
-            console.log("recursion base");
             var len = parseInt(child.len); // necessary since encoding the JSON objects turns integers to strings
             var text = content.substr(index, len);
             var textnode = document.createTextNode(text);
