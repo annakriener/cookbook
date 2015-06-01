@@ -1,11 +1,49 @@
 {% extends 'CookbookBundle:default:base.html.twig' %}
+{% form_theme addShoppingListItemForm 'bootstrap_3_layout.html.twig' %}
 
 {% block main %}
     <main>
         <div class="container">
+
             <div class="row">
+
+
                 <div class="col-md-6">
+
                     <h1>My Shopping List</h1>
+
+                    {{ form_start(addShoppingListItemForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                        {{ form_errors(addShoppingListItemForm) }}
+                        {{ form_row(addShoppingListItemForm.item) }}
+                    {{ form_end(addShoppingListItemForm) }}
+
+                    {{ form_start(deleteShoppingListItemForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                    {{ form_end(deleteShoppingListItemForm) }}
+
+                    <button class="btn btn-default" id="cb-sl-hideUserShoppingListItem">Hide checked items</button>
+
+                    <form method="post" name="deleteAllUserShoppingListItemsForm" class="cb-sl-deleteAllUserShoppingListItems">
+                        <input type="hidden" value="true" name="deleteAllUserShoppingListItems">
+                        <button class="btn btn-default">Delete all items</button>
+                    </form>
+
+                    <form method="post" class="cb-sl-deleteCheckedUserShoppingListItem" name="deleteCheckedUserShoppingListItemForm">
+                        <button class="btn btn-default">Delete checked item</button>
+                        <ul class="cb-sl-userShoppingList">
+                            <input type="hidden" value="true" name="deleteCheckedUserShoppingListItem">
+                            {% if userShoppingList %}
+                                {% for userShoppingListItem in userShoppingList %}
+                                    <li class="cb-sl-userShoppingListItem">
+                                        <input type="checkbox" value="{{ userShoppingListItem }}"
+                                               name="userShoppingListItem{{ loop.index }}" class="cb-sl-userShoppingListItemCheckbox">
+                                        <span class="cb-sl-userShoppingListItemText">{{ userShoppingListItem }}</span>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li>No items</li>
+                            {% endif %}
+                        </ul>
+                    </form>
                 </div>
             </div>
         </div>

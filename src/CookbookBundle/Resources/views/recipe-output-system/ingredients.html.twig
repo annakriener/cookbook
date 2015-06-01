@@ -1,26 +1,38 @@
 {% block ingredients %}
     <h2>Ingredients</h2>
-    <ul>
-        {% for ingr in ingredients %}
-            <li>
-                <input type="checkbox">
-                <span>
+    <form method="post" name="addToShoppingListForm">
+        <ul>
+            {% for ingr in ingredients %}
+                <li>
                     {% if ingr.amount %}
-                        <span>
-                            {{ ingr.amount }}
-                        </span>
+                        {% set amount = ingr.amount %}
+                    {% else %}
+                        {% set amount = "" %}
                     {% endif %}
 
                     {% if ingr.measurement %}
-                        <span>
-                        {{ ingr.measurement.name }}
-                    </span>
+                        {% set measurement = ingr.measurement.name %}
+                    {% else %}
+                        {% set measurement = "" %}
                     {% endif %}
 
-                    <span>{{ ingr.ingredient.name }}</span>
+                    {% if ingr.ingredient %}
+                        {% set ingredient = ingr.ingredient.name %}
+                    {% else %}
+                        {% set ingredient = "" %}
+                    {% endif %}
+
+                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}' name="addToShoppingListItem{{ loop.index }}" class="cb-sl-addToShoppingListItem">
+                <span>
+                    <span>{{ amount }}</span>
+                    <span>{{ measurement }}</span>
+                    <span>{{ ingredient }}</span>
                 </span>
-            </li>
-        {% endfor %}
-    </ul>
-    <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add to Shopping List</button>
+                </li>
+            {% endfor %}
+        </ul>
+        <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add to Shopping List</button>
+    </form>
+
+    <button class="btn btn-default" id="cb-sl-checkAllShoppingListItems"><span class="glyphicon glyphicon-check"></span> Check all</button>
 {% endblock %}

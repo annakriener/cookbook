@@ -25,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RecipeInputController extends Controller {
     /**
-     * @Route("/addRecipe", name="addRecipe")
+     * @Route("/addRecipe", name="add_recipe")
      */
-    public function addRecipeAction(Request $request) {
+    public function addRecipeAction() {
         // create new entities
         $recipe = new Recipe();
         $category = new Category();
@@ -36,70 +36,17 @@ class RecipeInputController extends Controller {
 
         // create new forms
         $recipeForm = $this->createForm(new RecipeType(), $recipe, array(
-            'action' => $this->generateUrl('addRecipe'),
+            'action' => $this->generateUrl('add_new_recipe'),
             'method' => 'POST'));
         $categoryForm = $this->createForm(new CategoryType(), $category, array(
-            'action' => $this->generateUrl('addRecipe'),
+            'action' => $this->generateUrl('add_category'),
             'method' => 'POST'));
         $measurementForm = $this->createForm(new MeasurementType(), $measurement, array(
-            'action' => $this->generateUrl('addRecipe'),
+            'action' => $this->generateUrl('add_measurement'),
             'method' => 'POST'));
         $classificationForm = $this->createForm(new ClassificationType(), $classification, array(
-            'action' => $this->generateUrl('addRecipe'),
+            'action' => $this->generateUrl('add_classification'),
             'method' => 'POST'));
-
-        if ($request->isMethod('POST')) {
-            if ($request->request->has('recipe')) {
-
-                $recipeForm->handleRequest($request);
-
-                if ($recipeForm->isValid()) {
-                    // saving the recipe to the database
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($recipe);
-                    $em->flush();
-
-                    return $this->redirectToRoute('addRecipe');
-                }
-
-            }
-
-            if ($request->request->has('category')) {
-                $categoryForm->handleRequest($request);
-                if ($categoryForm->isValid()) {
-                    // saving the category to the database
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($category);
-                    $em->flush();
-
-                    return $this->redirectToRoute('addRecipe');
-                }
-            }
-
-            if ($request->request->has('measurement')) {
-                $measurementForm->handleRequest($request);
-                if ($measurementForm->isValid()) {
-                    // saving the measurement to the database
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($measurement);
-                    $em->flush();
-
-                    return $this->redirectToRoute('addRecipe');
-                }
-            }
-
-            if ($request->request->has('classification')) {
-                $classificationForm->handleRequest($request);
-                if ($classificationForm->isValid()) {
-                    // saving the classification to the database
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($classification);
-                    $em->flush();
-
-                    return $this->redirectToRoute('addRecipe');
-                }
-            }
-        }
 
         return $this->render('CookbookBundle:recipe-input-system:recipeInput.html.twig', array(
             'recipeForm' => $recipeForm->createView(),
@@ -107,5 +54,92 @@ class RecipeInputController extends Controller {
             'measurementForm' => $measurementForm->createView(),
             'classificationForm' => $classificationForm->createView(),
         ));
+    }
+
+    /**
+     * @Route("/addRecipe/addRecipe", name="add_new_recipe")
+     */
+    public function processRecipeFormAction(Request $request) {
+        $recipe = new Recipe();
+        $recipeForm = $this->createForm(new RecipeType(), $recipe);
+
+        if ($request->isMethod('POST')) {
+            if ($request->request->has('recipe')) {
+                $recipeForm->handleRequest($request);
+                if ($recipeForm->isValid()) {
+                    // saving the recipe to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($recipe);
+                    $em->flush();
+                }
+            }
+        }
+        return $this->redirectToRoute('add_recipe');
+    }
+
+    /**
+     * @Route("/addRecipe/addCategory", name="add_category")
+     */
+    public function processCategoryFormAction(Request $request) {
+        $category = new Category();
+        $categoryForm = $this->createForm(new CategoryType(), $category);
+
+        if ($request->isMethod('POST')) {
+            if ($request->request->has('category')) {
+                $categoryForm->handleRequest($request);
+                if ($categoryForm->isValid()) {
+                    // saving the category to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($category);
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('add_recipe');
+    }
+
+    /**
+     * @Route("/addRecipe/addMeasurement", name="add_measurement")
+     */
+    public function processMeasurementFormAction(Request $request) {
+        $measurement = new Measurement();
+        $measurementForm = $this->createForm(new MeasurementType(), $measurement);
+
+        if ($request->isMethod('POST')) {
+            if ($request->request->has('measurement')) {
+                $measurementForm->handleRequest($request);
+                if ($measurementForm->isValid()) {
+                    // saving the measurement to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($measurement);
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('add_recipe');
+    }
+
+    /**
+     * @Route("/addRecipe/addClassification", name="add_classification")
+     */
+    public function processClassificationFormAction(Request $request) {
+        $classification = new Classification();
+        $classificationForm = $this->createForm(new ClassificationType(), $classification);
+
+        if ($request->isMethod('POST')) {
+            if ($request->request->has('classification')) {
+                $classificationForm->handleRequest($request);
+                if ($classificationForm->isValid()) {
+                    // saving the classification to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($classification);
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('add_recipe');
     }
 }
