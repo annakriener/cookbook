@@ -10,7 +10,7 @@ $(document).ready(function () {
         event.preventDefault();
         checkAndUnCheckShoppingListItems();
     });
-    var userShoppingListItem = $('.cb-sl-userShoppingListItem'); //li-element
+    var userShoppingListItem = $('.cb-sl-userShoppingListItem'); //label-element
 
     // make it able to click on the whole item to check it (and cross it out if checked)
     userShoppingListItem.on("click", function (event) {

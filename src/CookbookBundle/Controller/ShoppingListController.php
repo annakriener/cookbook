@@ -15,12 +15,15 @@ class ShoppingListController extends Controller {
      * @Route("/shoppinglist", name="shopping_list")
      */
     public function getShoppingListAction() {
+        $user = $this->getUser();
+        $userShoppingList = $user->getShoppingList();
+
         $addShoppingListItemForm = $this->createForm(new AddShoppingListItemType(), null, array(
             'action' => $this->generateUrl('shopping_list_add'),
             'method' => 'POST'
         ));
 
-        $deleteShoppingListItemForm = $this->createForm(new DeleteShoppingListItemType(), null, array(
+        $deleteShoppingListItemForm = $this->createForm(new DeleteShoppingListItemType($userShoppingList), null, array(
             'action' => $this->generateUrl('shopping_list_delete'),
             'method' => 'POST'
         ));
@@ -28,8 +31,7 @@ class ShoppingListController extends Controller {
         $this->deleteCheckedShoppingListItem();
         $this->deleteAllShoppingListItems();
 
-        $user = $this->getUser();
-        $userShoppingList = $user->getShoppingList();
+
 
         return $this->render('CookbookBundle:shopping-list:shoppingList.html.twig', array(
             'userShoppingList' => $userShoppingList,
@@ -76,6 +78,13 @@ class ShoppingListController extends Controller {
                 $deleteShoppingListItemForm->handleRequest($request);
 
                 if($deleteShoppingListItemForm->isValid()) {
+                    $data = $deleteShoppingListItemForm->getData();
+
+                    $em = $this->getDoctrine()->getManager();
+                    $user = $em->getRepository('CookbookBundle:User')->find($this->getUser()->getId());
+
+                    $shoppingList = $user->getShoppingList();
+
                     if($deleteShoppingListItemForm->get('deleteItem')->isClicked()) {
 
                     }

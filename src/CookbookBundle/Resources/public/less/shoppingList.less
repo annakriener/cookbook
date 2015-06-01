@@ -1,16 +1,30 @@
-ul.cb-sl-userShoppingList {
+#cb-sl-deleteShoppingListItemForm div.checkbox {
+  margin: 0;
+  padding: 0;
+}
+
+#cb-sl-deleteShoppingListItemForm div.form-group {
+  margin-bottom: 0;
+}
+
+ul.cb-sl-userShoppingList, div#deleteShoppingListItem_items{
   list-style: none;
   margin: 20px 0 20px 0;
   padding: 0;
 }
 
-li.cb-sl-userShoppingListItem {
+li.cb-sl-userShoppingListItem, label.cb-sl-userShoppingListItem {
   width: 100%;
   margin-top: 10px;
   padding: 10px 15px;
   border: 1px solid grey;
   border-radius: 4px;
   background-color: lightgoldenrodyellow;
+}
+
+input.cb-sl-userShoppingListItemCheckbox {
+  position: relative !important;
+  margin: 0 5px 0 0 !important;
 }
 
 .cb-sl-userShoppingListItemTextCrossed {
