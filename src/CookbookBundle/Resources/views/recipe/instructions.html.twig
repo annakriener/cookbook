@@ -1,23 +1,37 @@
 {% block instructions %}
     <h2>Instructions</h2>
 
-    <ol id="preparation">
-        {% spaceless %}
-        {% for step in recipe.instructions %}
-            <li>
-                {% for paragraph in  step %}
-                    <p>
-                    {%- for part in paragraph -%}
-                        {%- if part.type == 1 -%}
-                            {{- part.txt -}}
-                        {%- elseif part.type == 4 -%}
-                            <span class="cb-timer">{{- part.h }}:{{ part.m }}:{{ part.s -}}</span>
-                        {%- endif -%}
+    {%- if annotations -%}
+    <ol id="preparation"></ol>
+        {#- -#}
+        <script>{#- -#}
+            renderInstructions({ "data": {{ recipe.instructions|json_encode|raw }} }, {"data": {{ annotations.instructions|json_encode|raw }} }, {% if annotations.hideCrossed %}1{% else %}0{% endif %});
+            {#- -#}
+        </script>
+
+
+    {%- else -%}
+        <ol id="preparation">
+            {% spaceless %}
+            {%- for step in recipe.instructions -%}
+                <li>
+                    {%- for paragraph in  step -%}
+                        <p>
+                        {%- for part in paragraph -%}
+                            {%- if part.type == 1 -%}
+                                {{- part.txt -}}
+                            {%- elseif part.type == 4 -%}
+                                <span class="cb-timer">{{- part.h }}:{{ part.m }}:{{ part.s -}}</span>
+                            {%- endif -%}
+                        {%- endfor -%}
+                        </p>
                     {%- endfor -%}
-                    </p>
-                {% endfor %}
-            </li>
-        {% endfor %}
-        {% endspaceless %}
-    </ol>
+                </li>
+            {%- endfor -%}
+            {% endspaceless %}
+        </ol>
+    {%- endif %}
 {% endblock %}
+
+
+

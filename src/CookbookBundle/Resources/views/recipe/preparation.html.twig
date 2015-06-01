@@ -4,29 +4,20 @@
         <h2>Preparation</h2>
         <p>{{ recipe.preparation }}</p>
     {%  endif %}
+{% endblock %}
 
-<div id="an-tools" title="">
-    <div><button id="yellow" class="cb-an-c-yellow">yellow</button>
-        <button id="cyan" class="cb-an-c-cyan">cyan</button>
-        <button id="pink" class="cb-an-c-pink">pink</button>
+
+{% block annotations %}
+    {% set annotationID = "" %}
+    {% if annotations %}
+        {% set annotationID = annotations.id %}
+    {% endif %}
+
+<div id="an-tools" title="{{ annotationID }}">
+    <div><button id="yellow" class="cb-an-c-yellow">y</button>
+        <button id="cyan" class="cb-an-c-cyan">c</button>
+        <button id="pink" class="cb-an-c-pink">p</button>
         <button id="crossout" class="cb-an-f-off">cross out</button> <button id="takenote">take notes</button>
         <button id="hide">hide</button> <button id="save">Save</button></div>
 </div>
-
-    <div id="preparation_alt">
-        <h2>Instructions</h2>
-        <ol>
-            <li>
-                <p>Bake cake in oven for 40 minutes <span class="cb-timer">start timer</span> at 180 degrees Celsius. The ingredients above reflect 3 Servings, but the instructions reflect the as-posted 4 Servings. You may need to adjust the times, temperatures or quantities mentioned in the recipe below as needed.
-                <p>This is another paragraph. Just for testing purposes. Nothing important to read here.</p>
-            </li>
-            <li>
-                <p>Sift dry ingredients. Blend together egg yolks and yogurt, mix well; add to dry ingredients, add margarine and mix together lightly. Add blueberries. Fold in egg whites. Bake on hot griddle until golden on both sides.</p>
-            </li>
-        </ol>
-    </div>
-
-    <form name=aform action="get">
-        <textarea name="selectedtext" rows="5" cols="20"></textarea>
-    </form>
 {% endblock %}

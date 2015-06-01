@@ -1,10 +1,12 @@
 var $ingredientCollectionHolder;
-
-// setup an "add a ingredient" link
-var $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
-var $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+var $addIngredientButton;
+var $newIngredientButtonDiv;
 
 jQuery(document).ready(function() {
+    // setup an "add a ingredient" link
+    $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
+    $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+
     // Get the ul that holds the collection of ingredients
     $ingredientCollectionHolder = $('div#recipe_ingredients');
 

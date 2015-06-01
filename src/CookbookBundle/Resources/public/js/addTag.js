@@ -1,10 +1,13 @@
 var $tagCollectionHolder;
+var $addTagButton;
+var $newTagButtonDiv;
 
-// setup an "add a tag" link
-var $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn btn-sm">Add a tag</button>');
-var $newTagButtonDiv = $('<div></div>').append($addTagButton);
 
 jQuery(document).ready(function() {
+    // setup an "add a tag" link
+    $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn btn-sm">Add a tag</button>');
+    $newTagButtonDiv = $('<div></div>').append($addTagButton);
+
     // Get the ul that holds the collection of tags
     $tagCollectionHolder = $('div#recipe_tags');
 

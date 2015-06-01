@@ -53,6 +53,13 @@ class RecipeAnnotation {
      */
     protected $ingredients;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="hide_crossed", type="boolean")
+     */
+    protected $hide_crossed;
+
     /*
      * -------------------
      * AUTO-GENERATED CODE
@@ -156,4 +163,22 @@ class RecipeAnnotation {
 
         return $this;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isHideCrossed()
+    {
+        return $this->hide_crossed;
+    }
+
+    /**
+     * @param boolean $hide_crossed
+     */
+    public function setHideCrossed($hide_crossed)
+    {
+        $this->hide_crossed = $hide_crossed;
+    }
+
+
 }

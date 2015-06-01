@@ -3,17 +3,21 @@
  */
 
 // AMOUNT
-$('span.cb-ingr-amount').on('mousedown', function(){
-    if (!$(this).is("[contenteditable='true']")){
-        // remember the original amount
-        var amount = getTextContent(this);
-        $(this).on('mouseup', function(){
-            $(this).attr("contenteditable","true");
-            $(this).focus();
-            $(this).on('blur', {arg1: amount}, checkIfChanged);
-        });
-    }
+$( document ).ready(function() {
+    $('span.cb-ingr-amount').on('mousedown', function(){
+        if (!$(this).is("[contenteditable='true']")){
+            // remember the original amount
+            var amount = getTextContent(this);
+            $(this).on('mouseup', function(){
+                $(this).attr("contenteditable","true");
+                $(this).focus();
+                $(this).on('blur', {arg1: amount}, checkIfChanged);
+            });
+        }
+    });
 });
+
+
 
 function checkIfChanged(e) {
     var text = getTextContent(this);

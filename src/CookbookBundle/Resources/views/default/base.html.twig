@@ -10,6 +10,11 @@
         <link href='http://fonts.googleapis.com/css?family=Courgette&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
         {% block stylesheets %}{% endblock %}
 
+        <!-- JAVASCRIPT included in head on purpose, do not change-->
+        {% block javascripts %}
+            <script src="{{ asset('js/script.js') }}"></script>
+        {% endblock %}
+
         <!-- FAVICON -->
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     </head>
@@ -21,9 +26,5 @@
             {% include 'CookbookBundle:default:main.html.twig' %}
         {% endblock %}
         {% include 'CookbookBundle:default:footer.html.twig' %}
-
-        <!-- JAVASCRIPT -->
-        <script src="{{ asset('js/script.js') }}"></script>
-        {% block javascripts %}{% endblock %}
     </body>
 </html>

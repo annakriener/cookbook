@@ -28,10 +28,20 @@ class RecipeOutputController extends Controller {
         $duration = date_format($duration, 'H:i:s');
         $ingredients = $recipe->getIngredients();
 
+        // RECIPE ANNOTATION---
+        $userID = 0; //TODO: use actual user ID
+        $recipeAnnotations = $this->getDoctrine()
+            ->getRepository('CookbookBundle:RecipeAnnotation')
+            ->findOneBy(array('recipe' => $recipe, 'user_id' => $userID));
+        //----
+
+
+
         return $this->render('CookbookBundle:recipe:recipe.html.twig', array(
             'recipe' => $recipe,
             'duration' => $duration,
             'ingredients' => $ingredients,
+            'annotations' => $recipeAnnotations
         ));
     }
 }

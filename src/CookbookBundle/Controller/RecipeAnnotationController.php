@@ -20,10 +20,11 @@ class RecipeAnnotationController extends Controller {
         $annotationID = $_POST['annotation_id'];
         $instr = $_POST['instructions'];
         $ingr = $_POST['ingredients'];
+        $hide = ($_POST['hideCrossed'] == "true");
 
         $recipeAnnotation = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:RecipeAnnotation')->findOneById($annotationID);
 
-        if ($recipeAnnotation == NULL) {
+        if (!$recipeAnnotation) {
 
             $recID = intval($_POST['recipe_id']);
             $userID = intval($_POST['user_id']);
@@ -34,12 +35,14 @@ class RecipeAnnotationController extends Controller {
             $recipeAnnotation->setRecipe($recipe);
             $recipeAnnotation->setUserId($userID);
         }
-            $recipeAnnotation->setInstructions($instr);
-            $recipeAnnotation->setIngredients($ingr);
+        $recipeAnnotation->setInstructions($instr);
+        $recipeAnnotation->setIngredients($ingr);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($recipeAnnotation);
-            $em->flush();
+        $recipeAnnotation->setHideCrossed($hide);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($recipeAnnotation);
+        $em->flush();
 
 
         // ACHTUNG, jedes echo oder error ist wird vor die response angehängt und ist genauso eine response

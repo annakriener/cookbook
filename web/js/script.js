@@ -11528,12 +11528,14 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 var $ingredientCollectionHolder;
-
-// setup an "add a ingredient" link
-var $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
-var $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+var $addIngredientButton;
+var $newIngredientButtonDiv;
 
 jQuery(document).ready(function() {
+    // setup an "add a ingredient" link
+    $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
+    $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+
     // Get the ul that holds the collection of ingredients
     $ingredientCollectionHolder = $('div#recipe_ingredients');
 
@@ -11597,12 +11599,13 @@ jQuery(document).ready(function() {
 });
 
 var $instructionCollectionHolder;
-
-// setup an "add a step" link
-var $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
-var $newStepButtonDiv = $('<div></div>').append($addStepButton);
+var $addStepButton;
+var $newStepButtonDiv;
 
 jQuery(document).ready(function() {
+    // setup an "add a step" link
+    $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
+    $newStepButtonDiv = $('<div></div>').append($addStepButton);
     // Get the ul that holds the collection of steps
     $instructionCollectionHolder = $('div#recipe_instructions');
 
@@ -11671,12 +11674,15 @@ function addStepFormDeleteButton(stepFormDiv) {
 
 
 var $tagCollectionHolder;
+var $addTagButton;
+var $newTagButtonDiv;
 
-// setup an "add a tag" link
-var $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn btn-sm">Add a tag</button>');
-var $newTagButtonDiv = $('<div></div>').append($addTagButton);
 
 jQuery(document).ready(function() {
+    // setup an "add a tag" link
+    $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn btn-sm">Add a tag</button>');
+    $newTagButtonDiv = $('<div></div>').append($addTagButton);
+
     // Get the ul that holds the collection of tags
     $tagCollectionHolder = $('div#recipe_tags');
 
@@ -11739,88 +11745,67 @@ jQuery(document).ready(function() {
 });
 
 /**
- * INGREDIENTS - and their annotations
- */
-
-// AMOUNT
-$('span.cb-ingr-amount').on('mousedown', function(){
-    if (!$(this).is("[contenteditable='true']")){
-        // remember the original amount
-        var amount = getTextContent(this);
-        $(this).on('mouseup', function(){
-            $(this).attr("contenteditable","true");
-            $(this).focus();
-            $(this).on('blur', {arg1: amount}, checkIfChanged);
-        });
-    }
-});
-
-function checkIfChanged(e) {
-    var text = getTextContent(this);
-    if (e.data.arg1 == text) { // unset contenteditable if amount has not changed
-        $(this).attr("contenteditable","false");
-    } else if (!isNumber(text)) {
-        this.innerHTML = e.data.arg1;
-        $(this).attr("contenteditable","false");
-    } else {
-        this.innerHTML = parseFloat(text);
-    }
-}
-
-function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
-/**
  * INSTRUCTIONS - STEPS and their annotations
  */
 
+var $hideText = "hide";
+var $showText = "show";
+$( document ).ready(function() {
+
+    $('#crossout').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+
+    });
+
+    $('#yellow').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#cyan').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#pink').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#takenote').on('click', function(){
+
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', takeNote);
+    });
+    $('#save').on('click', function(){
+        //testIt();
+        saveAnnotations();
+    });
 
 
-$('#crossout').on('click', function(){
-    var cname = $(this).attr('class');
-    $('#preparation').off('mouseup');
-    $('#preparation').on('mouseup', formatTxt(cname));
+    $('#hide').on('click', function(){
+        if ($('#hide').text() == $showText) {
+            $('#hide').text($hideText);
+            $(".cb-an-f-off").show();
+        } else {
+            hideCrossed();
+        }
+    });
 
 });
 
-$('#yellow').on('click', function(){
-    var cname = $(this).attr('class');
-    $('#preparation').off('mouseup');
-    $('#preparation').on('mouseup', formatTxt(cname));
-});
-
-$('#cyan').on('click', function(){
-    var cname = $(this).attr('class');
-    $('#preparation').off('mouseup');
-    $('#preparation').on('mouseup', formatTxt(cname));
-});
-
-$('#pink').on('click', function(){
-    var cname = $(this).attr('class');
-    $('#preparation').off('mouseup');
-    $('#preparation').on('mouseup', formatTxt(cname));
-});
-
-$('#takenote').on('click', function(){
-
-    $('#preparation').off('mouseup');
-    $('#preparation').on('mouseup', takeNote);
-});
-$('#save').on('click', function(){
-    //testIt();
-    saveAnnotations();
-});
+function hideCrossed(){
+    $('#hide').text($showText);
+    $(".cb-an-f-off").not("button").hide();
+}
 
 
-$('#hide').on('click', function(){
-    if ($('#hide').text() == "show") {
-        $('#hide').text("hide");
-        $(".cb-an-f-off").show();
-    } else {
-        $('#hide').text("show");
-        $(".cb-an-f-off").not("button").hide();
-    }
-});
+
 
 // hightlighting of text
 function formatTxt(fClassName) {
@@ -11854,15 +11839,15 @@ function formatTxt(fClassName) {
                 var endString = originalString.substr(endStartIndex);
 
                 // Deal with blanks at beginning or end of selection. Uncommented for textHighlight, comment when text color only changed
-/*                if (middleString[0] == " ") {
-                    startString += " ";
-                    middleString = middleString.substr(1);
-                }
+                /*                if (middleString[0] == " ") {
+                 startString += " ";
+                 middleString = middleString.substr(1);
+                 }
 
-                if (middleString[middleString.length-1] == " ") {
-                    endString = " " + endString;
-                    middleString = middleString.substr(0, middleString.length-1);
-                }*/
+                 if (middleString[middleString.length-1] == " ") {
+                 endString = " " + endString;
+                 middleString = middleString.substr(0, middleString.length-1);
+                 }*/
 
 
                 // Create new Children from startString, middleString and endString and prepend them to selNode!
@@ -11894,7 +11879,6 @@ function formatTxt(fClassName) {
         txt = document.selection.createRange().text;
     }
     else return;
-    document.aform.selectedtext.value =  txt;
 };
 
 function isBackwardsSelection(selectionObject) {
@@ -11986,7 +11970,6 @@ function takeNote() {
 };
 
 function saveAnnotations(){
-// http://stackoverflow.com/questions/8324976/serializing-array-of-objects
 
     var annotation_id = $("#an-tools").attr("title");
     var recipe_id = $("#recipe_container").attr("title");
@@ -11995,21 +11978,18 @@ function saveAnnotations(){
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
-    console.log(JSON.stringify(serializedInstructions));
-    var dataInstructions = { "data": serializedInstructions };//JSON.stringify(serializedInstructions); // use JSON.parse(dataInstructions); to undo stringify
+    //console.log(JSON.stringify(serializedInstructions));
+
+    var hideCrossed = !($('#hide').text() == $hideText);
     var serializedIngredients = [{"type":100}];// TODO fill array
-
-
-    if (serializedInstructions != null) {
-        console.log("not null");
-    }
 
     $.post('/saveAnnotations', {
         annotation_id: annotation_id,
         recipe_id : recipe_id,
         user_id : user,
-        instructions : serializedInstructions,//jQuery.param(dataInstructions),
-        ingredients : serializedIngredients//jQuery.param(dataIngredients)
+        instructions : serializedInstructions,
+        ingredients : serializedIngredients,
+        hideCrossed: hideCrossed
     }).done(function(data){ // data is the response
         $("#an-tools").attr("title", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
     });
@@ -12017,15 +11997,15 @@ function saveAnnotations(){
 
 function r_serializeChild(child) {
     /*
-    * Node Types:
-    * 0: indexNode, refers to part of original text, contains length of the part (startIndex = summation of lengths of preceding indexNodes)
-    * 1: textNode, is a text written by user
-    * 2: nestedNode, is a not contenteditable span with 1 or more child nodes that may have children themselves
-    * 3: noteNode, is a contenteditable span with 1 or more child nodes that may have children themselves
-    * 4: timerNode, is a not contenteditable span with a time value
-    * 5: pNode, is a paragraph
-    * 6: stepNode (li)
-    * */
+     * Node Types:
+     * 0: indexNode, refers to part of original text, contains length of the part (startIndex = summation of lengths of preceding indexNodes)
+     * 1: textNode, is a text written by user
+     * 2: nestedNode, is a not contenteditable span with 1 or more child nodes that may have children themselves
+     * 3: noteNode, is a contenteditable span with 1 or more child nodes that may have children themselves
+     * 4: timerNode, is a not contenteditable span with a time value
+     * 5: pNode, is a paragraph
+     * 6: stepNode (li)
+     * */
 
     if (child.nodeType == 3){ // RECURSION BASE ! ( check if its a textnode )
         if ((child.parentNode).isContentEditable){
@@ -12085,22 +12065,59 @@ function getSerializedChildren(children) {
     return serializedChildren;
 }
 
-function renderInstructions(original, annoted, parentNode) {
 
-    //TODO: check if there are Annotations for the instructions
 
+/**
+ * INGREDIENTS - and their annotations
+ */
+
+// AMOUNT
+$( document ).ready(function() {
+    $('span.cb-ingr-amount').on('mousedown', function(){
+        if (!$(this).is("[contenteditable='true']")){
+            // remember the original amount
+            var amount = getTextContent(this);
+            $(this).on('mouseup', function(){
+                $(this).attr("contenteditable","true");
+                $(this).focus();
+                $(this).on('blur', {arg1: amount}, checkIfChanged);
+            });
+        }
+    });
+});
+
+
+
+function checkIfChanged(e) {
+    var text = getTextContent(this);
+    if (e.data.arg1 == text) { // unset contenteditable if amount has not changed
+        $(this).attr("contenteditable","false");
+    } else if (!isNumber(text)) {
+        this.innerHTML = e.data.arg1;
+        $(this).attr("contenteditable","false");
+    } else {
+        this.innerHTML = parseFloat(text);
+    }
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+// RENDER ANNOTATIONS
+
+function renderInstructions(original, annoted, hide) {
+
+    var parentNode = $('#preparation');
     // first retrieve the instructions array from Database
-    var stepsOriginal = original; // TODO
-    var stepsAnnoted = annoted; //TODO
+    var stepsOriginal = original.data; // TODO
+    var stepsAnnoted = annoted.data; //TODO
 
-    var orderedList = $('<ol />');
-    parentNode.append(orderedList);
-
+    var orderedList = $('#preparation');
 
     if (stepsOriginal.length == stepsAnnoted.length) {
         for (var step = 0; step < stepsOriginal.length; ++step) {
             var liNode = $('<li />');
-            orderedList.append(liNode);
+            parentNode.append(liNode);
 
             var originalPs = stepsOriginal[step];
             var annotedPs = stepsAnnoted[step].children;
@@ -12127,24 +12144,29 @@ function renderInstructions(original, annoted, parentNode) {
                     }
                 }
 
-                while (an_index < contentAnnoted.length) { // don't forget contenteditable spans at the very end of a paragraph
+                while (contentAnnoted != undefined && an_index < contentAnnoted.length) { // don't forget contenteditable spans at the very end of a paragraph
                     oC_index = r_appendChild(pNode, contentAnnoted[an_index], 0, "");
                     ++an_index;
                 }
             }
         }
     }
+
+    if (hide) {
+        hideCrossed();
+    }
 }
 
 function r_appendChild(parentNode, child, index, content){
-    var s = child.type;
+    var s = parseInt(child.type);
     switch (s) {
         case 0: // recursion base
             console.log("recursion base");
-            var text = content.substr(index, child.len);
+            var len = parseInt(child.len); // necessary since encoding the JSON objects turns integers to strings
+            var text = content.substr(index, len);
             var textnode = document.createTextNode(text);
             parentNode.append(textnode);
-            return (index + child.len);
+            return (index + len);
 
         case 1: // recursion base
             var textnode = document.createTextNode(child.txt);
@@ -12180,20 +12202,6 @@ function r_appendChild(parentNode, child, index, content){
 }
 
 
-function testIt(){
-    var db = [[
-        [{"type":1,"txt": "Bake cake in oven for 40 minutes "},{"type":4,"h":0,"m":5,"s":0},
-            {"type":1,"txt":" at 180 degrees Celsius. The ingredients above reflect 3 Servings, but the instructions reflect the as-posted 4 Servings. You may need to adjust the times, temperatures or quantities mentioned in the recipe below as needed."}],
-        [{"type":1, "txt":"This is another paragraph. Just for testing purposes. Nothing important to read here."}]],
-        [[{"type":1,"txt":"Sift dry ingredients. Blend together egg yolks and yogurt, mix well; add to dry ingredients, add margarine and mix together lightly. Add blueberries. Fold in egg whites. Bake on hot griddle until golden on both sides."}]
-    ]];
-
-    var annoted = saveAnnotations();
-    var div = $('<div />').attr("id", "copy");
-    $('#preparation').append(div);
-
-    renderInstructions(db, annoted, div);
-}
 
 function getTextContent(elementNode){ // innerText is not supported by Firefox (uses textContent instead)
     var hasInnerText = (elementNode.innerText != undefined) ? true : false;
