@@ -1,16 +1,11 @@
 {% extends 'CookbookBundle:default:base.html.twig' %}
 {% form_theme addShoppingListItemForm 'bootstrap_3_layout.html.twig' %}
 
-
 {% block main %}
     <main>
         <div class="container">
-
             <div class="row">
-
-
                 <div class="col-md-6">
-
                     <h1>My Shopping List</h1>
 
                     {{ form_start(addShoppingListItemForm, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -18,47 +13,25 @@
                         {{ form_row(addShoppingListItemForm.item) }}
                     {{ form_end(addShoppingListItemForm) }}
 
-                    {{ form_start(deleteShoppingListItemForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-sl-deleteShoppingListItemForm'}}) }}
-                        {{ form_row(deleteShoppingListItemForm.deleteItem) }}
-                        {{ form_row(deleteShoppingListItemForm.deleteAll) }}
-                        <ul class="cb-sl-userShoppingList">
-                            {% for item in deleteShoppingListItemForm.items %}
-                                <li class="cb-sl-userShoppingListItem">
-                                    {{ form_widget(item,  { 'attr': {'class': 'cb-sl-userShoppingListItemCheckbox'}}) }}
-                                    {{ form_label(item,  item.text, { 'label_attr': {'class': 'cb-sl-userShoppingListItemCheckbox'}}) }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-
-                    {{ form_end(deleteShoppingListItemForm) }}
-
                     <button class="btn btn-default" id="cb-sl-hideUserShoppingListItem">Hide checked items</button>
 
-                    <form method="post" name="deleteAllUserShoppingListItemsForm"
-                          class="cb-sl-deleteAllUserShoppingListItems">
-                        <input type="hidden" value="true" name="deleteAllUserShoppingListItems">
-                        <button class="btn btn-default">Delete all items</button>
-                    </form>
+                    {{ form_start(deleteShoppingListItemForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-sl-deleteShoppingListItemForm'}}) }}
+                        {{ form_errors(deleteShoppingListItemForm) }}
+                        {{ form_row(deleteShoppingListItemForm.deleteItem, {'attr': {'class': 'btn btn-default'}}) }}
+                        {{ form_row(deleteShoppingListItemForm.deleteAll, {'attr': {'class': 'btn btn-default'}}) }}
 
-                    <form method="post" class="cb-sl-deleteCheckedUserShoppingListItem"
-                          name="deleteCheckedUserShoppingListItemForm">
-                        <button class="btn btn-default">Delete checked item</button>
-                        <ul class="cb-sl-userShoppingList">
-                            <input type="hidden" value="true" name="deleteCheckedUserShoppingListItem">
-                            {% if userShoppingList %}
-                                {% for userShoppingListItem in userShoppingList %}
+                        {% if deleteShoppingListItemForm.items is not empty %}
+                            <ul class="cb-sl-userShoppingList">
+                                {% for item in deleteShoppingListItemForm.items %}
                                     <li class="cb-sl-userShoppingListItem">
-                                        <input type="checkbox" value="{{ userShoppingListItem }}"
-                                               name="userShoppingListItem{{ loop.index }}"
-                                               class="cb-sl-userShoppingListItemCheckbox">
-                                        <span class="cb-sl-userShoppingListItemText">{{ userShoppingListItem }}</span>
+                                        {{ form_widget(item,  { 'attr': {'class': 'cb-sl-userShoppingListItemCheckbox'}}) }}
+                                        {{ form_label(item, null, { 'label_attr': {'class': 'cb-sl-userShoppingListItemText'}}) }}
                                     </li>
+                                    <div class="sillyDiv"></div>
                                 {% endfor %}
-                            {% else %}
-                                <li>No items</li>
-                            {% endif %}
-                        </ul>
-                    </form>
+                            </ul>
+                        {% endif %}
+                    {{ form_end(deleteShoppingListItemForm) }}
                 </div>
             </div>
         </div>

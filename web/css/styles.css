@@ -6595,21 +6595,12 @@ button.close {
   margin-bottom: 60px;
 }
 
-#cb-sl-deleteShoppingListItemForm div.checkbox {
-  margin: 0;
-  padding: 0;
-}
-#cb-sl-deleteShoppingListItemForm div.form-group {
-  margin-bottom: 0;
-}
-ul.cb-sl-userShoppingList,
-div#deleteShoppingListItem_items {
+ul.cb-sl-userShoppingList {
   list-style: none;
   margin: 20px 0 20px 0;
   padding: 0;
 }
-li.cb-sl-userShoppingListItem,
-label.cb-sl-userShoppingListItem {
+li.cb-sl-userShoppingListItem {
   width: 100%;
   margin-top: 10px;
   padding: 10px 15px;
@@ -6617,9 +6608,23 @@ label.cb-sl-userShoppingListItem {
   border-radius: 4px;
   background-color: lightgoldenrodyellow;
 }
+/*
+li.cb-sl-userShoppingListItem:hover,
+input.cb-sl-userShoppingListItemCheckbox:hover,
+label.cb-sl-userShoppingListItemText:hover {
+  cursor: pointer;
+}
+*/
 input.cb-sl-userShoppingListItemCheckbox {
-  position: relative !important;
-  margin: 0 5px 0 0 !important;
+  width: 3%;
+  margin: 0;
+  position: relative;
+  vertical-align: middle;
+}
+label.cb-sl-userShoppingListItemText {
+  width: 96%;
+  margin: 0;
+  vertical-align: middle;
 }
 .cb-sl-userShoppingListItemTextCrossed {
   text-decoration: line-through;
@@ -6627,9 +6632,6 @@ input.cb-sl-userShoppingListItemCheckbox {
 }
 .cb-sl-userShoppingListItemHidden {
   display: none;
-}
-.cb-sl-deleteAllUserShoppingListItems {
-  margin: 15px 0 15px 0;
 }
 
 hr {

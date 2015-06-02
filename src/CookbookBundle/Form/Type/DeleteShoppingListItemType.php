@@ -28,6 +28,7 @@ class DeleteShoppingListItemType extends AbstractType{
                 'choices' => $this->shoppingList,
                 'multiple' => true,
                 'expanded' => true,
+                'label' => false
             ))
             ->add('deleteItem', 'submit', array('label' => 'Delete checked items'))
             ->add('deleteAll', 'submit', array('label' => 'Delete all'));

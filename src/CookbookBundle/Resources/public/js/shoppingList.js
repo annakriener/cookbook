@@ -10,23 +10,18 @@ $(document).ready(function () {
         event.preventDefault();
         checkAndUnCheckShoppingListItems();
     });
-    var userShoppingListItem = $('.cb-sl-userShoppingListItem'); //label-element
+
+    var userShoppingListItem = $('li.cb-sl-userShoppingListItem'); //li-element
 
     // make it able to click on the whole item to check it (and cross it out if checked)
     userShoppingListItem.on("click", function (event) {
-        var checkbox = $(this).children("input:first:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
-        checkbox.prop('checked', !checkbox.prop("checked"));
+        var checkbox = $(this).children("input:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
+        checkbox.prop('checked', !checkbox.prop('checked'));
 
-        $(this).children("span.cb-sl-userShoppingListItemText").toggleClass("cb-sl-userShoppingListItemTextCrossed"); // span-element
+        var itemText = $(this).children("label.cb-sl-userShoppingListItemText"); // label-element
+        itemText.toggleClass("cb-sl-userShoppingListItemTextCrossed ");
 
         hideAndShowCheckedUserShoppingListItems();
-    });
-
-    // show a hand-pointer when hovering over an item
-    userShoppingListItem.hover(function () {
-        $(this).css('cursor', 'pointer');
-    }, function () {
-        $(this).css('cursor', 'auto');
     });
 
     var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
@@ -34,7 +29,7 @@ $(document).ready(function () {
     // hide and show all checked items
     buttonHideUserShoppingListItem.on("click", function (event) {
         event.preventDefault();
-        $(this).toggleClass("active");
+        $(this).toggleClass("cb-sl-hideCheckedItemsActive active");
 
         // toggle button text
         $(this).html($(this).html() == "Hide checked items" ? "Show checked items" : "Hide checked items");
@@ -43,7 +38,7 @@ $(document).ready(function () {
     });
 
     function hideAndShowCheckedUserShoppingListItems() {
-        if (buttonHideUserShoppingListItem.hasClass("active")) {
+        if (buttonHideUserShoppingListItem.hasClass("cb-sl-hideCheckedItemsActive")) {
             $("input:checkbox:checked.cb-sl-userShoppingListItemCheckbox").each(function () {
                 $(this).parent().addClass("cb-sl-userShoppingListItemHidden")
             });
