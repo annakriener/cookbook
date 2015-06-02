@@ -12081,12 +12081,13 @@ function getSerializedChildren(children) {
 /**
  * INGREDIENTS - and their annotations
  */
-
 var $original_servingsize;
-// AMOUNT
+
 $( document ).ready(function() {
 
     $original_servingsize = $("#servings").attr("data-orig-servings");
+
+    // handle user changes in ingredient amounts
     $('span.cb-ingr-amount').on('mousedown', function(){
         $(this).on('mouseup', function(){
             $(this).attr("contenteditable","true");
@@ -12095,9 +12096,16 @@ $( document ).ready(function() {
         });
     });
 
+    // handle user changes in serving size !
     $("#servings").on('change', function(){
 
         var current = $("#servings").val();
+
+        if (!isNumber(current)){
+            current = $original_servingsize;
+            $("#servings").val($original_servingsize);
+        }
+
         var currentAmounts = $('span.cb-ingr-amount'); // list of the ingredients (their amounts)
 
         for (var i=0; i < currentAmounts.length; ++i){
@@ -12127,16 +12135,12 @@ function computeNewAmount(amount, currentServings, originalServings){
     return parseFloat(newAmount.toFixed(2));
 }
 
-
 function checkIfChanged() {
     var text = getTextContent(this);
     var origAmount = $(this).attr("data-orig-amount");
 
-    if (origAmount == text) { // unset contenteditable if amount has not changed
-        $(this).attr("contenteditable", "false");
-    } else if (!isNumber(text)) {
-        this.innerHTML = origAmount;
-        $(this).attr("contenteditable", "false");
+    if (origAmount == text || !isNumber(text)) { // unset contenteditable if amount has not changed or is not numeric
+        resetOriginal(this, origAmount);
     } else {
         this.innerHTML = parseFloat(text);
         var currentServings = $("#servings").val(); // remember the currentServing size to do conversions correctly
@@ -12145,6 +12149,13 @@ function checkIfChanged() {
             $(this).attr("data-an-servings", currentServings);
         }
     }
+}
+
+function resetOriginal(amountNode, origAmount){
+    amountNode.innerHTML = origAmount;
+    $(amountNode).attr("contenteditable", "false");
+    $(amountNode).removeAttr( "data-an-amount" );
+    $(amountNode).removeAttr( "data-an-servings" );
 }
 
 
