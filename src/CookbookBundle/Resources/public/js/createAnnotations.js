@@ -218,7 +218,7 @@ function takeNote() {
         }
     }
 };
-
+// SAVE ANNOTATIONS into DB via AJAX
 function saveAnnotations(){
 
     var annotation_id = $("#an-tools").attr("data-annotation-id");
@@ -230,7 +230,6 @@ function saveAnnotations(){
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
     //console.log(JSON.stringify(serializedInstructions));
-
 
     var hideCrossed = !($('#hide').text() == $hideText);
     var serializedIngredients = getSerializedChildren(ingredients);

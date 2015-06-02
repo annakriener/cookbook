@@ -11964,7 +11964,7 @@ function takeNote() {
         }
     }
 };
-
+// SAVE ANNOTATIONS into DB via AJAX
 function saveAnnotations(){
 
     var annotation_id = $("#an-tools").attr("data-annotation-id");
@@ -11976,7 +11976,6 @@ function saveAnnotations(){
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
     //console.log(JSON.stringify(serializedInstructions));
-
 
     var hideCrossed = !($('#hide').text() == $hideText);
     var serializedIngredients = getSerializedChildren(ingredients);
@@ -12152,9 +12151,8 @@ function checkIfChanged() {
 // RENDER ANNOTATIONS
 
 function renderInstructions(original, annoted, hide) {
-
     var parentNode = $('#preparation');
-    // first retrieve the instructions array from Database
+    // first retrieve the instructions arrays from Database
     var stepsOriginal = original.data; // TODO
     var stepsAnnoted = annoted.data; //TODO
 
@@ -12253,32 +12251,23 @@ function r_appendChild(parentNode, child, index, content){
 
 function renderIngredients(annoted) {
 
-    var parentNode = $('#ingredients');
-    // first retrieve the instructions array from Database
     var originalChildren = $('#ingredients').children("li");
-
-    var ingrAnnoted = annoted.data; //TODO
+    var ingrAnnoted = annoted.data;
 
     var li=0;
     for (; li < ingrAnnoted.length; ++li) { // use ingrAnnoted because there might be additional ingredients // TODO: make safe
         var originalP = $(originalChildren[li]).children("p")[0];
         var annotedP = ingrAnnoted[li].children[0];
-        var h = 0;
-
-        // nacher den inhalt von originalP ersetzen mit pNode
-
-        var pNode = $('<p />');
-        //liNode.append(pNode);
 
         var contentOriginal = originalP.childNodes;
         var contentAnnoted = annotedP.children;
         var an_index = 0;
 
-
+// 1. checkbox node
         if (contentAnnoted[0].check == "true") {
             contentOriginal[0].checked = true;
         }
-
+// 2. amount span
         if (contentAnnoted[1].children[0].type == "3") {
             var valueAmount = contentAnnoted[1].children[0].children[0].txt;
             contentOriginal[1].childNodes[0].innerHTML = valueAmount;
@@ -12288,12 +12277,10 @@ function renderIngredients(annoted) {
                 $(contentOriginal[1].childNodes[0]).attr("data-an-servings", contentAnnoted[1].children[0].servings);
                 $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
             }
-
-            // "servings": servingsData
         }
 
+// 3. ingredienttext (textnode)
         var originalTxt = contentOriginal[1].childNodes[1].nodeValue;
-
 
         if (contentAnnoted[1].children[1].type == "0" && parseInt(contentAnnoted[1].children[1].len) == originalTxt.length) {/*no annotations*/}
         else {
@@ -12301,10 +12288,8 @@ function renderIngredients(annoted) {
             var an_index = 1;
             var oC_index = 0;
             while (oC_index < originalTxt.length && an_index < contentAnnoted[1].children.length) {
-
                 oC_index = r_appendChild($(contentOriginal[1]), contentAnnoted[1].children[an_index], oC_index, originalTxt);
                 ++an_index;
-
             }
             $(contentOriginal[1].childNodes[1]).remove(); // remove the original textnode (without annotations)
         }
