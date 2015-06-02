@@ -4,3 +4,7 @@ function getTextContent(elementNode){ // innerText is not supported by Firefox (
     if(!hasInnerText){ return elementNode.textContent; }
     else { return elementNode.innerText; }
 }
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}

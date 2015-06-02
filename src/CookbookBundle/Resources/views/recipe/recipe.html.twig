@@ -3,7 +3,7 @@
 {% block main %}
 
     <main>
-        <div id="recipe_container" class="container cb-recipe" title="{{ recipe.id }}">
+        <div id="recipe_container" class="container cb-recipe" data-recipe-id="{{ recipe.id }}">
             <div class="row">
                 <div class="col-md-3">
                     <img class="cb-recipe-image" src="{{ asset('img/pancakes.jpg') }}" alt="pancakes" title="Pancakes">

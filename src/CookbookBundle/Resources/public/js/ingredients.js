@@ -2,35 +2,68 @@
  * INGREDIENTS - and their annotations
  */
 
+var $original_servingsize;
 // AMOUNT
 $( document ).ready(function() {
+
+    $original_servingsize = $("#servings").attr("data-orig-servings");
     $('span.cb-ingr-amount').on('mousedown', function(){
-        if (!$(this).is("[contenteditable='true']")){
-            // remember the original amount
-            var amount = getTextContent(this);
-            $(this).on('mouseup', function(){
-                $(this).attr("contenteditable","true");
-                $(this).focus();
-                $(this).on('blur', {arg1: amount}, checkIfChanged);
-            });
+        $(this).on('mouseup', function(){
+            $(this).attr("contenteditable","true");
+            $(this).focus();
+            $(this).on('blur', checkIfChanged);
+        });
+    });
+
+    $("#servings").on('change', function(){
+
+        var current = $("#servings").val();
+        var currentAmounts = $('span.cb-ingr-amount'); // list of the ingredients (their amounts)
+
+        for (var i=0; i < currentAmounts.length; ++i){
+            // first define values for computation for default case (no changes)
+            var initalServings = $original_servingsize;
+            var amount = $(currentAmounts[i]).attr("data-orig-amount");
+
+            // deal with changes made by user, if there are any
+            if ($(currentAmounts[i]).is("[contenteditable='true']")){ // if amount was changed, use the amount that was typed in by user
+                amount = $(currentAmounts[i]).attr("data-an-amount");;//""
+                if ($(currentAmounts[i]).attr("data-an-servings")){ // if the amount was changed with non-default servingsize, use servingsize at time user changed amount
+                    initalServings = $(currentAmounts[i]).attr("data-an-servings");
+                }
+            }
+            // compute and assign the new amount that shall be displayed
+            currentAmounts[i].innerHTML = computeNewAmount(amount, current, initalServings);
         }
     });
 });
 
+function computeNewAmount(amount, currentServings, originalServings){
+    var newAmount = parseFloat(amount)*parseFloat(currentServings);
+    newAmount = newAmount/parseFloat(originalServings);
+
+    //TODO: beautify output depending on size of newAmount zB 599 g --> 600 g, aber 5,9 bleibt 5,9
+    //TODO also deal with very small numbers - returning 0.0 won't make anybody happy
+    return parseFloat(newAmount.toFixed(2));
+}
 
 
-function checkIfChanged(e) {
+function checkIfChanged() {
     var text = getTextContent(this);
-    if (e.data.arg1 == text) { // unset contenteditable if amount has not changed
-        $(this).attr("contenteditable","false");
+    var origAmount = $(this).attr("data-orig-amount");
+
+    if (origAmount == text) { // unset contenteditable if amount has not changed
+        $(this).attr("contenteditable", "false");
     } else if (!isNumber(text)) {
-        this.innerHTML = e.data.arg1;
-        $(this).attr("contenteditable","false");
+        this.innerHTML = origAmount;
+        $(this).attr("contenteditable", "false");
     } else {
         this.innerHTML = parseFloat(text);
+        var currentServings = $("#servings").val(); // remember the currentServing size to do conversions correctly
+        $(this).attr("data-an-amount", parseFloat(text));
+        if (currentServings != $original_servingsize) {
+            $(this).attr("data-an-servings", currentServings);
+        }
     }
 }
 
-function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}

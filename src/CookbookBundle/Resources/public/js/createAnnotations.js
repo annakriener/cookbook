@@ -221,17 +221,19 @@ function takeNote() {
 
 function saveAnnotations(){
 
-    var annotation_id = $("#an-tools").attr("title");
-    var recipe_id = $("#recipe_container").attr("title");
+    var annotation_id = $("#an-tools").attr("data-annotation-id");
+    var recipe_id = $("#recipe_container").attr("data-recipeid");
     var user = 0; //TODO get current username or userid
     var instructions = $('#preparation').children("li");
+    var ingredients = $('#ingredients').children("li");
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
     //console.log(JSON.stringify(serializedInstructions));
 
+
     var hideCrossed = !($('#hide').text() == $hideText);
-    var serializedIngredients = [{"type":100}];// TODO fill array
+    var serializedIngredients = getSerializedChildren(ingredients);
 
     $.post('/saveAnnotations', {
         annotation_id: annotation_id,
@@ -241,7 +243,7 @@ function saveAnnotations(){
         ingredients : serializedIngredients,
         hideCrossed: hideCrossed
     }).done(function(data){ // data is the response
-        $("#an-tools").attr("title", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
+        $("#an-tools").attr("data-annotation-id", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
     });
 }
 
@@ -271,7 +273,7 @@ function r_serializeChild(child) {
     } else if (child.nodeType == 1) { // check if Element node to be on safe side
 
 
-        if (!child.childNodes.length){
+        if (!child.childNodes.length && !$(child).is("input")){
             return { type: -1};
         }
 
@@ -290,11 +292,17 @@ function r_serializeChild(child) {
         else if ($(child).is("[contenteditable='true']")){
             var serializedChildren = getSerializedChildren(child.childNodes);
             var classname = $(child).attr('class');
-            var jsonObj = { "type": 3, "children": serializedChildren, "class": classname };
+            var servingsData = $(child).attr('data-an-servings');
+            var jsonObj = { "type": 3, "children": serializedChildren, "class": classname, "servings": servingsData };
             return jsonObj;
 
         } else if ($(child).hasClass("cb-timer")) { // it's a timer! THIS IS ALSO A RECURSION BASE
-            var jsonObj = { "type": 4, "h": 0, "m": 5, "s": 0 }; // TODO: use actual values derived from nodeValue
+            var jsonObj = {"type": 4, "h": 0, "m": 5, "s": 0}; // TODO: use actual values derived from nodeValue
+            return jsonObj;
+
+        } else if ($(child).is("input")){//} && $(child).is(':checkbox')) { //$(child).is("input") && TODO check if first part is neccessary
+            var isChecked = child.checked;
+            var jsonObj = {"type": 7, "check": isChecked};
             return jsonObj;
 
         } else {

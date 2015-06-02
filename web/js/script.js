@@ -11967,17 +11967,19 @@ function takeNote() {
 
 function saveAnnotations(){
 
-    var annotation_id = $("#an-tools").attr("title");
-    var recipe_id = $("#recipe_container").attr("title");
+    var annotation_id = $("#an-tools").attr("data-annotation-id");
+    var recipe_id = $("#recipe_container").attr("data-recipeid");
     var user = 0; //TODO get current username or userid
     var instructions = $('#preparation').children("li");
+    var ingredients = $('#ingredients').children("li");
 
     // serializedInstructions is an array with JSON objects
     var serializedInstructions = getSerializedChildren(instructions);
     //console.log(JSON.stringify(serializedInstructions));
 
+
     var hideCrossed = !($('#hide').text() == $hideText);
-    var serializedIngredients = [{"type":100}];// TODO fill array
+    var serializedIngredients = getSerializedChildren(ingredients);
 
     $.post('/saveAnnotations', {
         annotation_id: annotation_id,
@@ -11987,7 +11989,7 @@ function saveAnnotations(){
         ingredients : serializedIngredients,
         hideCrossed: hideCrossed
     }).done(function(data){ // data is the response
-        $("#an-tools").attr("title", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
+        $("#an-tools").attr("data-annotation-id", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
     });
 }
 
@@ -12017,7 +12019,7 @@ function r_serializeChild(child) {
     } else if (child.nodeType == 1) { // check if Element node to be on safe side
 
 
-        if (!child.childNodes.length){
+        if (!child.childNodes.length && !$(child).is("input")){
             return { type: -1};
         }
 
@@ -12036,11 +12038,17 @@ function r_serializeChild(child) {
         else if ($(child).is("[contenteditable='true']")){
             var serializedChildren = getSerializedChildren(child.childNodes);
             var classname = $(child).attr('class');
-            var jsonObj = { "type": 3, "children": serializedChildren, "class": classname };
+            var servingsData = $(child).attr('data-an-servings');
+            var jsonObj = { "type": 3, "children": serializedChildren, "class": classname, "servings": servingsData };
             return jsonObj;
 
         } else if ($(child).hasClass("cb-timer")) { // it's a timer! THIS IS ALSO A RECURSION BASE
-            var jsonObj = { "type": 4, "h": 0, "m": 5, "s": 0 }; // TODO: use actual values derived from nodeValue
+            var jsonObj = {"type": 4, "h": 0, "m": 5, "s": 0}; // TODO: use actual values derived from nodeValue
+            return jsonObj;
+
+        } else if ($(child).is("input")){//} && $(child).is(':checkbox')) { //$(child).is("input") && TODO check if first part is neccessary
+            var isChecked = child.checked;
+            var jsonObj = {"type": 7, "check": isChecked};
             return jsonObj;
 
         } else {
@@ -12075,38 +12083,72 @@ function getSerializedChildren(children) {
  * INGREDIENTS - and their annotations
  */
 
+var $original_servingsize;
 // AMOUNT
 $( document ).ready(function() {
+
+    $original_servingsize = $("#servings").attr("data-orig-servings");
     $('span.cb-ingr-amount').on('mousedown', function(){
-        if (!$(this).is("[contenteditable='true']")){
-            // remember the original amount
-            var amount = getTextContent(this);
-            $(this).on('mouseup', function(){
-                $(this).attr("contenteditable","true");
-                $(this).focus();
-                $(this).on('blur', {arg1: amount}, checkIfChanged);
-            });
+        $(this).on('mouseup', function(){
+            $(this).attr("contenteditable","true");
+            $(this).focus();
+            $(this).on('blur', checkIfChanged);
+        });
+    });
+
+    $("#servings").on('change', function(){
+
+        var current = $("#servings").val();
+        var currentAmounts = $('span.cb-ingr-amount'); // list of the ingredients (their amounts)
+
+        for (var i=0; i < currentAmounts.length; ++i){
+            // first define values for computation for default case (no changes)
+            var initalServings = $original_servingsize;
+            var amount = $(currentAmounts[i]).attr("data-orig-amount");
+
+            // deal with changes made by user, if there are any
+            if ($(currentAmounts[i]).is("[contenteditable='true']")){ // if amount was changed, use the amount that was typed in by user
+                amount = $(currentAmounts[i]).attr("data-an-amount");;//""
+                if ($(currentAmounts[i]).attr("data-an-servings")){ // if the amount was changed with non-default servingsize, use servingsize at time user changed amount
+                    initalServings = $(currentAmounts[i]).attr("data-an-servings");
+                }
+            }
+            // compute and assign the new amount that shall be displayed
+            currentAmounts[i].innerHTML = computeNewAmount(amount, current, initalServings);
         }
     });
 });
 
+function computeNewAmount(amount, currentServings, originalServings){
+    var newAmount = parseFloat(amount)*parseFloat(currentServings);
+    newAmount = newAmount/parseFloat(originalServings);
+
+    //TODO: beautify output depending on size of newAmount zB 599 g --> 600 g, aber 5,9 bleibt 5,9
+    //TODO also deal with very small numbers - returning 0.0 won't make anybody happy
+    return parseFloat(newAmount.toFixed(2));
+}
 
 
-function checkIfChanged(e) {
+function checkIfChanged() {
     var text = getTextContent(this);
-    if (e.data.arg1 == text) { // unset contenteditable if amount has not changed
-        $(this).attr("contenteditable","false");
+    var origAmount = $(this).attr("data-orig-amount");
+
+    if (origAmount == text) { // unset contenteditable if amount has not changed
+        $(this).attr("contenteditable", "false");
     } else if (!isNumber(text)) {
-        this.innerHTML = e.data.arg1;
-        $(this).attr("contenteditable","false");
+        this.innerHTML = origAmount;
+        $(this).attr("contenteditable", "false");
     } else {
         this.innerHTML = parseFloat(text);
+        var currentServings = $("#servings").val(); // remember the currentServing size to do conversions correctly
+        $(this).attr("data-an-amount", parseFloat(text));
+        if (currentServings != $original_servingsize) {
+            $(this).attr("data-an-servings", currentServings);
+        }
     }
 }
 
-function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
+
 // RENDER ANNOTATIONS
 
 function renderInstructions(original, annoted, hide) {
@@ -12115,8 +12157,6 @@ function renderInstructions(original, annoted, hide) {
     // first retrieve the instructions array from Database
     var stepsOriginal = original.data; // TODO
     var stepsAnnoted = annoted.data; //TODO
-
-    var orderedList = $('#preparation');
 
     if (stepsOriginal.length == stepsAnnoted.length) {
         for (var step = 0; step < stepsOriginal.length; ++step) {
@@ -12199,16 +12239,85 @@ function r_appendChild(parentNode, child, index, content){
             var span = $('<span />').addClass("cb-timer").html(child.h + ":" + child.m + ":" + child.s);
             parentNode.append(span);
             return false;
+        case 7: //checkbox
+            var checkbox = $('<input />').attr("type", "checkbox").addClass("cb-ingr-checkbox");
+            if (child.check != "0") {
+                $(checkbox).prop("checked", true);
+            }
+            parentNode.append(checkbox);
         default:
             return index;
     }
 }
 
 
+function renderIngredients(annoted) {
+
+    var parentNode = $('#ingredients');
+    // first retrieve the instructions array from Database
+    var originalChildren = $('#ingredients').children("li");
+
+    var ingrAnnoted = annoted.data; //TODO
+
+    var li=0;
+    for (; li < ingrAnnoted.length; ++li) { // use ingrAnnoted because there might be additional ingredients // TODO: make safe
+        var originalP = $(originalChildren[li]).children("p")[0];
+        var annotedP = ingrAnnoted[li].children[0];
+        var h = 0;
+
+        // nacher den inhalt von originalP ersetzen mit pNode
+
+        var pNode = $('<p />');
+        //liNode.append(pNode);
+
+        var contentOriginal = originalP.childNodes;
+        var contentAnnoted = annotedP.children;
+        var an_index = 0;
+
+
+        if (contentAnnoted[0].check == "true") {
+            contentOriginal[0].checked = true;
+        }
+
+        if (contentAnnoted[1].children[0].type == "3") {
+            var valueAmount = contentAnnoted[1].children[0].children[0].txt;
+            contentOriginal[1].childNodes[0].innerHTML = valueAmount;
+            $(contentOriginal[1].childNodes[0]).attr("contenteditable", "true");
+
+            if (contentAnnoted[1].children[0].servings){
+                $(contentOriginal[1].childNodes[0]).attr("data-an-servings", contentAnnoted[1].children[0].servings);
+                $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
+            }
+
+            // "servings": servingsData
+        }
+
+        var originalTxt = contentOriginal[1].childNodes[1].nodeValue;
+
+
+        if (contentAnnoted[1].children[1].type == "0" && parseInt(contentAnnoted[1].children[1].len) == originalTxt.length) {/*no annotations*/}
+        else {
+
+            var an_index = 1;
+            var oC_index = 0;
+            while (oC_index < originalTxt.length && an_index < contentAnnoted[1].children.length) {
+
+                oC_index = r_appendChild($(contentOriginal[1]), contentAnnoted[1].children[an_index], oC_index, originalTxt);
+                ++an_index;
+
+            }
+            $(contentOriginal[1].childNodes[1]).remove(); // remove the original textnode (without annotations)
+        }
+    }
+}
 
 function getTextContent(elementNode){ // innerText is not supported by Firefox (uses textContent instead)
     var hasInnerText = (elementNode.innerText != undefined) ? true : false;
 
     if(!hasInnerText){ return elementNode.textContent; }
     else { return elementNode.innerText; }
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 }

@@ -1,24 +1,24 @@
 {% block recipeinfo %}
     <section>
-        {% if recipe.author %}
+        {%- if recipe.author -%}
             <p>
-                {{ recipe.author }}
+                {{- recipe.author -}}
             </p>
-        {% endif %}
+        {%- endif -%}
 
         <h1>{{ recipe.title }}</h1>
-        <time>Ready in {{ duration }}</time>
-        <p>serves {{ recipe.servings }}</p>
+        <time>Ready in {{ duration }}
+        <p>serves </time><input type="number" id="servings" data-orig-servings="{{ recipe.servings }}" value="{{ recipe.servings }}" name="quantity" min="1" max="100"></p>
 
         <p>Category: {{ recipe.category.name }}</p>
-        {% if recipe.tags|length > 0 %}
+        {%- if recipe.tags|length > 0 -%}
             <p>Tags:<br>
-            {% for tag in recipe.tags %}
-                {% if tag.classification %}
-                    {{ tag.classification.name }}:
-                {% endif %}
-                {{ tag.tag.name }}
-            {% endfor %}
+            {%- for tag in recipe.tags -%}
+                {%- if tag.classification -%}
+                    {{- tag.classification.name -}}:
+                {% endif -%}
+                {{- tag.tag.name -}}
+            {%- endfor -%}
             </p>
         {% endif %}
 

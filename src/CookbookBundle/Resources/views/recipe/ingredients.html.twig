@@ -1,31 +1,36 @@
 {% block ingredients %}
     <h2>Ingredients</h2>
-    <ul id="ingredients">
-        {% spaceless %}
-        {% for ingr in ingredients %}
-            {% set amount = "  " %}
-            {% if ingr.amount %}
-                {% set amount = ingr.amount %}
-            {% endif %}
 
-            {% set measurement = "" %}
-            {% if ingr.measurement %}
-                {% set measurement = " " ~ ingr.measurement.name %}
-            {% endif %}
-
-            {% set ingredient = " " ~ ingr.ingredient.name %}
-
-
-            {%- if annotations -%}
-            {%- else -%}
+        <ul id="ingredients">
+        {%- for ingr in ingredients -%}
+            {%- set amount = "  " -%}
+            {%- if ingr.amount -%}
+                {%- set amount = ingr.amount -%}
             {%- endif -%}
-            <li>
-                <input type="checkbox" class="cb-ingr-checkbox"/>
-                <span class="cb-ingr"><span class="cb-ingr-amount">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
-            </li>
 
-        {% endfor %}
-        {% endspaceless %}
+            {%- set measurement = "" -%}
+            {%- if ingr.measurement -%}
+                {%- set measurement = " " ~ ingr.measurement.name -%}
+            {%- endif -%}
+
+            {%- set ingredient = " " ~ ingr.ingredient.name -%}
+            {%- spaceless -%}
+            <li><p>
+                    <input type="checkbox" class="cb-ingr-checkbox"/>
+                    <span class="cb-ingr"><span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
+                </p>
+            </li>{%- endspaceless -%}
+        {%- endfor -%}
     </ul>
+
+    {%- if annotations -%}
+        {#- -#}
+
+        <script>{#- -#}
+            {% set arrayIngreds = recipe.ingredients %}
+            renderIngredients({"data": {{ annotations.ingredients|json_encode|raw }} });
+            {#- -#}
+        </script>
+        {%- endif -%}
     <button id="createShoppingList">Add to Shopping List</button>
 {% endblock %}
