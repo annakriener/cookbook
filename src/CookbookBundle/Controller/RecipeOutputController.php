@@ -15,7 +15,6 @@ class RecipeOutputController extends Controller
     public function getRecipesAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $recipes = $em->getRepository('CookbookBundle:Recipe')->findAllOrderedByTitle();
 
         return $this->render('CookbookBundle:default:base.html.twig', array(
@@ -32,8 +31,6 @@ class RecipeOutputController extends Controller
         $duration = date_format($duration, 'H:i:s');
         $ingredients = $recipe->getIngredients();
 
-        $this->addToShoppingListAction();
-
         return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
             'recipe' => $recipe,
             'duration' => $duration,
@@ -42,28 +39,32 @@ class RecipeOutputController extends Controller
     }
 
     // add ingredients of recipes to user-shopping-list
-    private function addToShoppingListAction() {
-        $request = $this->getRequest();
+    /**
+     * @Route("/recipe/{id}/add/to/shoppinglist", name="recipe_add_to_shopping_list")
+     */
+    public function addToShoppingListAction($id, Request $request)
+    {
         $user = $this->getUser();
 
         if ($user) {
-            $id = $user->getId();
+            $user_id = $user->getId();
 
             $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository('CookbookBundle:User')->find($id);
+            $user = $em->getRepository('CookbookBundle:User')->find($user_id);
 
             $shoppingList = $user->getShoppingList();
 
             if ($request->getMethod() == 'POST') {
-                    $addToShoppingListFormData = $request->request->all();
+                $addToShoppingListFormData = $request->request->all();
 
-                    foreach ($addToShoppingListFormData as $addToShoppingListItem) {
-                        $shoppingList[] = $addToShoppingListItem;
-                    }
-
-                    $user->setShoppingList($shoppingList);
-                    $em->flush();
+                foreach ($addToShoppingListFormData as $addToShoppingListItem) {
+                    $shoppingList[] = $addToShoppingListItem;
                 }
+
+                $user->setShoppingList($shoppingList);
+                $em->flush();
             }
         }
+        return $this->redirect('/recipe/' . $id);
+    }
 }
