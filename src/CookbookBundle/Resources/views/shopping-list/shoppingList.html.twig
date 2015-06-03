@@ -1,5 +1,4 @@
 {% extends 'CookbookBundle:default:base.html.twig' %}
-{% form_theme addShoppingListItemForm 'bootstrap_3_layout.html.twig' %}
 
 {% block main %}
     <main>
@@ -8,17 +7,15 @@
                 <div class="col-md-6">
                     <h1>My Shopping List</h1>
 
-                    {{ form_start(addShoppingListItemForm, {'attr': {'novalidate': 'novalidate'}}) }}
-                        {{ form_errors(addShoppingListItemForm) }}
-                        {{ form_row(addShoppingListItemForm.item) }}
-                    {{ form_end(addShoppingListItemForm) }}
-
                     <button class="btn btn-default" id="cb-sl-hideUserShoppingListItem">Hide checked items</button>
 
                     {{ form_start(deleteShoppingListItemForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-sl-deleteShoppingListItemForm'}}) }}
                         {{ form_errors(deleteShoppingListItemForm) }}
-                        {{ form_row(deleteShoppingListItemForm.deleteItem, {'attr': {'class': 'btn btn-default'}}) }}
+
                         {{ form_row(deleteShoppingListItemForm.deleteAll, {'attr': {'class': 'btn btn-default'}}) }}
+                        {{ form_row(deleteShoppingListItemForm.deleteItem, {'attr': {'class': 'btn btn-default'}}) }}
+
+                        <div class="cb-clear-both"></div>
 
                         {% if deleteShoppingListItemForm.items is not empty %}
                             <ul class="cb-sl-userShoppingList">
@@ -30,8 +27,23 @@
                                     <div class="sillyDiv"></div>
                                 {% endfor %}
                             </ul>
+                        {% else %}
+                            <p>No items.</p>
                         {% endif %}
                     {{ form_end(deleteShoppingListItemForm) }}
+
+                    {{ form_start(addShoppingListItemForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-sl-addShoppingListItemForm'}}) }}
+                        {{ form_errors(addShoppingListItemForm) }}
+
+                        <div class="input-group">
+                            {{ form_label(addShoppingListItemForm.item) }}
+                            {{ form_errors(addShoppingListItemForm.item) }}
+                            {{ form_widget(addShoppingListItemForm.item, {'attr': {'class': 'form-control'}}) }}
+                            <span class="input-group-btn">
+                                {{ form_widget(addShoppingListItemForm.save, {'attr': {'class': 'btn btn-default'}}) }}
+                            </span>
+                        </div>
+                    {{ form_end(addShoppingListItemForm) }}
                 </div>
 
                 <!-- Confirmation modal delete all -->

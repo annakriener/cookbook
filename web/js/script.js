@@ -11761,14 +11761,21 @@ $(document).ready(function () {
 
     // make it able to click on the whole item to check it (and cross it out if checked)
     userShoppingListItem.on("click", function (event) {
-        var checkbox = $(this).children("input:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
-        checkbox.prop('checked', !checkbox.prop('checked'));
+        if(event.target.nodeName === "LABEL") {
+            event.preventDefault();
+        }
 
-        var itemText = $(this).children("label.cb-sl-userShoppingListItemText"); // label-element
-        itemText.toggleClass("cb-sl-userShoppingListItemTextCrossed ");
+        if(event.target.nodeName != "INPUT") {
+            var checkbox = $(this).children("input:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
+            checkbox.prop('checked', !checkbox.prop('checked'));
+        }
+
+        var label = $(this).children("label.cb-sl-userShoppingListItemText"); // label-element
+        label.toggleClass("cb-sl-userShoppingListItemTextCrossed ");
 
         hideAndShowCheckedUserShoppingListItems();
     });
+
 
     var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
 
@@ -11805,9 +11812,6 @@ $(document).ready(function () {
         event.preventDefault();
         checkAndUnCheckShoppingListItems();
     });
-
-
-
 
     var addItemsToShoppingListForm = $('form#cb-sl-addItemsToShoppingListForm');
     var addItemsToShoppingListButton = $('button#cb-sl-addItemsToShoppingListButton');

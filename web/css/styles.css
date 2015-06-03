@@ -6595,18 +6595,57 @@ button.close {
   margin-bottom: 60px;
 }
 
+/*
+* HIDE CHECKED ITEMS
+*/
+button#cb-sl-hideUserShoppingListItem {
+  float: left !important;
+}
+.cb-sl-userShoppingListItemHidden {
+  display: none;
+}
+/*
+* DELETE BUTTONS
+*/
+button#deleteShoppingListItem_deleteAll,
+button#deleteShoppingListItem_deleteItem {
+  float: right;
+}
+button#deleteShoppingListItem_deleteItem {
+  margin-right: 10px;
+}
+/*
+* SHOPPING LIST
+*/
 ul.cb-sl-userShoppingList {
   list-style: none;
-  margin: 20px 0 20px 0;
+  margin: 20px 0 0 0;
   padding: 0;
 }
 li.cb-sl-userShoppingListItem {
   width: 100%;
-  margin-top: 10px;
-  padding: 10px 15px;
+  margin: 10px 0;
+  padding: 10px 15px 10px 15px;
   border: 1px solid grey;
   border-radius: 4px;
   background-color: lightgoldenrodyellow;
+  height: auto;
+  vertical-align: middle;
+  font-size: 0;
+}
+input.cb-sl-userShoppingListItemCheckbox {
+  margin: 0 5px 1px 0;
+  display: inline-block;
+  font-size: initial;
+  vertical-align: middle;
+  font-weight: normal;
+}
+label.cb-sl-userShoppingListItemText {
+  margin: 0;
+  width: 95%;
+  display: inline-block;
+  font-size: initial;
+  vertical-align: middle;
 }
 /*
 li.cb-sl-userShoppingListItem:hover,
@@ -6615,23 +6654,22 @@ label.cb-sl-userShoppingListItemText:hover {
   cursor: pointer;
 }
 */
-input.cb-sl-userShoppingListItemCheckbox {
-  width: 3%;
-  margin: 0;
-  position: relative;
-  vertical-align: middle;
+/*
+* ADD SHOPPING LIST ITEM FORM
+*/
+form#cb-sl-addShoppingListItemForm {
+  margin: 0 0 20px 0;
 }
-label.cb-sl-userShoppingListItemText {
-  width: 96%;
-  margin: 0;
-  vertical-align: middle;
+input#addShoppingListItem_item,
+button#addShoppingListItem_save {
+  min-height: 44px;
 }
+/*
+* CHECKED ITEM STYLE
+*/
 .cb-sl-userShoppingListItemTextCrossed {
   text-decoration: line-through;
   color: grey;
-}
-.cb-sl-userShoppingListItemHidden {
-  display: none;
 }
 
 hr {
@@ -6682,6 +6720,10 @@ header {
   background-color: #ffd700;
   height: 60px;
   padding: 15px;
+}
+/* ALIGNMENT & FLOATING */
+.cb-clear-both {
+  clear: both;
 }
 
 #cb-um-user-dropdown {
