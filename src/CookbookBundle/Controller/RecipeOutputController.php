@@ -58,6 +58,12 @@ class RecipeOutputController extends Controller
                 $addToShoppingListFormData = $request->request->all();
 
                 foreach ($addToShoppingListFormData as $addToShoppingListItem) {
+                    // prepared to store different data structure
+                    //$shoppingListEntry = array();
+                    //$shoppingListEntry[] = array("type" => 7, "checked" => false);
+                    //$shoppingListEntry[] = array("type" => 1, "txt" => $addToShoppingListItem);
+                    //$shoppingList[] = $shoppingListEntry;
+
                     $shoppingList[] = $addToShoppingListItem;
                 }
 

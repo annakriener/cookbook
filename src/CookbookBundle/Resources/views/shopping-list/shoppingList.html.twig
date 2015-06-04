@@ -24,7 +24,6 @@
                                         {{ form_widget(item,  { 'attr': {'class': 'cb-sl-userShoppingListItemCheckbox'}}) }}
                                         {{ form_label(item, null, { 'label_attr': {'class': 'cb-sl-userShoppingListItemText'}}) }}
                                     </li>
-                                    <div class="sillyDiv"></div>
                                 {% endfor %}
                             </ul>
                         {% else %}
@@ -46,24 +45,6 @@
                     {{ form_end(addShoppingListItemForm) }}
                 </div>
 
-                <!-- Confirmation modal delete all -->
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="cb-sl-confirmDeleteAllItems">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Confirm</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>Do you really want to delete all items?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">No!</button>
-                                <button type="button" class="btn btn-primary" id="cb-sl-yesDeleteAllItemsButton">Yes, delete all!</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>

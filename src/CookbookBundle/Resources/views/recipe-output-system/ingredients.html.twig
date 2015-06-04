@@ -23,7 +23,8 @@
                         {% set ingredient = "" %}
                     {% endif %}
 
-                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}' name="addToShoppingListItem{{ loop.index }}" class="cb-sl-addToShoppingListItemCheckbox">
+                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}'
+                           name="addToShoppingListItem{{ loop.index }}" class="cb-sl-addToShoppingListItemCheckbox">
                     <span class="cb-sl-addToShoppingListItem">
                         <span>{{ amount }}</span>
                         <span>{{ measurement }}</span>
@@ -37,27 +38,40 @@
         </button>
     </form>
 
-    <button class="btn btn-default" id="cb-sl-checkAllShoppingListItems"><span class="glyphicon glyphicon-check"></span>
-        Check all
+    <button class="btn btn-default" id="cb-sl-checkAllShoppingListItemsButton">
+        <span class="glyphicon glyphicon-check"></span> Check all
     </button>
 
     <!-- Confirmation modal add items -->
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-         aria-hidden="true" id="cb-sl-confirmAddItemsToShoppingList">
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="cb-sl-confirmAddItemsToShoppingListModal"
+         aria-hidden="true" id="cb-sl-confirmAddItemsToShoppingListModal">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="cb-sl-confirmAddItemsToShoppingListModalTitle">Confirm</h4>
                 </div>
                 <div class="modal-body">
                     <p>Do you really want to add these items to your shopping list?</p>
+                    <div id="cb-sl-itemsAddToShoppingList"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">No, cancel!</button>
                     <button type="button" class="btn btn-primary" id="cb-sl-yesAddItemsToShoppingListButton">Yes, add!
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Check at least one item modal -->
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="cb-sl-checkAtLeastOneItemModal"
+         aria-hidden="true" id="cb-sl-checkAtLeastOneItemModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Please check at least one item!</p>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>

@@ -6583,6 +6583,7 @@ button.close {
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
+
 .cb-recipe {
   margin-top: 60px;
   margin-bottom: 60px;
@@ -6635,16 +6636,16 @@ li.cb-sl-userShoppingListItem {
 }
 input.cb-sl-userShoppingListItemCheckbox {
   margin: 0 5px 1px 0;
+  font-size: 16px;
   display: inline-block;
-  font-size: initial;
   vertical-align: middle;
   font-weight: normal;
 }
 label.cb-sl-userShoppingListItemText {
   margin: 0;
   width: 95%;
+  font-size: 16px;
   display: inline-block;
-  font-size: initial;
   vertical-align: middle;
 }
 /*
@@ -6672,6 +6673,10 @@ button#addShoppingListItem_save {
   color: grey;
 }
 
+/* GLOBAL DOCUMENT STYLES */
+html {
+  font-size: 16px;
+}
 hr {
   margin: 0;
 }

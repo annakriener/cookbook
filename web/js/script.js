@@ -11758,14 +11758,15 @@ $(document).ready(function () {
      * SHOPPING LIST
      */
     var userShoppingListItem = $('li.cb-sl-userShoppingListItem'); //li-element
+    var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
 
     // make it able to click on the whole item to check it (and cross it out if checked)
     userShoppingListItem.on("click", function (event) {
-        if(event.target.nodeName === "LABEL") {
+        if (event.target.nodeName === "LABEL") {
             event.preventDefault();
         }
 
-        if(event.target.nodeName != "INPUT") {
+        if (event.target.nodeName != "INPUT") {
             var checkbox = $(this).children("input:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
             checkbox.prop('checked', !checkbox.prop('checked'));
         }
@@ -11776,10 +11777,7 @@ $(document).ready(function () {
         hideAndShowCheckedUserShoppingListItems();
     });
 
-
-    var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
-
-    // hide and show all checked items
+    // hide and show all checked items and toggle button-text
     buttonHideUserShoppingListItem.on("click", function (event) {
         event.preventDefault();
         $(this).toggleClass("cb-sl-hideCheckedItemsActive active");
@@ -11802,70 +11800,60 @@ $(document).ready(function () {
         }
     }
 
+
     /**
-     * RECIPE DETAIL
+     * RECIPE DETAIL (ADD INGREDIENTS FROM RECIPE TO SHOPPING LIST)
      */
-    var buttonCheckAllShoppingListItems = $('#cb-sl-checkAllShoppingListItems'); //button-element
+    var buttonCheckAllShoppingListItemsButton = $('button#cb-sl-checkAllShoppingListItemsButton'); //button-element
+    var addItemsToShoppingListForm = $('form#cb-sl-addItemsToShoppingListForm'); //form-element
+    var addItemsToShoppingListButton = $('button#cb-sl-addItemsToShoppingListButton'); //button-element
+    var confirmAddItemsToShoppingListModal = $('#cb-sl-confirmAddItemsToShoppingListModal'); //div-element (modal)
+    var checkAtLeastOneItemModal = $('#cb-sl-checkAtLeastOneItemModal'); //div-element (modal)
 
     // check all ingredients with button-click
-    buttonCheckAllShoppingListItems.on("click", function(event) {
+    buttonCheckAllShoppingListItemsButton.on("click", function (event) {
         event.preventDefault();
         checkAndUnCheckShoppingListItems();
     });
 
-    var addItemsToShoppingListForm = $('form#cb-sl-addItemsToShoppingListForm');
-    var addItemsToShoppingListButton = $('button#cb-sl-addItemsToShoppingListButton');
-    var confirmAddItemsToShoppingListModal = $('#cb-sl-confirmAddItemsToShoppingList');
-
-    addItemsToShoppingListButton.on("click", function(event) {
+    // confirm adding to shopping list
+    addItemsToShoppingListButton.on("click", function (event) {
         event.preventDefault();
 
         var checkedCheckboxesAddToShoppingListItem = $('.cb-sl-addToShoppingListItemCheckbox:checked');
         var checkedLength = checkedCheckboxesAddToShoppingListItem.length;
 
-        if(checkedLength > 0) {
+        if (checkedLength > 0) {
             confirmAddItemsToShoppingListModal.modal('toggle');
         } else {
-            alert("check at least one ingredient");
+            checkAtLeastOneItemModal.modal('toggle');
         }
     });
 
-    $('button#cb-sl-yesAddItemsToShoppingListButton').on("click", function() {
+    // submit form if confirmed
+    $('button#cb-sl-yesAddItemsToShoppingListButton').on("click", function () {
         addItemsToShoppingListForm.submit();
-
     });
 
+    // add checked items to confirmation-modal
     confirmAddItemsToShoppingListModal.on('show.bs.modal', function (event) {
-
-        /*
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var amount = button.data('whatever') // Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        */
         var modal = $(this);
-        var checkedItems = $('.cb-sl-addToShoppingListItemCheckbox:checked').next();
+        var checkedItems = $('.cb-sl-addToShoppingListItemCheckbox:checked').next(); // span-elements (with span-elements)
+        var itemsAddToShoppingList = "<ul>";
 
-        jQuery.each(checkedItems, function($index, $item) {
-            //modal.find('.modal-body').append($item);
+        checkedItems.each(function (index) {
+            var itemAddToShoppingListParts = $(this).children(); // span-elements (amount, measurement, ingredient)
+            itemsAddToShoppingList += "<li>";
+            itemAddToShoppingListParts.each(function (index) {
+                itemsAddToShoppingList += $(this).text() + " ";
+            });
+            itemsAddToShoppingList += "</li>";
         });
-
+        itemsAddToShoppingList += "<ul>";
+        modal.find("div#cb-sl-itemsAddToShoppingList").html(itemsAddToShoppingList);  // append list of checked items to modal
     });
 
-/*
-    var deleteShoppingListItemForm = $('form#cb-sl-deleteShoppingListItemForm');
-    var deleteButton = $('button#deleteShoppingListItem_deleteAll');
-    deleteButton.on("click", function(event) {
-            event.preventDefault();
-            $('#cb-sl-confirmDeleteAllItems').modal('toggle');
-    });
-
-    $('button#cb-sl-yesDeleteAllItemsButton').on("click", function() {
-        deleteShoppingListItemForm.submit();
-        alert("TEST");
-    });
-*/
-
+    // check and un-check all ingredients of a recipe
     function checkAndUnCheckShoppingListItems() {
         var checkboxesAddToShoppingListItem = $('.cb-sl-addToShoppingListItemCheckbox');
         var checkedCheckboxesAddToShoppingListItem = $('.cb-sl-addToShoppingListItemCheckbox:checked');
