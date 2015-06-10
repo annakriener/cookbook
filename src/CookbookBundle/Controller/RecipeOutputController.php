@@ -5,6 +5,7 @@ namespace CookbookBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use CookbookBundle\Form\Type\SearchType;
 
 class RecipeOutputController extends Controller
 {
@@ -17,8 +18,14 @@ class RecipeOutputController extends Controller
         $em = $this->getDoctrine()->getManager();
         $recipes = $em->getRepository('CookbookBundle:Recipe')->findAllOrderedByTitle();
 
+        $searchForm = $this->createForm(new SearchType(), null, array(
+            'action' => $this->generateUrl('search'),
+            'method' => 'POST'
+        ));
+
         return $this->render('CookbookBundle:default:base.html.twig', array(
-            'recipes' => $recipes));
+            'recipes' => $recipes,
+            'searchForm' => $searchForm->createView()));
     }
 
     /**
