@@ -10,38 +10,41 @@
                     <button class="btn btn-default" id="cb-sl-hideUserShoppingListItem">Hide checked items</button>
 
                     {{ form_start(deleteShoppingListItemForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-sl-deleteShoppingListItemForm'}}) }}
-                        {{ form_errors(deleteShoppingListItemForm) }}
+                    {{ form_errors(deleteShoppingListItemForm) }}
 
-                        {{ form_row(deleteShoppingListItemForm.deleteAll, {'attr': {'class': 'btn btn-default'}}) }}
-                        {{ form_row(deleteShoppingListItemForm.deleteItem, {'attr': {'class': 'btn btn-default'}}) }}
+                    {{ form_row(deleteShoppingListItemForm.deleteAll, {'attr': {'class': 'btn btn-default'}}) }}
+                    {{ form_row(deleteShoppingListItemForm.deleteItem, {'attr': {'class': 'btn btn-default'}}) }}
 
-                        <div class="cb-clear-both"></div>
+                    <div class="cb-clear-both"></div>
 
-                        {% if deleteShoppingListItemForm.items is not empty %}
-                            <ul class="cb-sl-userShoppingList">
-                                {% for item in deleteShoppingListItemForm.items %}
+                    {% if deleteShoppingListItemForm.items is not empty %}
+                        <ul class="cb-sl-userShoppingList">
+                            {% for item in deleteShoppingListItemForm.items %}
+                                <div class="cb-sl-userShoppingListItemContainer">
                                     <li class="cb-sl-userShoppingListItem">
                                         {{ form_widget(item,  { 'attr': {'class': 'cb-sl-userShoppingListItemCheckbox'}}) }}
                                         {{ form_label(item, null, { 'label_attr': {'class': 'cb-sl-userShoppingListItemText'}}) }}
                                     </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p>No items.</p>
-                        {% endif %}
+                                    <button class="btn btn-default cb-sl-editUserShoppingListItem" title="Edit Item"><span class="glyphicon glyphicon-edit"></span></button>
+                                </div>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No items.</p>
+                    {% endif %}
                     {{ form_end(deleteShoppingListItemForm) }}
 
                     {{ form_start(addShoppingListItemForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-sl-addShoppingListItemForm'}}) }}
-                        {{ form_errors(addShoppingListItemForm) }}
+                    {{ form_errors(addShoppingListItemForm) }}
 
-                        <div class="input-group">
-                            {{ form_label(addShoppingListItemForm.item) }}
-                            {{ form_errors(addShoppingListItemForm.item) }}
-                            {{ form_widget(addShoppingListItemForm.item, {'attr': {'class': 'form-control'}}) }}
-                            <span class="input-group-btn">
+                    <div class="input-group">
+                        {{ form_label(addShoppingListItemForm.item) }}
+                        {{ form_errors(addShoppingListItemForm.item) }}
+                        {{ form_widget(addShoppingListItemForm.item, {'attr': {'class': 'form-control'}}) }}
+                        <span class="input-group-btn">
                                 {{ form_widget(addShoppingListItemForm.save, {'attr': {'class': 'btn btn-default'}}) }}
                             </span>
-                        </div>
+                    </div>
                     {{ form_end(addShoppingListItemForm) }}
                 </div>
 

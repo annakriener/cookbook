@@ -6623,9 +6623,14 @@ ul.cb-sl-userShoppingList {
   margin: 20px 0 0 0;
   padding: 0;
 }
-li.cb-sl-userShoppingListItem {
-  width: 100%;
+div.cb-sl-userShoppingListItemContainer {
+  height: 44px;
   margin: 10px 0;
+}
+li.cb-sl-userShoppingListItem {
+  float: left;
+  width: 90%;
+  margin: 0 10px 0 0;
   padding: 10px 15px 10px 15px;
   border: 1px solid grey;
   border-radius: 4px;
@@ -6647,6 +6652,11 @@ label.cb-sl-userShoppingListItemText {
   font-size: 16px;
   display: inline-block;
   vertical-align: middle;
+}
+button.cb-sl-editUserShoppingListItem {
+  height: 44px;
+  padding-top: 10px;
+  font-size: 17px;
 }
 li.cb-sl-userShoppingListItem:hover,
 input.cb-sl-userShoppingListItemCheckbox:hover,

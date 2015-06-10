@@ -45,7 +45,7 @@ class ShoppingListController extends Controller
     {
         $addShoppingListItemForm = $this->createForm(new AddShoppingListItemType());
 
-        if ($request->getMethod() == "POST") {
+        if ($request->isMethod('POST')) {
 
             if ($request->request->has("addShoppingListItem")) {
                 $addShoppingListItemForm->handleRequest($request);
@@ -58,20 +58,18 @@ class ShoppingListController extends Controller
 
                     $shoppingList = $user->getShoppingList();
 
-                    // VERSION 2
                     $shoppingListEntry = array();
                     $shoppingListEntry[] = array("type" => 7, "checked" => false);
                     $shoppingListEntry[] = array("type" => 1, "txt" => $data["item"]);
                     $shoppingList[] = $shoppingListEntry;
 
-                    // VERSION 1
-                    //$shoppingList[] = $data['item'];
-
                     $user->setShoppingList($shoppingList);
                     $em->flush();
+
                 }
             }
         }
+
         return $this->redirectToRoute('shopping_list');
     }
 
@@ -133,6 +131,29 @@ class ShoppingListController extends Controller
             $isChecked = filter_var($request->get('isChecked'), FILTER_VALIDATE_BOOLEAN);
 
             $shoppingList[$index][0]["checked"] = $isChecked;
+
+            $user->setShoppingList($shoppingList);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('shopping_list');
+    }
+
+
+    /**
+     * @Route("/shoppinglist/edit", name="shopping_list_item_edit")
+     */
+    public function editShoppingListItemAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('CookbookBundle:User')->find($this->getUser()->getId());
+        $shoppingList = $user->getShoppingList();
+
+        if($request->isXmlHttpRequest()) {
+
+            $index = $request->get('index');
+            $newValue = $request->get('newValue');
+
+            $shoppingList[$index][1]["txt"] = $newValue;
 
             $user->setShoppingList($shoppingList);
             $em->flush();
