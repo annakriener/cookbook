@@ -16,15 +16,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class DeleteShoppingListItemType extends AbstractType{
 
+    // VERSION 2
     // prepared to store different data structure
-    //private $shoppingListItems;
-    //private $checkedItemsById;
+    private $shoppingListItems;
+    private $checkedItemsById;
 
-    private $shoppingList;
+    // VERSION 1
+    //private $shoppingList;
 
     public function __construct($shoppingList) {
+        // VERSION 2
         // prepared to store different data structure
-        /*
         $this->shoppingListItems = array();
         $this->checkedItemsById = array();
 
@@ -34,20 +36,23 @@ class DeleteShoppingListItemType extends AbstractType{
                 $this->checkedItemsById[] = $i;
             }
         }
-        */
 
-        $this->shoppingList = $shoppingList;
+        // VERSION 1
+        //$this->shoppingList = $shoppingList;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('items', 'choice', array(
-                'choices' => $this->shoppingList,
-                //'choices' => $this->shoppingListItems,
+                // VERSION 1
+                //'choices' => $this->shoppingList,
+                // VERSION 2
+                'choices' => $this->shoppingListItems,
                 'multiple' => true,
                 'expanded' => true,
                 'label' => false,
-                //'data' => $this->checkedItemsById
+                // VERSION 2
+                'data' => $this->checkedItemsById
             ))
             ->add('deleteItem', 'submit', array('label' => 'Delete checked items'))
             ->add('deleteAll', 'submit', array('label' => 'Delete all'));

@@ -11748,10 +11748,6 @@ $('#cb-anna').on('click', function(){
 function foo () {
     alert('BAR');
 }
-/**
- * Created by Anna Kriener on 31.05.2015.
- */
-
 $(document).ready(function () {
 
     /**
@@ -11759,6 +11755,11 @@ $(document).ready(function () {
      */
     var userShoppingListItem = $('li.cb-sl-userShoppingListItem'); //li-element
     var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
+
+    // cross out already checked items
+    $("input:checkbox:checked.cb-sl-userShoppingListItemCheckbox").each(function () {
+        $(this).next('label').toggleClass("cb-sl-userShoppingListItemTextCrossed ");
+    });
 
     // make it able to click on the whole item to check it (and cross it out if checked)
     userShoppingListItem.on("click", function (event) {
@@ -11768,7 +11769,7 @@ $(document).ready(function () {
 
         if (event.target.nodeName != "INPUT") {
             var checkbox = $(this).children("input:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
-            checkbox.prop('checked', !checkbox.prop('checked'));
+            checkbox.prop('checked', !checkbox.prop('checked')).change(); // manually fire change-event to be able to listen on checkbox-change afterwards
         }
 
         var label = $(this).children("label.cb-sl-userShoppingListItemText"); // label-element
@@ -11799,6 +11800,29 @@ $(document).ready(function () {
             });
         }
     }
+
+    // store checked status to database via ajax
+    $('input:checkbox.cb-sl-userShoppingListItemCheckbox').change(function() {
+        var url = "/shoppinglist/check";
+        var isChecked = false;
+
+        if($(this).is(':checked')) {
+            isChecked = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/shoppinglist/check",
+            data: {
+                index: $(this).val(),
+                isChecked: isChecked
+            },
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+            }
+        });
+    });
 
 
     /**

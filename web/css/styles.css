@@ -6648,13 +6648,11 @@ label.cb-sl-userShoppingListItemText {
   display: inline-block;
   vertical-align: middle;
 }
-/*
 li.cb-sl-userShoppingListItem:hover,
 input.cb-sl-userShoppingListItemCheckbox:hover,
 label.cb-sl-userShoppingListItemText:hover {
   cursor: pointer;
 }
-*/
 /*
 * ADD SHOPPING LIST ITEM FORM
 */
