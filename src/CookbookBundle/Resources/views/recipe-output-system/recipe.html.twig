@@ -5,7 +5,7 @@
         <div class="container cb-recipe">
             <div class="row">
                 <div class="col-md-3">
-                    <img class="cb-recipe-image img-responsive img-circle" src="{{ asset('img/pancakes.jpg') }}" alt="pancakes" title="Pancakes">
+                    <img class="cb-recipe-image img-responsive" src="{{ asset(imagePath) }}" alt="{{ recipe.title }}" title="{{ recipe.title }}">
                 </div>
                 <div class="col-md-9">
                     {% include 'CookbookBundle:recipe-output-system:recipeInfo.html.twig' %}

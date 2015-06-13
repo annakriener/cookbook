@@ -55,7 +55,7 @@ class RecipeType extends AbstractType {
                 'options' => array('label' => "Step:")
             ))
 
-            ->add('image', 'text', array('label' => 'Image: '))
+            ->add('image', 'file', array('label' => 'Image: '))
             ->add('save', 'submit', array('label' => 'Create Recipe'));
     }
 

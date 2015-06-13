@@ -285,4 +285,27 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->isActive;
     }
+
+    /**
+     * Set shoppingList
+     *
+     * @param array $shoppingList
+     * @return User
+     */
+    public function setShoppingList($shoppingList)
+    {
+        $this->shoppingList = $shoppingList;
+    
+        return $this;
+    }
+
+    /**
+     * Get shoppingList
+     *
+     * @return array 
+     */
+    public function getShoppingList()
+    {
+        return $this->shoppingList;
+    }
 }

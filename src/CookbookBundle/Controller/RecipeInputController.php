@@ -22,22 +22,23 @@ use CookbookBundle\Form\Type\ClassificationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RecipeInputController extends Controller {
     /**
      * @Route("/addRecipe", name="add_recipe")
      */
-    public function addRecipeAction() {
+    public function addRecipeAction(Request $request) {
         // create new entities
         $recipe = new Recipe();
         $category = new Category();
         $measurement = new Measurement();
         $classification = new Classification();
 
-        // create new forms
         $recipeForm = $this->createForm(new RecipeType(), $recipe, array(
-            'action' => $this->generateUrl('add_new_recipe'),
-            'method' => 'POST'));
+            //'action' => $this->generateUrl('add_new_recipe'),
+            //'method' => 'POST'));
+        ));
         $categoryForm = $this->createForm(new CategoryType(), $category, array(
             'action' => $this->generateUrl('add_category'),
             'method' => 'POST'));
@@ -47,6 +48,18 @@ class RecipeInputController extends Controller {
         $classificationForm = $this->createForm(new ClassificationType(), $classification, array(
             'action' => $this->generateUrl('add_classification'),
             'method' => 'POST'));
+
+        if ($request->isMethod('POST')) {
+            if ($request->request->has('recipe')) {
+                $recipeForm->handleRequest($request);
+                if ($recipeForm->isValid()) {
+                    // saving the recipe to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($recipe);
+                    $em->flush();
+                }
+            }
+        }
 
         return $this->render('CookbookBundle:recipe-input-system:recipeInput.html.twig', array(
             'recipeForm' => $recipeForm->createView(),
@@ -74,6 +87,7 @@ class RecipeInputController extends Controller {
                 }
             }
         }
+
         return $this->redirectToRoute('add_recipe');
     }
 

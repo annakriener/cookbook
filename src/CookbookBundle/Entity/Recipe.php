@@ -1,6 +1,8 @@
 <?php
 
 namespace CookbookBundle\Entity;
+
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,8 +12,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="recipe", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity(repositoryClass="CookbookBundle\Entity\RecipeRepository")
+ * @ORM\HasLifecycleCallbacks
  */
-class Recipe {
+class Recipe
+{
 
     /**
      * @var integer
@@ -131,9 +135,19 @@ class Recipe {
     protected $instructions;
 
     /**
-     * @ORM\Column(name="image", type="text", nullable=true)
+     * @ORM\Column(name="imagePath", type="string", length=255, nullable=true)
+     */
+    protected $imagePath;
+
+    /**
+     * @Assert\Image(
+     *      maxSize="6000000"
+     * )
      */
     protected $image;
+
+    private $tempPath;
+
 
     /*
     * -------------------
@@ -154,7 +168,7 @@ class Recipe {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -170,14 +184,14 @@ class Recipe {
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -193,14 +207,14 @@ class Recipe {
     public function setAuthor($author)
     {
         $this->author = $author;
-    
+
         return $this;
     }
 
     /**
      * Get author
      *
-     * @return string 
+     * @return string
      */
     public function getAuthor()
     {
@@ -216,14 +230,14 @@ class Recipe {
     public function setSource($source)
     {
         $this->source = $source;
-    
+
         return $this;
     }
 
     /**
      * Get source
      *
-     * @return string 
+     * @return string
      */
     public function getSource()
     {
@@ -239,14 +253,14 @@ class Recipe {
     public function setDuration($duration)
     {
         $this->duration = $duration;
-    
+
         return $this;
     }
 
     /**
      * Get duration
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDuration()
     {
@@ -262,14 +276,14 @@ class Recipe {
     public function setServings($servings)
     {
         $this->servings = $servings;
-    
+
         return $this;
     }
 
     /**
      * Get servings
      *
-     * @return integer 
+     * @return integer
      */
     public function getServings()
     {
@@ -285,14 +299,14 @@ class Recipe {
     public function setPreparation($preparation)
     {
         $this->preparation = $preparation;
-    
+
         return $this;
     }
 
     /**
      * Get preparation
      *
-     * @return string 
+     * @return string
      */
     public function getPreparation()
     {
@@ -308,14 +322,14 @@ class Recipe {
     public function setInstructions($instructions)
     {
         $this->instructions = $instructions;
-    
+
         return $this;
     }
 
     /**
      * Get instructions
      *
-     * @return array 
+     * @return array
      */
     public function getInstructions()
     {
@@ -328,7 +342,8 @@ class Recipe {
      * @param $instruction
      * @return Recipe
      */
-    public function addInstruction($instruction) {
+    public function addInstruction($instruction)
+    {
         $step = array();
         $paragraphs = preg_split("/\R/", $instruction);
 
@@ -361,34 +376,13 @@ class Recipe {
      *
      * @param $instruction
      */
-    public function removeInstruction($instruction) {
+    public function removeInstruction($instruction)
+    {
         if (in_array($instruction, $this->instructions)) {
             unset($this->instructions[array_search($instruction, $this->instructions)]);
         }
     }
 
-    /**
-     * Set image
-     *
-     * @param string $image
-     * @return Recipe
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return string 
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
 
     /**
      * Set category
@@ -399,14 +393,14 @@ class Recipe {
     public function setCategory(Category $category = null)
     {
         $this->category = $category;
-    
+
         return $this;
     }
 
     /**
      * Get category
      *
-     * @return \CookbookBundle\Entity\Category 
+     * @return \CookbookBundle\Entity\Category
      */
     public function getCategory()
     {
@@ -419,7 +413,8 @@ class Recipe {
      * @param \CookbookBundle\Entity\RecipeTag $tag
      * @return Recipe
      */
-    public function addTag(RecipeTag $tag) {
+    public function addTag(RecipeTag $tag)
+    {
         $this->tags[] = $tag;
         $tag->setRecipe($this);
         return $this;
@@ -430,16 +425,18 @@ class Recipe {
      *
      * @param \CookbookBundle\Entity\RecipeTag $tag
      */
-    public function removeTag(RecipeTag $tag) {
+    public function removeTag(RecipeTag $tag)
+    {
         $this->tags->removeElement($tag);
     }
 
     /**
      * Get tags
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getTags() {
+    public function getTags()
+    {
         return $this->tags;
     }
 
@@ -449,7 +446,8 @@ class Recipe {
      * @param \CookbookBundle\Entity\RecipeIngredient $ingredient
      * @return Recipe
      */
-    public function addIngredient(RecipeIngredient $ingredient) {
+    public function addIngredient(RecipeIngredient $ingredient)
+    {
         $this->ingredients[] = $ingredient;
         $ingredient->setRecipe($this);
         return $this;
@@ -460,16 +458,127 @@ class Recipe {
      *
      * @param \CookbookBundle\Entity\RecipeIngredient $ingredient
      */
-    public function removeIngredient(RecipeIngredient $ingredient) {
+    public function removeIngredient(RecipeIngredient $ingredient)
+    {
         $this->ingredients->removeElement($ingredient);
     }
 
     /**
      * Get ingredients
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIngredients() {
+    public function getIngredients()
+    {
         return $this->ingredients;
+    }
+
+
+    /*
+     * IMAGE UPLOAD
+     */
+    public function getAbsolutePath()
+    {
+        return null === $this->imagePath
+            ? null
+            : $this->getUploadRootDir().'/'.$this->imagePath;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->imagePath
+            ? null
+            : $this->getUploadDir().'/'.$this->imagePath;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/images';
+    }
+
+    /**
+     * Sets image.
+     *
+     * @param UploadedFile $image
+     */
+    public function setImage(UploadedFile $image = null)
+    {
+        $this->image = $image;
+        // check if we have an old image path
+        if (isset($this->imagePath)) {
+            // store the old name to delete after the update
+            $this->tempPath = $this->imagePath;
+            $this->imagePath = null;
+        } else {
+            $this->imagePath = 'initial';
+        }
+    }
+
+    /**
+     * Get image.
+     *
+     * @return UploadedFile
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getImage()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->imagePath = $filename.'.'.$this->getImage()->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->getImage()) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getImage()->move($this->getUploadRootDir(), $this->imagePath);
+
+        // check if we have an old image
+        if (isset($this->tempPath)) {
+            // delete the old image
+            unlink($this->getUploadRootDir().'/'.$this->tempPath);
+            // clear the temp image path
+            $this->tempPath = null;
+        }
+        $this->image = null;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        $image = $this->getAbsolutePath();
+        if ($image) {
+            unlink($image);
+        }
     }
 }
