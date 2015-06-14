@@ -37,16 +37,15 @@ class RecipeInputController extends Controller {
 
         $recipeForm = $this->createForm(new RecipeType(), $recipe, array(
             //'action' => $this->generateUrl('add_new_recipe'),
-            //'method' => 'POST'));
-        ));
+            'method' => 'POST'));
         $categoryForm = $this->createForm(new CategoryType(), $category, array(
-            'action' => $this->generateUrl('add_category'),
+            //'action' => $this->generateUrl('add_category'),
             'method' => 'POST'));
         $measurementForm = $this->createForm(new MeasurementType(), $measurement, array(
-            'action' => $this->generateUrl('add_measurement'),
+            //'action' => $this->generateUrl('add_measurement'),
             'method' => 'POST'));
         $classificationForm = $this->createForm(new ClassificationType(), $classification, array(
-            'action' => $this->generateUrl('add_classification'),
+            //'action' => $this->generateUrl('add_classification'),
             'method' => 'POST'));
 
         if ($request->isMethod('POST')) {
@@ -57,6 +56,44 @@ class RecipeInputController extends Controller {
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($recipe);
                     $em->flush();
+
+                    return $this->redirectToRoute('add_recipe');
+                }
+            }
+
+            if ($request->request->has('category')) {
+                $categoryForm->handleRequest($request);
+                if ($categoryForm->isValid()) {
+                    // saving the category to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($category);
+                    $em->flush();
+
+                    return $this->redirectToRoute('add_recipe');
+                }
+            }
+
+            if ($request->request->has('measurement')) {
+                $measurementForm->handleRequest($request);
+                if ($measurementForm->isValid()) {
+                    // saving the measurement to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($measurement);
+                    $em->flush();
+
+                    return $this->redirectToRoute('add_recipe');
+                }
+            }
+
+            if ($request->request->has('classification')) {
+                $classificationForm->handleRequest($request);
+                if ($classificationForm->isValid()) {
+                    // saving the classification to the database
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($classification);
+                    $em->flush();
+
+                    return $this->redirectToRoute('add_recipe');
                 }
             }
         }
@@ -86,9 +123,11 @@ class RecipeInputController extends Controller {
                     $em->flush();
                 }
             }
+
+
         }
 
-        return $this->redirectToRoute('add_recipe');
+        return array('recipeForm' => $recipeForm);
     }
 
     /**
