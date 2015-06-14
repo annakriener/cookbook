@@ -2,17 +2,8 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid">
-            <div class="row cb-search">
-                <div class="col-md-4 col-lg-push-4">
-                    {{ form_start(searchForm) }}
-                        <div class="input-group">
-                            {{ form_row(searchForm.search, {'attr': {'class': 'form-control'}}) }}
-                            <span class="input-group-btn"><button class="btn btn-default">Go!</button></span>
-                        </div>
-                    {{ form_end(searchForm) }}
-                </div>
-            </div>
+        <div class="container-fluid cb-search">
+            {% include 'CookbookBundle:default:search.html.twig' %}
         </div>
 
         <div class="container">

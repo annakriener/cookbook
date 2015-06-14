@@ -2,6 +2,7 @@
 
 namespace CookbookBundle\Controller;
 
+use CookbookBundle\Form\Type\SearchRefineType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,9 +24,16 @@ class RecipeOutputController extends Controller
             'method' => 'POST'
         ));
 
+        $searchRefineForm = $this->createForm(new SearchRefineType(), null, array(
+            'action' => $this->generateUrl('search'),
+            'method' => 'POST'
+        ));
+
         return $this->render('CookbookBundle:default:base.html.twig', array(
             'recipes' => $recipes,
-            'searchForm' => $searchForm->createView()));
+            'searchForm' => $searchForm->createView(),
+            'searchRefineForm' =>$searchRefineForm->createView(),
+        ));
     }
 
     /**

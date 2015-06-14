@@ -1,0 +1,25 @@
+<div class="row" id="cb-search">
+    <div class="col-md-4 col-md-push-4">
+        {{ form_start(searchForm, {'attr': {'id': 'cb-search-form'}}) }}
+        <div class="input-group">
+            {{ form_row(searchForm.search, {'attr': {'class': 'form-control'}}) }}
+            <span class="input-group-btn"><button class="btn btn-default"><span
+                            class="glyphicon glyphicon-search"></span></button></span>
+        </div>
+        {{ form_end(searchForm) }}
+        <button id="cb-search-refine-button" class="btn btn-default" type="button" data-toggle="collapse" data-target="#cb-search-refine"
+                aria-expanded="false" aria-controls="cb-search-refine" title="Refine Search">
+            <span class="glyphicon glyphicon-collapse-down"></span>
+        </button>
+    </div>
+</div>
+
+<div class="row collapse" id="cb-search-refine">
+    <div class="col-md-6 col-md-push-3">
+        <div class="cb-search-refine-box">
+            {{ form_start(searchRefineForm) }}
+                {{ form_errors(searchRefineForm) }}
+            {{ form_end(searchRefineForm) }}
+        </div>
+    </div>
+</div>

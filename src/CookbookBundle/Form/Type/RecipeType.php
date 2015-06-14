@@ -1,5 +1,6 @@
 <?php
 namespace CookbookBundle\Form\Type;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -14,7 +15,11 @@ class RecipeType extends AbstractType {
 
             ->add('category', 'entity', array(
                 'class'         => 'CookbookBundle:Category',
-                'property'      => 'name',
+                'property'      =>  'name',
+                'query_builder'      => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'label'         => 'Category: ',
                 'placeholder'   => 'Choose a category',
                 'empty_data'    => 'null'

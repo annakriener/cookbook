@@ -31,6 +31,12 @@ class RecipeIngredient {
     /**
      * @var float
      *
+     * @Assert\Range(
+     *      min= 0,
+     *      minMessage = "Quantity cannot be negative.",
+     *      invalidMessage = "Quantity must be a number."
+     * )
+     *
      * @ORM\Column(name="amount", type="float", nullable=true)
      */
     private $amount;
