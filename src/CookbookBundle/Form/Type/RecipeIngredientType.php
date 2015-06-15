@@ -14,7 +14,7 @@ class RecipeIngredientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount', 'number', array('label' => 'Quantity:'))
+            ->add('amount', 'number', array('label' => 'Quantity:', 'trim' => true))
             ->add('measurement', 'entity', array(
                 'class'         => 'CookbookBundle:Measurement',
                 'property'      => 'name',

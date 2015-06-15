@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class RecipeType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('title', 'text', array('label' => 'Title: '))
-            ->add('author', 'text', array('label' => 'Author: '))
-            ->add('source', 'text', array('label' => 'Source: '))
+            ->add('title', 'text', array('label' => 'Title: ', 'trim' => true))
+            ->add('author', 'text', array('label' => 'Author: ', 'trim' => true))
+            ->add('source', 'text', array('label' => 'Source: ', 'trim' => true))
             ->add('duration', 'time', array('label' => 'Duration: (hh:mm)'))
 
             ->add('category', 'entity', array(
@@ -46,8 +46,8 @@ class RecipeType extends AbstractType {
                 'options' => array('label' => false)
             ))
 
-            ->add('servings', 'integer', array('label' => 'Yields:'))
-            ->add('preparation', 'textarea', array('label' => 'Preparation:'))
+            ->add('servings', 'integer', array('label' => 'Yields:', 'trim' => true))
+            ->add('preparation', 'textarea', array('label' => 'Preparation:', 'trim' => true))
 
             ->add('instructions', 'collection', array(
                 'type'          => 'textarea',

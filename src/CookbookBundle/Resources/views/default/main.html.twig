@@ -1,9 +1,10 @@
 {% form_theme searchForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme searchRefineForm 'bootstrap_3_layout.html.twig' %}
 
 {% block main %}
     <main>
         <div class="container-fluid cb-search">
-            {% include 'CookbookBundle:default:search.html.twig' %}
+            {% include 'CookbookBundle:search:search.html.twig' %}
         </div>
 
         <div class="container">

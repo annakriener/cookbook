@@ -1,0 +1,47 @@
+{% extends 'CookbookBundle:default:base.html.twig' %}
+{% form_theme searchForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme searchRefineForm 'bootstrap_3_layout.html.twig' %}
+
+{% block main %}
+    <main>
+        <div class="container-fluid cb-search">
+            {% include 'CookbookBundle:search:search.html.twig' %}
+        </div>
+
+        <div class="container">
+            <div class="row cb-main">
+                {% if recipes|length > 0 %}
+                    <div class="col-md-12"><h1>Results</h1></div>
+
+                    {% for recipe in recipes %}
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                            <a href="/recipe/{{ recipe.id }}">
+                                <div class="thumbnail cb-search-result-recipe">
+                                    {% if recipe.webPath %}
+                                        {% set imagePath = recipe.webPath %}
+                                    {% else %}
+                                        {% set imagePath = '/img/search-result-image-default.png' %}
+                                    {% endif %}
+
+                                    <div class="cb-search-result-thumbnail"
+                                         style="background-image: url({{ asset(imagePath) }})"
+                                         title="{{ recipe.title }}"></div>
+                                    <div class="caption">
+                                        <h4>{{ recipe.title }}</h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-12">
+                        <h1>Sorry, no results ...</h1>
+                        <p>Please change your filter settings.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    <hr>
+{% endblock %}

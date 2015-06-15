@@ -11,17 +11,23 @@ namespace CookbookBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class SearchType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('search', 'search', array(
-            'label' => false,
-            'attr' => array(
-                'placeholder' =>"Search for ...")
-            )
-        );
+class SearchType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('search', 'search',
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => "Search for ..."),
+                    'trim' => true
+                )
+            );
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'search';
     }
 }

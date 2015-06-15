@@ -45,13 +45,11 @@ class RecipeOutputController extends Controller
         $duration = $recipe->getDuration();
         $duration = date_format($duration, 'H:i:s');
         $ingredients = $recipe->getIngredients();
-        $imagePath = $recipe->getWebPath();
 
         return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
             'recipe' => $recipe,
             'duration' => $duration,
             'ingredients' => $ingredients,
-            'imagePath' => $imagePath,
         ));
     }
 
