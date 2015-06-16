@@ -22,14 +22,16 @@ class RecipeRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findRecipesByTitle($recipeTitle) {
-        return  $this->createQueryBuilder('r')
+    public function findRecipesByTitle($recipeTitle)
+    {
+        return $this->createQueryBuilder('r')
             ->where('r.title LIKE :searchTerm')
             ->setParameter('searchTerm', "%$recipeTitle%")
             ->getQuery()
             ->getResult();
     }
 
+    /*
     public function findRecipesByCategory($categoryName)
     {
         return $this->createQueryBuilder('r')
@@ -40,11 +42,12 @@ class RecipeRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findRecipesByIngredients($ingredientNames) {
+    public function findRecipesByIngredients($ingredientNames)
+    {
         $ingredients = array();
 
-        foreach($ingredientNames as $ingredientName) {
-            if(!empty($ingredientName)) {
+        foreach ($ingredientNames as $ingredientName) {
+            if (!empty($ingredientName)) {
                 $ingredients[] = $this->findIngredientByName($ingredientName);
             }
         }
@@ -59,19 +62,107 @@ class RecipeRepository extends EntityRepository
         return $result;
     }
 
-    public function findRecipesWithPhoto() {
+    public function findRecipesByTags($tagNames)
+    {
+        $tags = array();
+
+        foreach ($tagNames as $tagName) {
+            if (!empty($tagName)) {
+                $tags[] = $this->findTagByName($tagName);
+            }
+        }
+
+        $result = $this->createQueryBuilder('r')
+            ->leftJoin('r.tags', 'rt')
+            ->where('rt.tag IN (:tags)')
+            ->setParameter('tags', $tags)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function findRecipesWithPhoto()
+    {
         return $this->createQueryBuilder('r')
             ->where('r.imagePath IS NOT NULL')
             ->getQuery()
             ->getResult();
     }
+*/
 
-    private function findIngredientByName($ingredientName) {
+    public function findRecipes($title, $category, $ingredientNames, $tagNames, $withPhoto)
+    {
+        $ingredients = array();
+        $tags = array();
+
+        foreach ($ingredientNames as $ingredientName) {
+            if (!empty($ingredientName)) {
+                $ingredients[] = $this->findIngredientByName($ingredientName);
+            }
+        }
+
+        foreach ($tagNames as $tagName) {
+            if (!empty($tagName)) {
+                $tags[] = $this->findTagByName($tagName);
+            }
+        }
+
+        $qb = $this->createQueryBuilder('r');
+
+        if ($title) {
+            $qb->where('r.title LIKE :searchTerm')
+                ->setParameter('searchTerm', "%$title%");
+        }
+
+        if ($category) {
+            $categoryName = $category->getName();
+            $qb->leftJoin('r.category', 'c')
+                ->andWhere('c.name LIKE :categoryName')
+                ->setParameter('categoryName', $categoryName);
+        }
+
+        if (count($ingredients) > 0) {
+            $qb->leftJoin('r.ingredients', 'ri')
+                ->andWhere('ri.ingredient IN (:ingredients)')
+                ->setParameter('ingredients', $ingredients);
+        }
+
+        if (count($tags) > 0) {
+            $qb->leftJoin('r.tags', 'rt')
+                ->andWhere('rt.tag IN (:tags)')
+                ->setParameter('tags', $tags);
+        }
+
+        if ($withPhoto) {
+            $qb->andWhere('r.imagePath IS NOT NULL');
+        }
+
+
+        $results = $qb->getQuery()
+            ->getResult();
+
+        return $results;
+    }
+
+    private function findIngredientByName($ingredientName)
+    {
         return $this->getEntityManager()->createQueryBuilder()
             ->select('i')
             ->from('CookbookBundle:Ingredient', 'i')
             ->where('i.name LIKE :ingredientName')
             ->setParameter('ingredientName', "%$ingredientName%")
+            ->getQuery()
+            ->getResult();
+    }
+
+    private function findTagByName($tagName)
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('t')
+            ->from('CookbookBundle:Tag', 't')
+            ->where('t.name LIKE :tagName')
+            ->setParameter('tagName', "%$tagName%")
             ->getQuery()
             ->getResult();
     }

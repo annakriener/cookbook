@@ -65,10 +65,14 @@ class SearchController extends Controller
 
                     //$recipes = $this->queryRecipesByTitle($em, $searchTitle);
                     //$recipes = $this->queryRecipesByCategory($em, $searchCategory);
-                    $recipes = $this->queryRecipesByIngredients($em, $searchIngr1, $searchIngr2, $searchIngr3);
-                    if($searchWithPhoto) {
-                        //$recipes = $this->queryRecipesWithPhoto($em);
-                    }
+                    //$recipes = $this->queryRecipesByIngredients($em, $searchIngr1, $searchIngr2, $searchIngr3);
+                    //$recipes = $this->queryRecipesByTags($em, $searchTag1, $searchTag2, $searchTag3);
+                    //if($searchWithPhoto) {
+                    //$recipes = $this->queryRecipesWithPhoto($em);
+                    //}
+                    $searchIngredientNames = array($searchIngr1, $searchIngr2, $searchIngr3);
+                    $searchTagNames = array($searchTag1, $searchTag2, $searchTag3);
+                    $recipes = $this->queryRecipes($em, $searchTitle, $searchCategory, $searchIngredientNames, $searchTagNames, $searchWithPhoto);
                 }
             }
         }
@@ -80,11 +84,13 @@ class SearchController extends Controller
         ));
     }
 
-    private function queryRecipesByTitle($em, $searchTerm) {
+    private function queryRecipesByTitle($em, $searchTerm)
+    {
         $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByTitle($searchTerm);
         return $recipes;
     }
 
+    /*
     private function queryRecipesByCategory($em, $searchCategory) {
         $searchCategoryName = $searchCategory->getName();
         $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($searchCategoryName);
@@ -97,7 +103,18 @@ class SearchController extends Controller
         return $recipes;
     }
 
+    private function queryRecipesByTags($em, $tag1, $tag2, $tag3) {
+        $tagNames = array($tag1, $tag2, $tag3);
+        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByTags($tagNames);
+        return $recipes;
+    }
+
     private function queryRecipesWithPhoto($em) {
         return $em->getRepository('CookbookBundle:Recipe')->findRecipesWithPhoto();
+    }
+*/
+    private function queryRecipes($em, $title, $category, $ingredientNames, $tagNames, $withPhoto)
+    {
+        return $em->getRepository('CookbookBundle:Recipe')->findRecipes($title, $category, $ingredientNames, $tagNames, $withPhoto);
     }
 }
