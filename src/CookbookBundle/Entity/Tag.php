@@ -83,10 +83,9 @@ class Tag
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-
         $entity = $args->getEntity();
 
-        // we're interested in Dishes only
+        // we're interested in Recipe only
         if ($entity instanceof Recipe) {
 
             $entityManager = $args->getEntityManager();
@@ -94,10 +93,10 @@ class Tag
 
             foreach ($recipeTags as $key => $recipeTag) {
 
-                // let's check for existance of this ingredient
+                // let's check for existence of this tag
                 $tags = $entityManager->getRepository('CookbookBundle:Tag')->findBy(array('name' => $recipeTag->getTag()->getName()), array('id' => 'ASC'));
 
-                // if ingredient exists use the existing ingredient
+                // if tag exists use the existing tag
                 if (count($tags) > 0) {
                     $entity->removeTag($recipeTag);
 
@@ -109,7 +108,7 @@ class Tag
 
                     $entity->addTag($newRecipeTag);
                 } else {
-                    // ingredient doesn't exist yet, add relation
+                    // tag doesn't exist yet, add relation
                     $entity->addTag($recipeTag);
                 }
 

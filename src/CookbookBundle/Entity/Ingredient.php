@@ -82,10 +82,9 @@ class Ingredient
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-
         $entity = $args->getEntity();
 
-        // we're interested in Dishes only
+        // we're interested in Recipe only
         if ($entity instanceof Recipe) {
 
             $entityManager = $args->getEntityManager();
@@ -93,7 +92,7 @@ class Ingredient
 
             foreach ($recipeIngredients as $key => $recipeIngredient) {
 
-                // let's check for existance of this ingredient
+                // let's check for existence of this ingredient
                 $ingredients = $entityManager->getRepository('CookbookBundle:Ingredient')->findBy(array('name' => $recipeIngredient->getIngredient()->getName()), array('id' => 'ASC'));
 
                 // if ingredient exists use the existing ingredient
@@ -112,10 +111,7 @@ class Ingredient
                     // ingredient doesn't exist yet, add relation
                     $entity->addIngredient($recipeIngredient);
                 }
-
             }
-
         }
-
     }
 }

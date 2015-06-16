@@ -6628,6 +6628,11 @@ div.cb-search-result-thumbnail {
   background: center center no-repeat;
   background-size: cover;
 }
+div.cb-search-result-recipe-title > h4 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /*
 * HIDE CHECKED ITEMS

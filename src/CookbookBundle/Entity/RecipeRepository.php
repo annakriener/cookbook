@@ -40,21 +40,19 @@ class RecipeRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findRecipesByIngredients($ingr1, $ingr2, $ingr3) {
+    public function findRecipesByIngredients($ingredientNames) {
+        $ingredients = array();
 
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        $ingredient1 = $qb->select('i')
-            ->from('CookbookBundle:Ingredient', 'i')
-            ->where('i.name = :ingredientName')
-            ->setParameter('ingredientName', $ingr1)
-            ->getQuery()
-            ->getResult();
+        foreach($ingredientNames as $ingredientName) {
+            if(!empty($ingredientName)) {
+                $ingredients[] = $this->findIngredientByName($ingredientName);
+            }
+        }
 
         $result = $this->createQueryBuilder('r')
-            ->leftJoin('r.ingredients', 'i')
-            ->where('i.id = :ingredientId1')
-            ->setParameter('ingredientId1', $ingredient1->getId())
+            ->leftJoin('r.ingredients', 'ri')
+            ->where('ri.ingredient IN (:ingredients)')
+            ->setParameter('ingredients', $ingredients)
             ->getQuery()
             ->getResult();
 
@@ -64,6 +62,16 @@ class RecipeRepository extends EntityRepository
     public function findRecipesWithPhoto() {
         return $this->createQueryBuilder('r')
             ->where('r.imagePath IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    private function findIngredientByName($ingredientName) {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('i')
+            ->from('CookbookBundle:Ingredient', 'i')
+            ->where('i.name LIKE :ingredientName')
+            ->setParameter('ingredientName', "%$ingredientName%")
             ->getQuery()
             ->getResult();
     }

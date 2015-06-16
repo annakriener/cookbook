@@ -92,7 +92,8 @@ class SearchController extends Controller
     }
 
     private function queryRecipesByIngredients($em, $ingr1, $ingr2, $ingr3) {
-        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByIngredients($ingr1, $ingr2, $ingr3);
+        $ingredientNames = array($ingr1, $ingr2, $ingr3);
+        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByIngredients($ingredientNames);
         return $recipes;
     }
 
