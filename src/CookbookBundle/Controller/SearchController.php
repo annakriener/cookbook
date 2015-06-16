@@ -62,7 +62,9 @@ class SearchController extends Controller
                     $searchTag2 = $data['tag2'];
                     $searchTag3 = $data['tag3'];
                     $searchWithPhoto = $data['image'];
+                    $searchDietary = $data['dietary'];
 
+                    $recipes = $this->queryRecipesByTags($em, $searchDietary);
                     //$recipes = $this->queryRecipesByTitle($em, $searchTitle);
                     //$recipes = $this->queryRecipesByCategory($em, $searchCategory);
                     //$recipes = $this->queryRecipesByIngredients($em, $searchIngr1, $searchIngr2, $searchIngr3);
@@ -72,7 +74,7 @@ class SearchController extends Controller
                     //}
                     $searchIngredientNames = array($searchIngr1, $searchIngr2, $searchIngr3);
                     $searchTagNames = array($searchTag1, $searchTag2, $searchTag3);
-                    $recipes = $this->queryRecipes($em, $searchTitle, $searchCategory, $searchIngredientNames, $searchTagNames, $searchWithPhoto);
+                    //$recipes = $this->queryRecipes($em, $searchTitle, $searchCategory, $searchIngredientNames, $searchTagNames, $searchWithPhoto);
                 }
             }
         }
@@ -116,5 +118,9 @@ class SearchController extends Controller
     private function queryRecipes($em, $title, $category, $ingredientNames, $tagNames, $withPhoto)
     {
         return $em->getRepository('CookbookBundle:Recipe')->findRecipes($title, $category, $ingredientNames, $tagNames, $withPhoto);
+    }
+
+    private function queryRecipesByTags($em, $tagNames) {
+        return $em->getRepository('CookbookBundle:Recipe')->findDietaryRecipesByTags($tagNames);
     }
 }

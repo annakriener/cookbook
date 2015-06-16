@@ -145,6 +145,26 @@ class RecipeRepository extends EntityRepository
         return $results;
     }
 
+    public function findDietaryRecipesByTags($tagNames)
+    {
+        $tags = array();
+
+        foreach ($tagNames as $tagName) {
+            if (!empty($tagName)) {
+                $tags[] = $this->findTagByName($tagName->getTag()->getName());
+            }
+        }
+
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.tags', 'rt')
+            ->where('rt.tag IN (:tags)')
+            ->setParameter('tags', $tags)
+            ->getQuery()
+            ->getResult();
+
+        return $qb;
+    }
+
     private function findIngredientByName($ingredientName)
     {
         return $this->getEntityManager()->createQueryBuilder()

@@ -8,6 +8,7 @@
 
 namespace CookbookBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -84,6 +85,22 @@ class SearchRefineType extends AbstractType
                 'label' => 'with Photo',
                 'required' => false,
                 'trim' => true,
+            ))
+            ->add('dietary', 'entity', array(
+                'class' => 'CookbookBundle:RecipeTag',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('rt')
+                        ->leftJoin('rt.classification', 'c')
+                        ->where('c.name = :classificationName')
+                        ->groupBy('rt.tag')
+                        ->orderBy('rt.tag', 'ASC')
+                        ->setParameter('classificationName', 'dietary');
+                },
+                'property' => 'tag.name',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+                'empty_data' => null
             ))
             ->add('submit', 'submit', array(
                 'label' => "Filter"
