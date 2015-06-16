@@ -23,9 +23,10 @@ class SearchController extends Controller
      */
     public function searchAction(Request $request)
     {
-
-        $searchForm = $this->createForm(new SearchType());
-
+        $searchForm = $this->createForm(new SearchType(), null, array(
+            'action' => $this->generateUrl('search'),
+            'method' => 'POST'
+        ));
         $searchRefineForm = $this->createForm(new SearchRefineType(), null, array(
             'action' => $this->generateUrl('search'),
             'method' => 'POST'
@@ -51,6 +52,7 @@ class SearchController extends Controller
 
                 if ($searchRefineForm->isValid()) {
                     $data = $searchRefineForm->getData();
+
                     $searchTitle = $data['title'];
                     $searchCategory = $data['category'];
                     $searchIngr1 = $data['ingredient1'];
@@ -61,12 +63,12 @@ class SearchController extends Controller
                     $searchTag3 = $data['tag3'];
                     $searchWithPhoto = $data['image'];
 
-                    $recipes = $this->queryRecipesByTitle($em, $searchTitle);
-
+                    //$recipes = $this->queryRecipesByTitle($em, $searchTitle);
+                    //$recipes = $this->queryRecipesByCategory($em, $searchCategory);
+                    $recipes = $this->queryRecipesByIngredients($em, $searchIngr1, $searchIngr2, $searchIngr3);
                     if($searchWithPhoto) {
                         //$recipes = $this->queryRecipesWithPhoto($em);
                     }
-                    //$recipes = $this->queryRecipesByCategory($em, $searchCategory);
                 }
             }
         }
@@ -86,6 +88,11 @@ class SearchController extends Controller
     private function queryRecipesByCategory($em, $searchCategory) {
         $searchCategoryName = $searchCategory->getName();
         $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($searchCategoryName);
+        return $recipes;
+    }
+
+    private function queryRecipesByIngredients($em, $ingr1, $ingr2, $ingr3) {
+        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByIngredients($ingr1, $ingr2, $ingr3);
         return $recipes;
     }
 

@@ -40,6 +40,27 @@ class RecipeRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findRecipesByIngredients($ingr1, $ingr2, $ingr3) {
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $ingredient1 = $qb->select('i')
+            ->from('CookbookBundle:Ingredient', 'i')
+            ->where('i.name = :ingredientName')
+            ->setParameter('ingredientName', $ingr1)
+            ->getQuery()
+            ->getResult();
+
+        $result = $this->createQueryBuilder('r')
+            ->leftJoin('r.ingredients', 'i')
+            ->where('i.id = :ingredientId1')
+            ->setParameter('ingredientId1', $ingredient1->getId())
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
     public function findRecipesWithPhoto() {
         return $this->createQueryBuilder('r')
             ->where('r.imagePath IS NOT NULL')
