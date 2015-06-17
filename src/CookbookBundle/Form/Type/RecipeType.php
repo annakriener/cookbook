@@ -31,8 +31,8 @@ class RecipeType extends AbstractType {
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
-                'by_reference'  => false,
                 'delete_empty'  => true,
+                'by_reference'  => false,
                 'options' => array('label' => false)
             ))
 
@@ -42,6 +42,7 @@ class RecipeType extends AbstractType {
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
+                'delete_empty'  => true,
                 'by_reference'  => false,
                 'options' => array('label' => false)
             ))

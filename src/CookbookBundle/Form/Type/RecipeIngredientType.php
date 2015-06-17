@@ -23,7 +23,7 @@ class RecipeIngredientType extends AbstractType
                         ->orderBy('m.name', 'ASC');
                 },
                 'label'         => 'Measurement: ',
-                'placeholder'   => 'Choose a Measurement',
+                'placeholder'   => 'Choose Measurement',
                 'required'      => false,
                 'empty_data'    => null
             ))

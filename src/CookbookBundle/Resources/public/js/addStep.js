@@ -29,7 +29,11 @@ jQuery(document).ready(function() {
     });
 
 
-    //addInstructionForm($instructionCollectionHolder, $newStepButtonDiv);
+    (function() {
+        if($('div#recipe_instructions').children().length <= 1) {
+            $addStepButton.trigger('click');
+        }
+    }());
 });
 
 function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
@@ -48,7 +52,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
     $instructionCollectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a step" link li
-    var $newStepFormDiv = $('<div></div>').append(newStepForm);
+    var $newStepFormDiv = $('<div class="cb-ris-new-step"></div>').append(newStepForm);
     $newStepButtonDiv.before($newStepFormDiv);
 
     // add a delete link to the new form
@@ -56,7 +60,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
 }
 
 function addStepFormDeleteButton(stepFormDiv) {
-    var $removeStepFormButton = $('<button class="btn btn-xs">X</button>');
+    var $removeStepFormButton = $('<button class="btn btn-xs cb-ris-delete-new-step"><span class="glyphicon glyphicon-remove"></span></button>');
     stepFormDiv.append($removeStepFormButton);
 
     $removeStepFormButton.on('click', function (e) {

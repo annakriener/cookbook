@@ -27,7 +27,7 @@ class RecipeTagType extends AbstractType{
                         ->orderBy('c.name', 'ASC');
                 },
                 'label'         => 'Classification: ',
-                'placeholder'   => 'Choose a Classification',
+                'placeholder'   => 'Choose Classification',
                 'required'      => false,
                 'empty_data'    => null
             ));

@@ -11538,7 +11538,7 @@ jQuery(document).ready(function() {
     $ingredientCollectionHolder = $('div#recipe_ingredients');
 
     // add a delete link to all of the existing ingredient form div elements
-    $ingredientCollectionHolder.find('div').each(function() {
+    $ingredientCollectionHolder.find('div[id^="recipe_ingredients_"]:not([id$="ingredient"])').each(function() {
         addIngredientFormDeleteButton($(this));
     });
 
@@ -11573,7 +11573,7 @@ jQuery(document).ready(function() {
         $ingredientCollectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a ingredient" link li
-        var $newIngredientFormDiv = $('<div></div>').append(newIngredientForm);
+        var $newIngredientFormDiv = $('<div class="cb-ris-new-ingredient"></div>').append(newIngredientForm);
         $newIngredientButtonDiv.before($newIngredientFormDiv);
 
         // add a delete link to the new form
@@ -11581,7 +11581,7 @@ jQuery(document).ready(function() {
     }
 
     function addIngredientFormDeleteButton(ingredientFormDiv) {
-        var $removeIngredientFormButton = $('<button class="btn btn-xs">X</button>');
+        var $removeIngredientFormButton = $('<button class="btn btn-xs cb-ris-delete-new-ingredient-button"><span class="glyphicon glyphicon-remove"></span></button>');
         ingredientFormDiv.append($removeIngredientFormButton);
 
         $removeIngredientFormButton.on('click', function (e) {
@@ -11590,10 +11590,22 @@ jQuery(document).ready(function() {
 
             // remove the li for the ingredient form
             ingredientFormDiv.remove();
+
+            $('div#recipe_ingredients').children('div.form-group').each(function($index, $item) {
+                if($(this).children().length === 0) {
+                    $(this).remove();
+                }
+            });
+
         });
     }
 
-    //addIngredientForm($ingredientCollectionHolder, $newIngredientButtonDiv);
+    /* initially show one ingredient-input field */
+    (function() {
+        if($('div#recipe_ingredients').children().length <= 1) {
+            $addIngredientButton.trigger('click');
+        }
+    }());
 });
 
 var $instructionCollectionHolder;
@@ -11627,7 +11639,11 @@ jQuery(document).ready(function() {
     });
 
 
-    //addInstructionForm($instructionCollectionHolder, $newStepButtonDiv);
+    (function() {
+        if($('div#recipe_instructions').children().length <= 1) {
+            $addStepButton.trigger('click');
+        }
+    }());
 });
 
 function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
@@ -11646,7 +11662,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
     $instructionCollectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a step" link li
-    var $newStepFormDiv = $('<div></div>').append(newStepForm);
+    var $newStepFormDiv = $('<div class="cb-ris-new-step"></div>').append(newStepForm);
     $newStepButtonDiv.before($newStepFormDiv);
 
     // add a delete link to the new form
@@ -11654,7 +11670,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
 }
 
 function addStepFormDeleteButton(stepFormDiv) {
-    var $removeStepFormButton = $('<button class="btn btn-xs">X</button>');
+    var $removeStepFormButton = $('<button class="btn btn-xs cb-ris-delete-new-step"><span class="glyphicon glyphicon-remove"></span></button>');
     stepFormDiv.append($removeStepFormButton);
 
     $removeStepFormButton.on('click', function (e) {
@@ -11681,7 +11697,7 @@ jQuery(document).ready(function() {
     $tagCollectionHolder = $('div#recipe_tags');
 
     // add a delete link to all of the existing tag form div elements
-    $tagCollectionHolder.find("div").each(function() {
+    $tagCollectionHolder.find('div[id^="recipe_tags_"]:not([id$="tag"])').each(function() {
         addTagFormDeleteButton($(this));
     });
 
@@ -11715,7 +11731,7 @@ jQuery(document).ready(function() {
         $tagCollectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a tag" link li
-        var $newTagFormDiv = $('<div></div>').append(newTagForm);
+        var $newTagFormDiv = $('<div class="cb-ris-new-tag"></div>').append(newTagForm);
         $newTagButtonDiv.before($newTagFormDiv);
 
         // add a delete link to the new form
@@ -11723,7 +11739,7 @@ jQuery(document).ready(function() {
     }
 
     function addTagFormDeleteButton(tagFormDiv) {
-        var $removeTagFormButton = $('<button class="btn btn-xs">X</button>');
+        var $removeTagFormButton = $('<button class="btn btn-xs cb-ris-delete-new-tag-button"><span class="glyphicon glyphicon-remove"></span></button>');
         tagFormDiv.append($removeTagFormButton);
 
         $removeTagFormButton.on('click', function (e) {
@@ -11732,10 +11748,14 @@ jQuery(document).ready(function() {
 
             // remove the li for the tag form
             tagFormDiv.remove();
+
+            $('div#recipe_tags').children('div.form-group').each(function($index, $item) {
+                if($(this).children().length === 0) {
+                    $(this).remove();
+                }
+            });
         });
     }
-
-    //addTagForm($tagCollectionHolder, $newTagButtonDiv);
 });
 
 /**
