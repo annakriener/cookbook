@@ -15,20 +15,28 @@ class RecipeRepository extends EntityRepository
 
     public function findAllOrderedByTitle()
     {
-        return $this->getEntityManager()
-            ->createQuery(
-                'SELECT r FROM CookbookBundle:Recipe r ORDER BY r.title ASC'
-            )
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.category', 'ASC')
+            ->getQuery()
             ->getResult();
     }
 
     public function findRecipesByTitle($recipeTitle)
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.title LIKE :searchTerm')
-            ->setParameter('searchTerm', "%$recipeTitle%")
-            ->getQuery()
+        $splitPattern = '/[;, ]/';
+        $searchTerms = preg_split($splitPattern, $recipeTitle);
+
+        $qb = $this->createQueryBuilder('r');
+
+        foreach ($searchTerms as $key => $searchTerm) {
+            $qb->andWhere('r.title LIKE :searchTerm' . $key)
+                ->setParameter('searchTerm' . $key, "%$searchTerm%");
+        }
+
+        $result = $qb->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /*
@@ -91,28 +99,49 @@ class RecipeRepository extends EntityRepository
     }
 */
 
-    public function findRecipes($title, $category, $ingredientNames, $tagNames, $withPhoto)
+    public function findRecipes($title, $category, $ingredientNames, $tagNames, $dietaryRecipeTags, $withPhoto)
     {
+        $splitPattern = '/[;, ]/';
+        $searchTerms = preg_split($splitPattern, $title);
+
         $ingredients = array();
         $tags = array();
+        $dietaryTags = array();
 
         foreach ($ingredientNames as $ingredientName) {
             if (!empty($ingredientName)) {
-                $ingredients[] = $this->findIngredientByName($ingredientName);
+                $foundIngredients = $this->findIngredientByName($ingredientName);
+                foreach ($foundIngredients as $foundIngredient) {
+                    $ingredients[] = $foundIngredient;
+                }
             }
         }
 
         foreach ($tagNames as $tagName) {
             if (!empty($tagName)) {
-                $tags[] = $this->findTagByName($tagName);
+                $foundTags = $this->findTagByName($tagName);
+                foreach ($foundTags as $foundTag) {
+                    $tags[] = $foundTag;
+                }
+            }
+        }
+
+        foreach ($dietaryRecipeTags as $dietaryRecipeTag) {
+            if (!empty($dietaryRecipeTag)) {
+                $foundTags = $this->findTagByName($dietaryRecipeTag->getTag()->getName());
+                foreach ($foundTags as $foundTag) {
+                    $dietaryTags[] = $foundTag;
+                }
             }
         }
 
         $qb = $this->createQueryBuilder('r');
 
-        if ($title) {
-            $qb->where('r.title LIKE :searchTerm')
-                ->setParameter('searchTerm', "%$title%");
+        if (count($searchTerms) > 0) {
+            foreach ($searchTerms as $key => $searchTerm) {
+                $qb->andWhere('r.title LIKE :searchTerm' . $key)
+                    ->setParameter('searchTerm' . $key, "%$searchTerm%");
+            }
         }
 
         if ($category) {
@@ -128,9 +157,14 @@ class RecipeRepository extends EntityRepository
                 ->setParameter('ingredients', $ingredients);
         }
 
-        if (count($tags) > 0) {
+        if (count($dietaryTags) > 0) {
             $qb->leftJoin('r.tags', 'rt')
-                ->andWhere('rt.tag IN (:tags)')
+                ->andWhere('rt.tag IN (:dietaryTags)')
+                ->setParameter('dietaryTags', $dietaryTags);
+        }
+
+        if (count($tags) > 0) {
+            $qb->andWhere('rt.tag IN (:tags)')
                 ->setParameter('tags', $tags);
         }
 
@@ -143,26 +177,6 @@ class RecipeRepository extends EntityRepository
             ->getResult();
 
         return $results;
-    }
-
-    public function findDietaryRecipesByTags($tagNames)
-    {
-        $tags = array();
-
-        foreach ($tagNames as $tagName) {
-            if (!empty($tagName)) {
-                $tags[] = $this->findTagByName($tagName->getTag()->getName());
-            }
-        }
-
-        $qb = $this->createQueryBuilder('r')
-            ->leftJoin('r.tags', 'rt')
-            ->where('rt.tag IN (:tags)')
-            ->setParameter('tags', $tags)
-            ->getQuery()
-            ->getResult();
-
-        return $qb;
     }
 
     private function findIngredientByName($ingredientName)

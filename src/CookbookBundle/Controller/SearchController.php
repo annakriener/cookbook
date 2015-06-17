@@ -11,6 +11,7 @@ namespace CookbookBundle\Controller;
 
 use CookbookBundle\Form\Type\SearchRefineType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use CookbookBundle\Form\Type\SearchType;
@@ -61,20 +62,12 @@ class SearchController extends Controller
                     $searchTag1 = $data['tag1'];
                     $searchTag2 = $data['tag2'];
                     $searchTag3 = $data['tag3'];
-                    $searchWithPhoto = $data['image'];
                     $searchDietary = $data['dietary'];
+                    $searchWithPhoto = $data['image'];
 
-                    $recipes = $this->queryRecipesByTags($em, $searchDietary);
-                    //$recipes = $this->queryRecipesByTitle($em, $searchTitle);
-                    //$recipes = $this->queryRecipesByCategory($em, $searchCategory);
-                    //$recipes = $this->queryRecipesByIngredients($em, $searchIngr1, $searchIngr2, $searchIngr3);
-                    //$recipes = $this->queryRecipesByTags($em, $searchTag1, $searchTag2, $searchTag3);
-                    //if($searchWithPhoto) {
-                    //$recipes = $this->queryRecipesWithPhoto($em);
-                    //}
                     $searchIngredientNames = array($searchIngr1, $searchIngr2, $searchIngr3);
                     $searchTagNames = array($searchTag1, $searchTag2, $searchTag3);
-                    //$recipes = $this->queryRecipes($em, $searchTitle, $searchCategory, $searchIngredientNames, $searchTagNames, $searchWithPhoto);
+                    $recipes = $this->queryRecipes($em, $searchTitle, $searchCategory, $searchIngredientNames, $searchTagNames, $searchDietary, $searchWithPhoto);
                 }
             }
         }
@@ -111,16 +104,17 @@ class SearchController extends Controller
         return $recipes;
     }
 
+    private function queryDietaryRecipesByTags($em, $tagNames) {
+        return $em->getRepository('CookbookBundle:Recipe')->findDietaryRecipesByTags($tagNames);
+    }
+
     private function queryRecipesWithPhoto($em) {
         return $em->getRepository('CookbookBundle:Recipe')->findRecipesWithPhoto();
     }
 */
-    private function queryRecipes($em, $title, $category, $ingredientNames, $tagNames, $withPhoto)
+    private function queryRecipes($em, $title, $category, $ingredientNames, $tagNames, $dietaryRecipeTags, $withPhoto)
     {
-        return $em->getRepository('CookbookBundle:Recipe')->findRecipes($title, $category, $ingredientNames, $tagNames, $withPhoto);
+        return $em->getRepository('CookbookBundle:Recipe')->findRecipes($title, $category, $ingredientNames, $tagNames, $dietaryRecipeTags, $withPhoto);
     }
 
-    private function queryRecipesByTags($em, $tagNames) {
-        return $em->getRepository('CookbookBundle:Recipe')->findDietaryRecipesByTags($tagNames);
-    }
 }

@@ -11,12 +11,19 @@ namespace CookbookBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\CallbackValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SearchRefineType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
+       $builder
             ->add('title', 'text', array(
                 'label' => 'Title',
                 'attr' => array(
@@ -81,26 +88,26 @@ class SearchRefineType extends AbstractType
                 'required' => false,
                 'trim' => true,
             ))
-            ->add('image', 'checkbox', array(
-                'label' => 'with Photo',
-                'required' => false,
-                'trim' => true,
-            ))
             ->add('dietary', 'entity', array(
                 'class' => 'CookbookBundle:RecipeTag',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('rt')
                         ->leftJoin('rt.classification', 'c')
                         ->where('c.name = :classificationName')
-                        ->groupBy('rt.tag')
-                        ->orderBy('rt.tag', 'ASC')
-                        ->setParameter('classificationName', 'dietary');
+                        ->setParameter('classificationName', 'dietary')
+                        ->orderBy('rt.tag')
+                        ->groupBy('rt.tag');
                 },
                 'property' => 'tag.name',
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
                 'empty_data' => null
+            ))
+            ->add('image', 'checkbox', array(
+                'label' => 'with Photo',
+                'required' => false,
+                'trim' => true,
             ))
             ->add('submit', 'submit', array(
                 'label' => "Filter"
