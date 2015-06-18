@@ -3,6 +3,7 @@ var $instructionCollectionHolder;
 // setup an "add a step" link
 var $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
 var $newStepButtonDiv = $('<div></div>').append($addStepButton);
+var pathname = window.location.pathname;
 
 jQuery(document).ready(function() {
     // Get the ul that holds the collection of steps
@@ -29,11 +30,14 @@ jQuery(document).ready(function() {
     });
 
 
+    /* initially show one step-textarea field */
+
     (function() {
-        if($('div#recipe_instructions').children().length <= 1) {
-            $addStepButton.trigger('click');
+        if(pathname === "/addRecipe" && $('div#recipe_instructions').children().length <= 1) {
+            $addStepButton.click();
         }
     }());
+
 });
 
 function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
@@ -74,4 +78,3 @@ function addStepFormDeleteButton(stepFormDiv) {
         stepFormDiv.remove();
     });
 }
-

@@ -85,33 +85,6 @@ class SearchController extends Controller
         return $recipes;
     }
 
-    /*
-    private function queryRecipesByCategory($em, $searchCategory) {
-        $searchCategoryName = $searchCategory->getName();
-        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($searchCategoryName);
-        return $recipes;
-    }
-
-    private function queryRecipesByIngredients($em, $ingr1, $ingr2, $ingr3) {
-        $ingredientNames = array($ingr1, $ingr2, $ingr3);
-        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByIngredients($ingredientNames);
-        return $recipes;
-    }
-
-    private function queryRecipesByTags($em, $tag1, $tag2, $tag3) {
-        $tagNames = array($tag1, $tag2, $tag3);
-        $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByTags($tagNames);
-        return $recipes;
-    }
-
-    private function queryDietaryRecipesByTags($em, $tagNames) {
-        return $em->getRepository('CookbookBundle:Recipe')->findDietaryRecipesByTags($tagNames);
-    }
-
-    private function queryRecipesWithPhoto($em) {
-        return $em->getRepository('CookbookBundle:Recipe')->findRecipesWithPhoto();
-    }
-*/
     private function queryRecipes($em, $title, $category, $ingredientNames, $tagNames, $dietaryRecipeTags, $withPhoto)
     {
         return $em->getRepository('CookbookBundle:Recipe')->findRecipes($title, $category, $ingredientNames, $tagNames, $dietaryRecipeTags, $withPhoto);

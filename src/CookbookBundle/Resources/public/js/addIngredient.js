@@ -73,8 +73,8 @@ jQuery(document).ready(function() {
 
     /* initially show one ingredient-input field */
     (function() {
-        if($('div#recipe_ingredients').children().length <= 1) {
-            $addIngredientButton.trigger('click');
+        if(pathname === "/addRecipe" && $('div#recipe_ingredients').children().length <= 1) {
+            $addIngredientButton.click();
         }
     }());
 });

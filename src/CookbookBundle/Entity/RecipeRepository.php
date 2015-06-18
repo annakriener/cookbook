@@ -39,66 +39,6 @@ class RecipeRepository extends EntityRepository
         return $result;
     }
 
-    /*
-    public function findRecipesByCategory($categoryName)
-    {
-        return $this->createQueryBuilder('r')
-            ->leftJoin('r.category', 'c')
-            ->where('c.name LIKE :categoryName')
-            ->setParameter('categoryName', $categoryName)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findRecipesByIngredients($ingredientNames)
-    {
-        $ingredients = array();
-
-        foreach ($ingredientNames as $ingredientName) {
-            if (!empty($ingredientName)) {
-                $ingredients[] = $this->findIngredientByName($ingredientName);
-            }
-        }
-
-        $result = $this->createQueryBuilder('r')
-            ->leftJoin('r.ingredients', 'ri')
-            ->where('ri.ingredient IN (:ingredients)')
-            ->setParameter('ingredients', $ingredients)
-            ->getQuery()
-            ->getResult();
-
-        return $result;
-    }
-
-    public function findRecipesByTags($tagNames)
-    {
-        $tags = array();
-
-        foreach ($tagNames as $tagName) {
-            if (!empty($tagName)) {
-                $tags[] = $this->findTagByName($tagName);
-            }
-        }
-
-        $result = $this->createQueryBuilder('r')
-            ->leftJoin('r.tags', 'rt')
-            ->where('rt.tag IN (:tags)')
-            ->setParameter('tags', $tags)
-            ->getQuery()
-            ->getResult();
-
-        return $result;
-    }
-
-    public function findRecipesWithPhoto()
-    {
-        return $this->createQueryBuilder('r')
-            ->where('r.imagePath IS NOT NULL')
-            ->getQuery()
-            ->getResult();
-    }
-*/
-
     public function findRecipes($title, $category, $ingredientNames, $tagNames, $dietaryRecipeTags, $withPhoto)
     {
         $splitPattern = '/[;, ]/';
@@ -106,7 +46,7 @@ class RecipeRepository extends EntityRepository
 
         $ingredients = array();
         $tags = array();
-        $dietaryTags = array();
+        $dietaryTagNames = array();
 
         foreach ($ingredientNames as $ingredientName) {
             if (!empty($ingredientName)) {
@@ -130,7 +70,7 @@ class RecipeRepository extends EntityRepository
             if (!empty($dietaryRecipeTag)) {
                 $foundTags = $this->findTagByName($dietaryRecipeTag->getTag()->getName());
                 foreach ($foundTags as $foundTag) {
-                    $dietaryTags[] = $foundTag;
+                    $dietaryTagNames[] = $foundTag->getName();
                 }
             }
         }
@@ -157,14 +97,37 @@ class RecipeRepository extends EntityRepository
                 ->setParameter('ingredients', $ingredients);
         }
 
-        if (count($dietaryTags) > 0) {
-            $qb->leftJoin('r.tags', 'rt')
-                ->andWhere('rt.tag IN (:dietaryTags)')
-                ->setParameter('dietaryTags', $dietaryTags);
+        if (count($dietaryTagNames) > 0) {
+            $dietaryRecipes = $this->createQueryBuilder('r')
+                ->leftJoin('r.tags', 'rt')
+                ->leftJoin('rt.classification', 'c')
+                ->where('c.name = :dietary')
+                ->setParameter('dietary', 'dietary')
+                ->getQuery()
+                ->getResult();
+
+            $recipeIDs = array();
+
+            foreach ($dietaryRecipes as $key => $dietaryRecipe) {
+                $dietaryRecipeTagNames = array();
+                $recipeTags = $dietaryRecipe->getTags();
+
+                foreach ($recipeTags as $recipeTag) {
+                    $dietaryRecipeTagNames[] = $recipeTag->getTag()->getName();
+                }
+                $diff = array_diff($dietaryTagNames, $dietaryRecipeTagNames);
+                if (count($diff) === 0) {
+                    $recipeIDs[] = $dietaryRecipe->getId();
+                }
+            }
+
+            $qb->andWhere('r.id IN (:recipeIDs)')
+                ->setParameter('recipeIDs', $recipeIDs);
         }
 
         if (count($tags) > 0) {
-            $qb->andWhere('rt.tag IN (:tags)')
+            $qb->leftJoin('r.tags', 'rt')
+                ->andWhere('rt.tag IN (:tags)')
                 ->setParameter('tags', $tags);
         }
 
