@@ -39,6 +39,10 @@ $( document ).ready(function() {
         saveAnnotations();
     });
 
+    $('#rmAnnotations').on('click', function(){
+        removeAnnotations();
+    });
+
 
     $('#hide').on('click', function(){
         if ($('#hide').text() == $showText) {
@@ -222,8 +226,7 @@ function takeNote() {
 function saveAnnotations(){
 
     var annotation_id = $("#an-tools").attr("data-annotation-id");
-    var recipe_id = $("#recipe_container").attr("data-recipeid");
-    var user = 0; //TODO get current username or userid
+    var recipe_id = $("#recipe_container").attr("data-recipe-id");
     var instructions = $('#preparation').children("li");
     var ingredients = $('#ingredients').children("li");
 
@@ -237,12 +240,25 @@ function saveAnnotations(){
     $.post('/saveAnnotations', {
         annotation_id: annotation_id,
         recipe_id : recipe_id,
-        user_id : user,
         instructions : serializedInstructions,
         ingredients : serializedIngredients,
         hideCrossed: hideCrossed
     }).done(function(data){ // data is the response
         $("#an-tools").attr("data-annotation-id", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
+    });
+}
+
+// SAVE ANNOTATIONS into DB via AJAX
+function removeAnnotations(){
+
+    var annotation_id = $("#an-tools").attr("data-annotation-id");
+    var recipe_id = $("#recipe_container").attr("data-recipe-id");
+    alert("remove annotations with id: " + annotation_id + " and recipe id: " + recipe_id);
+
+    $.post('/removeAnnotations', {
+        annotation_id: annotation_id
+    }).done(function(){ // data is the response
+        document.location.reload(true);
     });
 }
 

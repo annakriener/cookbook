@@ -46,12 +46,10 @@ class RecipeOutputController extends Controller
         $duration = date_format($duration, 'H:i:s');
         $ingredients = $recipe->getIngredients();
 
-
-        $userID = 0; //TODO: use actual user ID
+        $user = $this->getUser();
         $recipeAnnotations = $this->getDoctrine()
             ->getRepository('CookbookBundle:RecipeAnnotation')
-            ->findOneBy(array('recipe' => $recipe, 'user_id' => $userID));
-        //----
+            ->findOneBy(array('recipe' => $recipe, 'user_id' => $user));
 
         return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
             'recipe' => $recipe,

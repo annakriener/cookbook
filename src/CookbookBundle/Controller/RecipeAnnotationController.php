@@ -15,7 +15,10 @@ class RecipeAnnotationController extends Controller {
     /**
      * @Route("/saveAnnotations", name="saveAnnotations")
      */
-    public function saveAnnotations() {
+    public function saveAnnotationsAction() {
+
+        $user = $this->getUser();
+        if (!$user) { return new Response();} // do not save if no user logged in
 
         $annotationID = $_POST['annotation_id'];
         $instr = $_POST['instructions'];
@@ -25,15 +28,11 @@ class RecipeAnnotationController extends Controller {
         $recipeAnnotation = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:RecipeAnnotation')->findOneById($annotationID);
 
         if (!$recipeAnnotation) {
-
             $recID = intval($_POST['recipe_id']);
-            $userID = intval($_POST['user_id']);
             $recipeAnnotation = new RecipeAnnotation();
-
             $recipe = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:Recipe')->findOneById($recID);
-            //$user = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:User')->findOneById($userID);
             $recipeAnnotation->setRecipe($recipe);
-            $recipeAnnotation->setUserId($userID);
+            $recipeAnnotation->setUserId($user);
         }
         $recipeAnnotation->setInstructions($instr);
         $recipeAnnotation->setIngredients($ingr);
@@ -44,8 +43,27 @@ class RecipeAnnotationController extends Controller {
         $em->persist($recipeAnnotation);
         $em->flush();
 
-
         // ACHTUNG, jedes echo oder error ist wird vor die response angehängt und ist genauso eine response
         return new Response($recipeAnnotation->getId());//, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/removeAnnotations", name="removeAnnotations")
+     */
+    public function removeAnnotationsAction(){
+        $user = $this->getUser();
+        if (!$user) { return new Response();} // do not save if no user logged in
+
+        $annotationID = $_POST['annotation_id'];
+
+        $recipeAnnotation = $this->getDoctrine()->getManager()->getRepository('CookbookBundle:RecipeAnnotation')->findOneById($annotationID);
+
+        if ($recipeAnnotation){
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($recipeAnnotation);
+            $em->flush();
+        }
+
+        return new Response();
     }
 }

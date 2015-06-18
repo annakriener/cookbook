@@ -30,12 +30,10 @@ class RecipeAnnotation {
      **/
     protected $recipe;
 
-
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer")
-     */
+    * @ORM\ManyToOne(targetEntity="User", cascade={"persist"} )
+    * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+    */
     protected $user_id;
 
 
