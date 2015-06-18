@@ -1,6 +1,8 @@
 <?php
 
 namespace CookbookBundle\Entity;
+
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="ingredient", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
-class Ingredient {
+class Ingredient
+{
     /**
      * @var integer
      *
@@ -44,7 +47,7 @@ class Ingredient {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,18 +62,56 @@ class Ingredient {
      */
     public function setName($name)
     {
-        $this->name = $name;
-    
+        $this->name = strtolower($name);
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * This will be called on newly created entities
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        // we're interested in Recipe only
+        if ($entity instanceof Recipe) {
+
+            $entityManager = $args->getEntityManager();
+            $recipeIngredients = $entity->getIngredients();
+
+            foreach ($recipeIngredients as $key => $recipeIngredient) {
+
+                // let's check for existence of this ingredient
+                $ingredients = $entityManager->getRepository('CookbookBundle:Ingredient')->findBy(array('name' => $recipeIngredient->getIngredient()->getName()), array('id' => 'ASC'));
+
+                // if ingredient exists use the existing ingredient
+                if (count($ingredients) > 0) {
+                    $entity->removeIngredient($recipeIngredient);
+
+                    $knownIngredient = $ingredients[0];
+                    $newRecipeIngredient = new RecipeIngredient();
+                    $newRecipeIngredient->setRecipe($entity);
+                    $newRecipeIngredient->setMeasurement($recipeIngredient->getMeasurement());
+                    $newRecipeIngredient->setIngredient($knownIngredient);
+                    $newRecipeIngredient->setAmount($recipeIngredient->getAmount());
+
+                    $entity->addIngredient($newRecipeIngredient);
+                } else {
+                    // ingredient doesn't exist yet, add relation
+                    $entity->addIngredient($recipeIngredient);
+                }
+            }
+        }
     }
 }

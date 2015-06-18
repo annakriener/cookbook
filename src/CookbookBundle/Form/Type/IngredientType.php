@@ -8,7 +8,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IngredientType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text', array('label' => 'Ingredient: '));
+        $builder->add('name', 'text', array(
+            'label' => 'Ingredient: ',
+            'trim' => true,
+            'required' => true,
+        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

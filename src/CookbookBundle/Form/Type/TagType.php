@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TagType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text', array('label' => 'Tag: '));
+        $builder->add('name', 'text', array('label' => 'Tag: ', 'trim' => true));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

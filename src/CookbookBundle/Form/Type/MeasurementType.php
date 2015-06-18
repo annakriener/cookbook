@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MeasurementType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text', array('label' => 'Measurement: '))
+        $builder->add('name', 'text', array('label' => 'Measurement: ', 'trim' => true))
                 ->add('save', 'submit', array('label' => 'Create Measurement'));
     }
 

@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
     $ingredientCollectionHolder = $('div#recipe_ingredients');
 
     // add a delete link to all of the existing ingredient form div elements
-    $ingredientCollectionHolder.find('div').each(function() {
+    $ingredientCollectionHolder.find('div[id^="recipe_ingredients_"]:not([id$="ingredient"])').each(function() {
         addIngredientFormDeleteButton($(this));
     });
 
@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
         $ingredientCollectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a ingredient" link li
-        var $newIngredientFormDiv = $('<div></div>').append(newIngredientForm);
+        var $newIngredientFormDiv = $('<div class="cb-ris-new-ingredient"></div>').append(newIngredientForm);
         $newIngredientButtonDiv.before($newIngredientFormDiv);
 
         // add a delete link to the new form
@@ -54,7 +54,7 @@ jQuery(document).ready(function() {
     }
 
     function addIngredientFormDeleteButton(ingredientFormDiv) {
-        var $removeIngredientFormButton = $('<button class="btn btn-xs">X</button>');
+        var $removeIngredientFormButton = $('<button class="btn btn-xs cb-ris-delete-new-ingredient-button"><span class="glyphicon glyphicon-remove"></span></button>');
         ingredientFormDiv.append($removeIngredientFormButton);
 
         $removeIngredientFormButton.on('click', function (e) {
@@ -63,8 +63,20 @@ jQuery(document).ready(function() {
 
             // remove the li for the ingredient form
             ingredientFormDiv.remove();
+
+            $('div#recipe_ingredients').children('div.form-group').each(function($index, $item) {
+                if($(this).children().length === 0) {
+                    $(this).remove();
+                }
+            });
+
         });
     }
 
-    //addIngredientForm($ingredientCollectionHolder, $newIngredientButtonDiv);
+    /* initially show one ingredient-input field */
+    (function() {
+        if(pathname === "/addRecipe" && $('div#recipe_ingredients').children().length <= 1) {
+            $addIngredientButton.click();
+        }
+    }());
 });

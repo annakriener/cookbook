@@ -1,5 +1,9 @@
-@gold: #ffd700;
-@green: #19a507;
+@import url(globals.less);
+
+/* GLOBAL DOCUMENT STYLES */
+html {
+  font-size: @default-font-size;
+}
 
 hr {
   margin: 0;
@@ -36,13 +40,6 @@ header {
 }
 
 /* MAIN */
-.cb-search {
-  padding: 200px 0 200px 0;
-  background-image: url('../img/background.jpg');
-  background-repeat: no-repeat;
-  background-position: 0;
-}
-
 .cb-main {
   margin: 90px 0 120px 0;
 }
@@ -59,4 +56,9 @@ header {
   background-color: @gold;
   height: 60px;
   padding: 15px;
+}
+
+/* ALIGNMENT & FLOATING */
+.cb-clear-both {
+  clear:both;
 }

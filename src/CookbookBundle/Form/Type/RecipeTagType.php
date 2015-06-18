@@ -1,6 +1,7 @@
 <?php
 
 namespace CookbookBundle\Form\Type;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,8 +22,12 @@ class RecipeTagType extends AbstractType{
             ->add('classification', 'entity', array(
                 'class'         => 'CookbookBundle:Classification',
                 'property'      => 'name',
+                'query_builder'      => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'label'         => 'Classification: ',
-                'placeholder'   => 'Choose a Classification',
+                'placeholder'   => 'Choose Classification',
                 'required'      => false,
                 'empty_data'    => null
             ));

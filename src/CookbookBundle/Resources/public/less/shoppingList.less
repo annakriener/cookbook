@@ -1,0 +1,105 @@
+@import url(globals.less);
+
+/*
+* HIDE CHECKED ITEMS
+*/
+button#cb-sl-hideUserShoppingListItem {
+  float: left !important;
+}
+
+.cb-sl-userShoppingListItemHidden {
+  display: none;
+}
+
+/*
+* DELETE BUTTONS
+*/
+button#deleteShoppingListItem_deleteAll, button#deleteShoppingListItem_deleteItem {
+  float: right;
+}
+
+button#deleteShoppingListItem_deleteItem {
+  margin-right: 10px;
+}
+
+/*
+* SHOPPING LIST
+*/
+ul.cb-sl-userShoppingList {
+  list-style: none;
+  margin: 20px 0 0 0;
+  padding: 0;
+}
+
+div.cb-sl-userShoppingListItemContainer {
+  height: 44px;
+  margin: 10px 0;
+}
+
+li.cb-sl-userShoppingListItem {
+  float: left;
+  width: 90%;
+  margin: 0 10px 0 0;
+  padding: 10px 15px 10px 15px;
+
+  border: 1px solid grey;
+  border-radius: 4px;
+  background-color: lightgoldenrodyellow;
+
+  height: auto;
+  vertical-align: middle;
+  font-size: 0;
+}
+
+input.cb-sl-userShoppingListItemCheckbox {
+  margin: 0 5px 1px 0;
+
+  font-size: @default-font-size;
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: normal;
+}
+
+label.cb-sl-userShoppingListItemText {
+  margin: 0;
+  width: 95%;
+
+  font-size: @default-font-size;
+
+  display: inline-block;
+  vertical-align: middle;
+}
+
+button.cb-sl-editUserShoppingListItem {
+  height: 44px;
+  padding-top: 10px;
+  font-size: @default-font-size + 1px;
+}
+
+li.cb-sl-userShoppingListItem:hover,
+input.cb-sl-userShoppingListItemCheckbox:hover,
+label.cb-sl-userShoppingListItemText:hover {
+  cursor: pointer;
+}
+
+
+/*
+* ADD SHOPPING LIST ITEM FORM
+*/
+form#cb-sl-addShoppingListItemForm {
+  margin: 0 0 20px 0;
+}
+
+input#addShoppingListItem_item, button#addShoppingListItem_save {
+  min-height: 44px;
+}
+
+/*
+* CHECKED ITEM STYLE
+*/
+.cb-sl-userShoppingListItemTextCrossed {
+  text-decoration: line-through;
+  color: grey;
+}
+
+

@@ -1,26 +1,35 @@
 {% form_theme recipeForm 'bootstrap_3_layout.html.twig' %}
 
 <div class="col-md-6">
-    <h1>Add recipe</h1>
-
-    {{ form_start(recipeForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    <h1>Add Recipe</h1>
+    {{ form_start(recipeForm, {'attr': {'novalidate': 'novalidate', 'id': 'cb-ris-form'}}) }}
 
         {{ form_errors(recipeForm) }}
 
-        {{ form_row(recipeForm.title) }}
-        {{ form_row(recipeForm.author) }}
-        {{ form_row(recipeForm.source) }}
-        {{ form_row(recipeForm.duration) }}
+        <div class="cb-ris-form-field-1">
+            {{ form_row(recipeForm.title) }}
+            {{ form_row(recipeForm.author) }}
+            {{ form_row(recipeForm.source) }}
+        </div>
 
-        {{ form_row(recipeForm.category) }}
+        <div class="cb-ris-form-field-2">
+            {{ form_row(recipeForm.category) }}
+            {{ form_row(recipeForm.duration) }}
+            {{ form_row(recipeForm.servings) }}
+        </div>
 
-        {{ form_row(recipeForm.tags) }}
+        <div class="cb-ris-form-field-tags">
+            {{ form_row(recipeForm.tags) }}
+        </div>
 
-        {{ form_row(recipeForm.servings) }}
-        {{ form_row(recipeForm.ingredients) }}
+        <div class="cb-ris-form-field-ingredients">
+            {{ form_row(recipeForm.ingredients) }}
+        </div>
 
-        {{ form_row(recipeForm.preparation) }}
-        {{ form_row(recipeForm.instructions) }}
+        <div class="cb-ris-form-field-3">
+            {{ form_row(recipeForm.preparation) }}
+            {{ form_row(recipeForm.instructions) }}
+        </div>
 
         {{ form_row(recipeForm.image) }}
     {{ form_end(recipeForm) }}

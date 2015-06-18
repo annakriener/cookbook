@@ -1,11 +1,13 @@
 var $instructionCollectionHolder;
 var $addStepButton;
 var $newStepButtonDiv;
+var pathname;
 
 jQuery(document).ready(function() {
     // setup an "add a step" link
     $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
     $newStepButtonDiv = $('<div></div>').append($addStepButton);
+    pathname = window.location.pathname;
     // Get the ul that holds the collection of steps
     $instructionCollectionHolder = $('div#recipe_instructions');
 
@@ -30,7 +32,14 @@ jQuery(document).ready(function() {
     });
 
 
-    //addInstructionForm($instructionCollectionHolder, $newStepButtonDiv);
+    /* initially show one step-textarea field */
+
+    (function() {
+        if(pathname === "/addRecipe" && $('div#recipe_instructions').children().length <= 1) {
+            $addStepButton.click();
+        }
+    }());
+
 });
 
 function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
@@ -49,7 +58,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
     $instructionCollectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a step" link li
-    var $newStepFormDiv = $('<div></div>').append(newStepForm);
+    var $newStepFormDiv = $('<div class="cb-ris-new-step"></div>').append(newStepForm);
     $newStepButtonDiv.before($newStepFormDiv);
 
     // add a delete link to the new form
@@ -57,7 +66,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
 }
 
 function addStepFormDeleteButton(stepFormDiv) {
-    var $removeStepFormButton = $('<button class="btn btn-xs">X</button>');
+    var $removeStepFormButton = $('<button class="btn btn-xs cb-ris-delete-new-step"><span class="glyphicon glyphicon-remove"></span></button>');
     stepFormDiv.append($removeStepFormButton);
 
     $removeStepFormButton.on('click', function (e) {
@@ -71,4 +80,3 @@ function addStepFormDeleteButton(stepFormDiv) {
         stepFormDiv.remove();
     });
 }
-

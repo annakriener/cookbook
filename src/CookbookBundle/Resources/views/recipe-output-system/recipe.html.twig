@@ -1,0 +1,27 @@
+{% extends 'CookbookBundle:default:base.html.twig' %}
+
+{% block main %}
+    <main>
+        <div id="recipe_container" class="container cb-recipe" data-recipe-id="{{ recipe.id }}">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <img class="cb-recipe-image img-responsive" src="{% if recipe.webPath %}{{ asset(recipe.webPath) }}{% else %}{{ asset('/img/search-result-image-default.png') }}{% endif %}" alt="{{ recipe.title }}" title="{{ recipe.title }}">
+                </div>
+                <div class="col-md-9">
+                    {% include 'CookbookBundle:recipe-output-system:recipeInfo.html.twig' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    {% include 'CookbookBundle:recipe-output-system:ingredients.html.twig' %}
+                </div>
+                <div class="col-md-8">
+                    {% include 'CookbookBundle:recipe-output-system:preparation.html.twig' %}
+                    {% include 'CookbookBundle:recipe-output-system:instructions.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

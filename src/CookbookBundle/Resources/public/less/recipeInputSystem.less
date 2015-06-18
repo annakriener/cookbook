@@ -1,3 +1,133 @@
+@import url(globals.less);
+
 .cb-ris-form-row {
-  margin: 60px 0 60px 0;
+  margin-bottom: 60px;
+}
+
+div.cb-ris-form-field-1, div.cb-ris-form-field-2, div.cb-ris-form-field-3 {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+form#cb-ris-form > div.cb-ris-form-field-2 > div {
+  margin-right: 10px;
+  float: left;
+}
+
+/* category width */
+form#cb-ris-form > div.cb-ris-form-field-2 > div:first-child {
+  width: 50%;
+}
+
+/* duration width */
+form#cb-ris-form > div.cb-ris-form-field-2 > div:nth-child(2) {
+  width: auto;
+}
+
+/* servings width*/
+form#cb-ris-form > div.cb-ris-form-field-2 > div:last-child {
+  width: 20%;
+  margin-right: 0;
+}
+
+div.cb-ris-form-field-2 {
+  clear: both;
+  height: 90px;
+}
+
+div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
+  margin-bottom: 30px;
+}
+
+/* NEW INGREDIENTS */
+.cb-ris-new-ingredient, div#recipe_ingredients > div.form-group {
+  height: 90px;
+  padding: 10px;
+  margin: 10px 0 10px 0;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.cb-ris-new-ingredient > div > div > div, div#recipe_ingredients > div.form-group > div > div  {
+  width: 30%;
+  float: left;
+  margin-right: 9px;
+  margin-bottom: 0;
+}
+
+.cb-ris-delete-new-ingredient-button {
+  float: right;
+}
+
+.cb-ris-new-ingredient > button.cb-ris-delete-new-ingredient-button {
+  position: relative;
+  top: -15px;
+}
+
+/* NEW TAGS */
+.cb-ris-new-tag, div#recipe_tags > div.form-group {
+  height: 90px;
+  padding: 10px;
+  margin: 10px 0 10px 0;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.cb-ris-new-tag > div > div > div, div#recipe_tags > div.form-group > div > div  {
+  width: 45%;
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.cb-ris-delete-new-tag-button {
+  float: right;
+}
+
+.cb-ris-new-tag > button.cb-ris-delete-new-tag-button {
+  position: relative;
+  top: -15px;
+}
+
+div.has-error > span.help-block {
+  margin: 0;
+}
+
+/* PREPARATION */
+textarea#recipe_preparation {
+  max-width: 100%;
+}
+
+/* INSTRUCTIONS: NEW STEP */
+div.cb-ris-new-step  {
+  clear:both;
+}
+
+div.cb-ris-new-step > div, div#recipe_instructions > div.form-group > textarea{
+  float:left;
+  width: 95%;
+}
+
+div#recipe_instructions > div.form-group > textarea {
+  margin-bottom: 15px;
+  max-width: 95%;
+  height: auto;
+}
+
+div.cb-ris-new-step > div > textarea  {
+  max-width: 100%;
+}
+
+div#recipe_instructions > div.form-group > button.cb-ris-delete-new-step {
+  top: -25px;
+  position: relative;
+  float: left;
 }

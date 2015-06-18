@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CategoryType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text', array('label' => 'Category: '))
+        $builder->add('name', 'text', array('label' => 'Category: ', 'trim' => true))
                 ->add('save', 'submit', array('label' => 'Create Category'));
     }
 

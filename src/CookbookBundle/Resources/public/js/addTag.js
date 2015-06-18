@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
     $tagCollectionHolder = $('div#recipe_tags');
 
     // add a delete link to all of the existing tag form div elements
-    $tagCollectionHolder.find("div").each(function() {
+    $tagCollectionHolder.find('div[id^="recipe_tags_"]:not([id$="tag"])').each(function() {
         addTagFormDeleteButton($(this));
     });
 
@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
         $tagCollectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a tag" link li
-        var $newTagFormDiv = $('<div></div>').append(newTagForm);
+        var $newTagFormDiv = $('<div class="cb-ris-new-tag"></div>').append(newTagForm);
         $newTagButtonDiv.before($newTagFormDiv);
 
         // add a delete link to the new form
@@ -54,7 +54,7 @@ jQuery(document).ready(function() {
     }
 
     function addTagFormDeleteButton(tagFormDiv) {
-        var $removeTagFormButton = $('<button class="btn btn-xs">X</button>');
+        var $removeTagFormButton = $('<button class="btn btn-xs cb-ris-delete-new-tag-button"><span class="glyphicon glyphicon-remove"></span></button>');
         tagFormDiv.append($removeTagFormButton);
 
         $removeTagFormButton.on('click', function (e) {
@@ -63,8 +63,12 @@ jQuery(document).ready(function() {
 
             // remove the li for the tag form
             tagFormDiv.remove();
+
+            $('div#recipe_tags').children('div.form-group').each(function($index, $item) {
+                if($(this).children().length === 0) {
+                    $(this).remove();
+                }
+            });
         });
     }
-
-    //addTagForm($tagCollectionHolder, $newTagButtonDiv);
 });

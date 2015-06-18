@@ -7,3 +7,14 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+     my.doctrine.listener_ingredients:
+          class: CookbookBundle\Entity\Ingredient
+          tags:
+               #- { name: doctrine.event_listener, event: preUpdate }
+               - { name: doctrine.event_listener, event: prePersist }
+
+     my.doctrine.listener_tags:
+          class: CookbookBundle\Entity\Tag
+          tags:
+               #- { name: doctrine.event_listener, event: preUpdate }
+               - { name: doctrine.event_listener, event: prePersist }

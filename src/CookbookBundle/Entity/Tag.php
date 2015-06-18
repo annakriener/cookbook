@@ -1,6 +1,8 @@
 <?php
 
 namespace CookbookBundle\Entity;
+
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="tag", options={"collate"="utf8mb4_general_ci", "charset"="utf8mb4"})
  * @ORM\Entity
  */
-class Tag {
+class Tag
+{
     /**
      * @var integer
      *
@@ -45,7 +48,7 @@ class Tag {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -60,18 +63,60 @@ class Tag {
      */
     public function setName($name)
     {
-        $this->name = $name;
-    
+        $this->name = strtolower($name);
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
+
+    /**
+     * This will be called on newly created entities
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        // we're interested in Recipe only
+        if ($entity instanceof Recipe) {
+
+            $entityManager = $args->getEntityManager();
+            $recipeTags = $entity->getTags();
+
+            foreach ($recipeTags as $key => $recipeTag) {
+
+                // let's check for existence of this tag
+                $tags = $entityManager->getRepository('CookbookBundle:Tag')->findBy(array('name' => $recipeTag->getTag()->getName()), array('id' => 'ASC'));
+
+                // if tag exists use the existing tag
+                if (count($tags) > 0) {
+                    $entity->removeTag($recipeTag);
+
+                    $knownTag = $tags[0];
+                    $newRecipeTag = new RecipeTag();
+                    $newRecipeTag->setRecipe($entity);
+                    $newRecipeTag->setTag($knownTag);
+                    $newRecipeTag->setClassification($recipeTag->getClassification());
+
+                    $entity->addTag($newRecipeTag);
+                } else {
+                    // tag doesn't exist yet, add relation
+                    $entity->addTag($recipeTag);
+                }
+
+            }
+
+        }
+
+    }
+
+
 }

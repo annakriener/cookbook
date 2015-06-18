@@ -11540,7 +11540,7 @@ jQuery(document).ready(function() {
     $ingredientCollectionHolder = $('div#recipe_ingredients');
 
     // add a delete link to all of the existing ingredient form div elements
-    $ingredientCollectionHolder.find('div').each(function() {
+    $ingredientCollectionHolder.find('div[id^="recipe_ingredients_"]:not([id$="ingredient"])').each(function() {
         addIngredientFormDeleteButton($(this));
     });
 
@@ -11575,7 +11575,7 @@ jQuery(document).ready(function() {
         $ingredientCollectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a ingredient" link li
-        var $newIngredientFormDiv = $('<div></div>').append(newIngredientForm);
+        var $newIngredientFormDiv = $('<div class="cb-ris-new-ingredient"></div>').append(newIngredientForm);
         $newIngredientButtonDiv.before($newIngredientFormDiv);
 
         // add a delete link to the new form
@@ -11583,7 +11583,7 @@ jQuery(document).ready(function() {
     }
 
     function addIngredientFormDeleteButton(ingredientFormDiv) {
-        var $removeIngredientFormButton = $('<button class="btn btn-xs">X</button>');
+        var $removeIngredientFormButton = $('<button class="btn btn-xs cb-ris-delete-new-ingredient-button"><span class="glyphicon glyphicon-remove"></span></button>');
         ingredientFormDiv.append($removeIngredientFormButton);
 
         $removeIngredientFormButton.on('click', function (e) {
@@ -11592,20 +11592,34 @@ jQuery(document).ready(function() {
 
             // remove the li for the ingredient form
             ingredientFormDiv.remove();
+
+            $('div#recipe_ingredients').children('div.form-group').each(function($index, $item) {
+                if($(this).children().length === 0) {
+                    $(this).remove();
+                }
+            });
+
         });
     }
 
-    //addIngredientForm($ingredientCollectionHolder, $newIngredientButtonDiv);
+    /* initially show one ingredient-input field */
+    (function() {
+        if(pathname === "/addRecipe" && $('div#recipe_ingredients').children().length <= 1) {
+            $addIngredientButton.click();
+        }
+    }());
 });
 
 var $instructionCollectionHolder;
 var $addStepButton;
 var $newStepButtonDiv;
+var pathname;
 
 jQuery(document).ready(function() {
     // setup an "add a step" link
     $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
     $newStepButtonDiv = $('<div></div>').append($addStepButton);
+    pathname = window.location.pathname;
     // Get the ul that holds the collection of steps
     $instructionCollectionHolder = $('div#recipe_instructions');
 
@@ -11630,7 +11644,14 @@ jQuery(document).ready(function() {
     });
 
 
-    //addInstructionForm($instructionCollectionHolder, $newStepButtonDiv);
+    /* initially show one step-textarea field */
+
+    (function() {
+        if(pathname === "/addRecipe" && $('div#recipe_instructions').children().length <= 1) {
+            $addStepButton.click();
+        }
+    }());
+
 });
 
 function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
@@ -11649,7 +11670,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
     $instructionCollectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a step" link li
-    var $newStepFormDiv = $('<div></div>').append(newStepForm);
+    var $newStepFormDiv = $('<div class="cb-ris-new-step"></div>').append(newStepForm);
     $newStepButtonDiv.before($newStepFormDiv);
 
     // add a delete link to the new form
@@ -11657,7 +11678,7 @@ function addStepForm($instructionCollectionHolder, $newStepButtonDiv) {
 }
 
 function addStepFormDeleteButton(stepFormDiv) {
-    var $removeStepFormButton = $('<button class="btn btn-xs">X</button>');
+    var $removeStepFormButton = $('<button class="btn btn-xs cb-ris-delete-new-step"><span class="glyphicon glyphicon-remove"></span></button>');
     stepFormDiv.append($removeStepFormButton);
 
     $removeStepFormButton.on('click', function (e) {
@@ -11671,7 +11692,6 @@ function addStepFormDeleteButton(stepFormDiv) {
         stepFormDiv.remove();
     });
 }
-
 
 var $tagCollectionHolder;
 var $addTagButton;
@@ -11687,7 +11707,7 @@ jQuery(document).ready(function() {
     $tagCollectionHolder = $('div#recipe_tags');
 
     // add a delete link to all of the existing tag form div elements
-    $tagCollectionHolder.find("div").each(function() {
+    $tagCollectionHolder.find('div[id^="recipe_tags_"]:not([id$="tag"])').each(function() {
         addTagFormDeleteButton($(this));
     });
 
@@ -11721,7 +11741,7 @@ jQuery(document).ready(function() {
         $tagCollectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a tag" link li
-        var $newTagFormDiv = $('<div></div>').append(newTagForm);
+        var $newTagFormDiv = $('<div class="cb-ris-new-tag"></div>').append(newTagForm);
         $newTagButtonDiv.before($newTagFormDiv);
 
         // add a delete link to the new form
@@ -11729,7 +11749,7 @@ jQuery(document).ready(function() {
     }
 
     function addTagFormDeleteButton(tagFormDiv) {
-        var $removeTagFormButton = $('<button class="btn btn-xs">X</button>');
+        var $removeTagFormButton = $('<button class="btn btn-xs cb-ris-delete-new-tag-button"><span class="glyphicon glyphicon-remove"></span></button>');
         tagFormDiv.append($removeTagFormButton);
 
         $removeTagFormButton.on('click', function (e) {
@@ -11738,10 +11758,14 @@ jQuery(document).ready(function() {
 
             // remove the li for the tag form
             tagFormDiv.remove();
+
+            $('div#recipe_tags').children('div.form-group').each(function($index, $item) {
+                if($(this).children().length === 0) {
+                    $(this).remove();
+                }
+            });
         });
     }
-
-    //addTagForm($tagCollectionHolder, $newTagButtonDiv);
 });
 
 /**
@@ -12303,6 +12327,209 @@ function renderIngredients(annoted) {
         }
     }
 }
+
+/**
+ * Created by Anna Kriener on 15.06.2015.
+ */
+$(document).ready(function (){
+   var searchRefineButton = $('button#cb-search-refine-button');
+    var searchRefineDiv = $('div#cb-search-refine');
+    var searchForm = $('form#cb-search-form');
+
+    searchRefineDiv.on('show.bs.collapse', function(event) {
+        searchForm.fadeOut();
+        searchRefineButton.children('span').attr('class', 'glyphicon glyphicon-collapse-up');
+
+    }).on('hide.bs.collapse', function(event) {
+        searchForm.fadeIn();
+        searchRefineButton.children('span').attr('class', 'glyphicon glyphicon-collapse-down');
+    });
+});
+$(document).ready(function () {
+
+    /**
+     * SHOPPING LIST
+     */
+    var userShoppingListItem = $('li.cb-sl-userShoppingListItem'); //li-element
+    var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
+
+    // cross out already checked items
+    $("input:checkbox:checked.cb-sl-userShoppingListItemCheckbox").each(function () {
+        $(this).next('label').toggleClass("cb-sl-userShoppingListItemTextCrossed ");
+    });
+
+    // make it able to click on the whole item to check it (and cross it out if checked)
+    userShoppingListItem.on("click", function (event) {
+        var label = $(this).children("label.cb-sl-userShoppingListItemText"); // label-element
+
+        // prevent currently edited items of being checked/unchecked
+        if (label.attr("contenteditable") === "true") {
+            event.preventDefault();
+        } else {
+            label.toggleClass("cb-sl-userShoppingListItemTextCrossed ");
+
+            if (event.target.nodeName === "LABEL") {
+                event.preventDefault();
+            }
+
+            if (event.target.nodeName != "INPUT") {
+                var checkbox = $(this).children("input:checkbox.cb-sl-userShoppingListItemCheckbox"); // input-element (checkbox)
+                checkbox.prop('checked', !checkbox.prop('checked')).change(); // manually fire change-event to be able to listen on checkbox-change afterwards
+            }
+
+            hideAndShowCheckedUserShoppingListItems();
+        }
+    });
+
+    // hide and show all checked items and toggle button-text
+    buttonHideUserShoppingListItem.on("click", function (event) {
+        event.preventDefault();
+        $(this).toggleClass("cb-sl-hideCheckedItemsActive active");
+
+        // toggle button text
+        $(this).html($(this).html() === "Hide checked items" ? "Show checked items" : "Hide checked items");
+
+        hideAndShowCheckedUserShoppingListItems();
+    });
+
+    function hideAndShowCheckedUserShoppingListItems() {
+        if (buttonHideUserShoppingListItem.hasClass("cb-sl-hideCheckedItemsActive")) {
+            $("input:checkbox:checked.cb-sl-userShoppingListItemCheckbox").each(function () {
+                $(this).parent().parent().addClass("cb-sl-userShoppingListItemHidden")
+            });
+        } else {
+            $("input:checkbox:checked.cb-sl-userShoppingListItemCheckbox").each(function () {
+                $(this).parent().parent().removeClass("cb-sl-userShoppingListItemHidden")
+            });
+        }
+    }
+
+    // store checked status to database via ajax
+    $('input:checkbox.cb-sl-userShoppingListItemCheckbox').change(function () {
+        var url = "/shoppinglist/check";
+        var isChecked = false;
+
+        if ($(this).is(':checked')) {
+            isChecked = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/shoppinglist/check",
+            data: {
+                index: $(this).val(),
+                isChecked: isChecked
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
+    // make label contenteditabel
+    $('button.cb-sl-editUserShoppingListItem').on('click', function (event) {
+        event.preventDefault();
+
+        $(this).addClass('active');
+
+        var label = $(this).prev('li.cb-sl-userShoppingListItem').children('label.cb-sl-userShoppingListItemText');
+        label.prop("contenteditable", true);
+        label.focus();
+    });
+
+    // store edited item-value to database via ajax
+    $('label.cb-sl-userShoppingListItemText').on('blur', function (event) {
+        $(this).prop("contenteditable", false);
+        $(this).parent().next('button.cb-sl-editUserShoppingListItem').removeClass('active');
+
+        var index = $(this).prev('input:checkbox.cb-sl-userShoppingListItemCheckbox').val();
+        var newValue = $(this).html();
+
+        $.ajax({
+            type: "POST",
+            url: "/shoppinglist/edit",
+            data: {
+                index: index,
+                newValue: newValue
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
+
+    /**
+     * RECIPE DETAIL (ADD INGREDIENTS FROM RECIPE TO SHOPPING LIST)
+     */
+    var buttonCheckAllShoppingListItemsButton = $('button#cb-sl-checkAllShoppingListItemsButton'); //button-element
+    var addItemsToShoppingListForm = $('form#cb-sl-addItemsToShoppingListForm'); //form-element
+    var addItemsToShoppingListButton = $('button#cb-sl-addItemsToShoppingListButton'); //button-element
+    var confirmAddItemsToShoppingListModal = $('#cb-sl-confirmAddItemsToShoppingListModal'); //div-element (modal)
+    var checkAtLeastOneItemModal = $('#cb-sl-checkAtLeastOneItemModal'); //div-element (modal)
+
+    // check all ingredients with button-click
+    buttonCheckAllShoppingListItemsButton.on("click", function (event) {
+        event.preventDefault();
+        checkAndUnCheckShoppingListItems();
+    });
+
+    // confirm adding to shopping list
+    addItemsToShoppingListButton.on("click", function (event) {
+        event.preventDefault();
+
+        var checkedCheckboxesAddToShoppingListItem = $('.cb-sl-addToShoppingListItemCheckbox:checked');
+        var checkedLength = checkedCheckboxesAddToShoppingListItem.length;
+
+        if (checkedLength > 0) {
+            confirmAddItemsToShoppingListModal.modal('toggle');
+        } else {
+            checkAtLeastOneItemModal.modal('toggle');
+        }
+    });
+
+    // submit form if confirmed
+    $('button#cb-sl-yesAddItemsToShoppingListButton').on("click", function () {
+        addItemsToShoppingListForm.submit();
+    });
+
+    // add checked items to confirmation-modal
+    confirmAddItemsToShoppingListModal.on('show.bs.modal', function (event) {
+        var modal = $(this);
+        var checkedItems = $('.cb-sl-addToShoppingListItemCheckbox:checked').next(); // span-elements (with span-elements)
+        var itemsAddToShoppingList = "<ul>";
+
+        checkedItems.each(function (index) {
+            var itemAddToShoppingListParts = $(this).children(); // span-elements (amount, measurement, ingredient)
+            itemsAddToShoppingList += "<li>";
+            itemAddToShoppingListParts.each(function (index) {
+                itemsAddToShoppingList += $(this).text() + " ";
+            });
+            itemsAddToShoppingList += "</li>";
+        });
+        itemsAddToShoppingList += "<ul>";
+        modal.find("div#cb-sl-itemsAddToShoppingList").html(itemsAddToShoppingList);  // append list of checked items to modal
+    });
+
+    // check and un-check all ingredients of a recipe
+    function checkAndUnCheckShoppingListItems() {
+        var checkboxesAddToShoppingListItem = $('.cb-sl-addToShoppingListItemCheckbox');
+        var checkedCheckboxesAddToShoppingListItem = $('.cb-sl-addToShoppingListItemCheckbox:checked');
+
+        var unCheckedLength = checkboxesAddToShoppingListItem.length;
+        var checkedLength = checkedCheckboxesAddToShoppingListItem.length;
+
+        if (checkedLength >= 0 && checkedLength < unCheckedLength) {
+            checkboxesAddToShoppingListItem.prop("checked", true);
+        }
+
+        if (checkedLength == unCheckedLength) {
+            checkboxesAddToShoppingListItem.prop("checked", false);
+        }
+    }
+});
 
 function getTextContent(elementNode){ // innerText is not supported by Firefox (uses textContent instead)
     var hasInnerText = (elementNode.innerText != undefined) ? true : false;

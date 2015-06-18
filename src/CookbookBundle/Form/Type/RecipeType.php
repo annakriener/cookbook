@@ -1,5 +1,6 @@
 <?php
 namespace CookbookBundle\Form\Type;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -7,14 +8,18 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class RecipeType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('title', 'text', array('label' => 'Title: '))
-            ->add('author', 'text', array('label' => 'Author: '))
-            ->add('source', 'text', array('label' => 'Source: '))
+            ->add('title', 'text', array('label' => 'Title: ', 'trim' => true))
+            ->add('author', 'text', array('label' => 'Author: ', 'trim' => true))
+            ->add('source', 'text', array('label' => 'Source: ', 'trim' => true))
             ->add('duration', 'time', array('label' => 'Duration: (hh:mm)'))
 
             ->add('category', 'entity', array(
                 'class'         => 'CookbookBundle:Category',
-                'property'      => 'name',
+                'property'      =>  'name',
+                'query_builder'      => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'label'         => 'Category: ',
                 'placeholder'   => 'Choose a category',
                 'empty_data'    => 'null'
@@ -26,8 +31,8 @@ class RecipeType extends AbstractType {
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
-                'by_reference'  => false,
                 'delete_empty'  => true,
+                'by_reference'  => false,
                 'options' => array('label' => false)
             ))
 
@@ -37,12 +42,13 @@ class RecipeType extends AbstractType {
                 'prototype'     => true,
                 'allow_add'     => true,
                 'allow_delete'  => true,
+                'delete_empty'  => true,
                 'by_reference'  => false,
                 'options' => array('label' => false)
             ))
 
-            ->add('servings', 'integer', array('label' => 'Yields:'))
-            ->add('preparation', 'textarea', array('label' => 'Preparation:'))
+            ->add('servings', 'integer', array('label' => 'Yields:', 'trim' => true))
+            ->add('preparation', 'textarea', array('label' => 'Preparation:', 'trim' => true))
 
             ->add('instructions', 'collection', array(
                 'type'          => 'textarea',
@@ -55,7 +61,7 @@ class RecipeType extends AbstractType {
                 'options' => array('label' => "Step:")
             ))
 
-            ->add('image', 'text', array('label' => 'Image: '))
+            ->add('image', 'file', array('label' => 'Image: '))
             ->add('save', 'submit', array('label' => 'Create Recipe'));
     }
 
