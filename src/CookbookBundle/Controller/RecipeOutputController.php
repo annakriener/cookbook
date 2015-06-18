@@ -17,7 +17,23 @@ class RecipeOutputController extends Controller
     public function getRecipesAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $recipes = $em->getRepository('CookbookBundle:Recipe')->findAllOrderedByTitle();
+
+        $endSnack = $startBreakfast = mktime(5, 0, 0);
+        $endBreakfast = $startMainDish = mktime(10, 0, 0);
+        $endMainDish = $startSnack = mktime(20, 0, 0);
+        $currentTime = localtime(time(), true);
+
+        var_dump($currentTime);
+
+        if($startBreakfast <= $currentTime && $endBreakfast > $currentTime) {
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory('breakfast', 3);
+        } else if ($startMainDish <= $currentTime && $endMainDish > $currentTime) {
+            $recipes =$em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory('main dish', 3);
+        } else if ($startSnack <= $currentTime && $endSnack > $currentTime) {
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory('snack', 3);
+        } else {
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findDefaultRecipes();
+        }
 
         $searchForm = $this->createForm(new SearchType(), null, array(
             'action' => $this->generateUrl('search'),

@@ -9,8 +9,9 @@
 
         <div class="container">
             <div class="row cb-main">
+
                 {% for recipe in recipes %}
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         {% include 'CookbookBundle:default:box.html.twig' %}
                     </div>
                 {% endfor %}

@@ -159,6 +159,6 @@ class ShoppingListController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('shopping_list');
+        return $this->redirectToRoute('homepage');
     }
 }

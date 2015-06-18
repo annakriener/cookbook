@@ -13,10 +13,21 @@ use Doctrine\ORM\EntityRepository;
 class RecipeRepository extends EntityRepository
 {
 
-    public function findAllOrderedByTitle()
+    public function findDefaultRecipes()
     {
         return $this->createQueryBuilder('r')
             ->orderBy('r.category', 'ASC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findRecipesByCategory($categoryName, $limit) {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.category','c')
+            ->where('c.name = :categoryName')
+            ->setParameter('categoryName', $categoryName)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
