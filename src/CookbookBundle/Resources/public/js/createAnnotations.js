@@ -253,7 +253,6 @@ function removeAnnotations(){
 
     var annotation_id = $("#an-tools").attr("data-annotation-id");
     var recipe_id = $("#recipe_container").attr("data-recipe-id");
-    alert("remove annotations with id: " + annotation_id + " and recipe id: " + recipe_id);
 
     $.post('/removeAnnotations', {
         annotation_id: annotation_id

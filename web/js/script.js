@@ -12023,7 +12023,6 @@ function removeAnnotations(){
 
     var annotation_id = $("#an-tools").attr("data-annotation-id");
     var recipe_id = $("#recipe_container").attr("data-recipe-id");
-    alert("remove annotations with id: " + annotation_id + " and recipe id: " + recipe_id);
 
     $.post('/removeAnnotations', {
         annotation_id: annotation_id
@@ -12518,13 +12517,11 @@ $(document).ready(function () {
         var itemsAddToShoppingList = "<ul>";
 
         checkedItems.each(function (index) {
-            var itemAddToShoppingListParts = $(this).children(); // span-elements (amount, measurement, ingredient)
-            itemsAddToShoppingList += "<li>";
-            itemAddToShoppingListParts.each(function (index) {
-                itemsAddToShoppingList += $(this).text() + " ";
-            });
-            itemsAddToShoppingList += "</li>";
+            var itemAddToShoppingListText = $(this).text(); // span-elements (amount, measurement, ingredient)
+            itemsAddToShoppingList += "<li>" + itemAddToShoppingListText + "</li>";
+            $(this).prev('input.cb-sl-addToShoppingListItemCheckbox').val(itemAddToShoppingListText);
         });
+
         itemsAddToShoppingList += "<ul>";
         modal.find("div#cb-sl-itemsAddToShoppingList").html(itemsAddToShoppingList);  // append list of checked items to modal
     });

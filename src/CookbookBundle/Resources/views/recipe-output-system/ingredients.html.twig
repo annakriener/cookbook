@@ -17,12 +17,10 @@
 
                     {%- set ingredient = " " ~ ingr.ingredient.name -%}
                     <p>
-                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}'
-                           name="addToShoppingListItem{{ loop.index }}" class="cb-ingr-checkbox cb-sl-addToShoppingListItemCheckbox">
+                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}' name="addToShoppingListItem{{ loop.index }}" class="cb-ingr-checkbox cb-sl-addToShoppingListItemCheckbox">
                     <span class="cb-ingr cb-sl-addToShoppingListItem">
-        <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
+                    <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
                         </p>
-
                 </li>{%- endspaceless -%}
             {%- endfor -%}
         </ul>
