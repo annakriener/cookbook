@@ -50,10 +50,9 @@ function computeNewAmount(amount, currentServings, originalServings){
     var newAmount = parseFloat(amount)*parseFloat(currentServings);
     newAmount = newAmount/parseFloat(originalServings);
 
-    //TODO: beautify output depending on size of newAmount zB 599 g --> 600 g, aber 5,9 bleibt 5,9
-    //TODO also deal with very small numbers - returning 0.0 won't make anybody happy
-    return parseFloat(newAmount.toFixed(2));
+    return beautifyNumber(parseFloat(newAmount.toFixed(2)));
 }
+
 
 function checkIfChanged() {
     var text = getTextContent(this);
