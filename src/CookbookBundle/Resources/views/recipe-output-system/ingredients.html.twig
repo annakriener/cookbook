@@ -27,8 +27,7 @@
                            name="addToShoppingListItem{{ loop.index }}" class="cb-sl-addToShoppingListItemCheckbox">
                     <span class="cb-sl-addToShoppingListItem">
                         <span>{{ amount }}</span>
-                        <span>{{ measurement }}</span>
-                        <span>{{ ingredient }}</span>
+                        {{ measurement }} {{ ingredient }}
                     </span>
                 </li>
             {% endfor %}

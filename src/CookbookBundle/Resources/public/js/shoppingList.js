@@ -155,13 +155,11 @@ $(document).ready(function () {
         var itemsAddToShoppingList = "<ul>";
 
         checkedItems.each(function (index) {
-            var itemAddToShoppingListParts = $(this).children(); // span-elements (amount, measurement, ingredient)
-            itemsAddToShoppingList += "<li>";
-            itemAddToShoppingListParts.each(function (index) {
-                itemsAddToShoppingList += $(this).text() + " ";
-            });
-            itemsAddToShoppingList += "</li>";
+            var itemAddToShoppingListText = $(this).text(); // span-elements (amount, measurement, ingredient)
+            itemsAddToShoppingList += "<li>" + itemAddToShoppingListText + "</li>";
+            $(this).prev('input.cb-sl-addToShoppingListItemCheckbox').val(itemAddToShoppingListText);
         });
+
         itemsAddToShoppingList += "<ul>";
         modal.find("div#cb-sl-itemsAddToShoppingList").html(itemsAddToShoppingList);  // append list of checked items to modal
     });
