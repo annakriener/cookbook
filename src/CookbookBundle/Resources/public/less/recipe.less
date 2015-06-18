@@ -3,8 +3,92 @@
 .cb-recipe {
   margin-top: 60px;
   margin-bottom: 60px;
+  color: rgba(188, 121, 255, 0.99);
 }
 
 .cb-recipe-image {
   width: 100%;
+}
+
+.cb-an-f-highlight {
+
+  background-color: #fffe70;
+//
+}
+
+.cb-an-c-yellow{
+  background-color: #fffe70;
+}
+
+.cb-an-c-cyan{
+  background-color: #a5fffa;
+}
+
+.cb-an-c-pink{
+  background-color: #f0b7ff;
+}
+
+.cb-an-f-bold{
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.cb-an-f-off{
+  text-decoration: line-through;
+}
+
+[contenteditable="true"] {
+  color: #4985ff;
+  font-size: 1.2em;
+  font-family: 'Courgette', cursive;
+}
+
+
+.cb-timer {
+  background-color:#44c767;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  border-radius:8px;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-size: 1em;
+  padding:0px 6px 0px 30px;
+  text-decoration:none;
+  margin-left: 4px;
+  margin-right: 4px;
+
+  // TODO: fix image display for firefox + opera (works great with chrome & safari)
+  background-image: url('../img/cb_timer.png');
+  background-size: 15px 15px;
+  background-position-x: 6px;
+  background-position-y: center;
+  background-repeat: no-repeat;
+
+}
+.cb-timer:hover {
+  background-color:#5cbf2a;
+}
+.cb-timer:active {
+  position:relative;
+  top:1px;
+}
+
+// INGREDIENTS
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+
+.cb-ingr-checkbox {
+  float: left;
+  width: 8%;
+}
+
+.cb-ingr {
+  float: left;
+  width: 90%;
+  padding-bottom: 10px;
 }

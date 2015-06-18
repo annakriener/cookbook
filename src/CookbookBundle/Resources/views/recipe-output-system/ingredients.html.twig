@@ -2,36 +2,37 @@
     <h2>Ingredients</h2>
     <form method="post" action="/recipe/{{ recipe.id }}/add/to/shoppinglist" name="addToShoppingListForm"
           id="cb-sl-addItemsToShoppingListForm">
-        <ul>
-            {% for ingr in ingredients %}
+        <ul id="ingredients">
+            {% for ingr in ingredients %}{%- spaceless -%}
                 <li>
-                    {% if ingr.amount %}
-                        {% set amount = ingr.amount %}
-                    {% else %}
-                        {% set amount = "" %}
-                    {% endif %}
+                    {%- set amount = "  " -%}
+                    {%- if ingr.amount -%}
+                        {%- set amount = ingr.amount -%}
+                    {%- endif -%}
 
-                    {% if ingr.measurement %}
-                        {% set measurement = ingr.measurement.name %}
-                    {% else %}
-                        {% set measurement = "" %}
-                    {% endif %}
+                    {%- set measurement = "" -%}
+                    {%- if ingr.measurement -%}
+                        {%- set measurement = " " ~ ingr.measurement.name -%}
+                    {%- endif -%}
 
-                    {% if ingr.ingredient %}
-                        {% set ingredient = ingr.ingredient.name %}
-                    {% else %}
-                        {% set ingredient = "" %}
-                    {% endif %}
-
-                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}'
-                           name="addToShoppingListItem{{ loop.index }}" class="cb-sl-addToShoppingListItemCheckbox">
-                    <span class="cb-sl-addToShoppingListItem">
-                        <span>{{ amount }}</span>
-                        {{ measurement }} {{ ingredient }}
-                    </span>
-                </li>
-            {% endfor %}
+                    {%- set ingredient = " " ~ ingr.ingredient.name -%}
+                    <p>
+                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}' name="addToShoppingListItem{{ loop.index }}" class="cb-ingr-checkbox cb-sl-addToShoppingListItemCheckbox">
+                    <span class="cb-ingr cb-sl-addToShoppingListItem">
+                    <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
+                        </p>
+                </li>{%- endspaceless -%}
+            {%- endfor -%}
         </ul>
+        {%- if annotations -%}
+            {#- -#}
+
+            <script>{#- -#}
+                {% set arrayIngreds = recipe.ingredients %}
+                renderIngredients({"data": {{ annotations.ingredients|json_encode|raw }} });
+                {#- -#}
+            </script>
+        {%- endif -%}
         <button class="btn btn-default" id="cb-sl-addItemsToShoppingListButton"><span
                     class="glyphicon glyphicon-plus"></span> Add to Shopping List
         </button>
@@ -76,3 +77,5 @@
         </div>
     </div>
 {% endblock %}
+
+

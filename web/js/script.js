@@ -11528,12 +11528,14 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 var $ingredientCollectionHolder;
-
-// setup an "add a ingredient" link
-var $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
-var $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+var $addIngredientButton;
+var $newIngredientButtonDiv;
 
 jQuery(document).ready(function() {
+    // setup an "add a ingredient" link
+    $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
+    $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+
     // Get the ul that holds the collection of ingredients
     $ingredientCollectionHolder = $('div#recipe_ingredients');
 
@@ -11609,13 +11611,15 @@ jQuery(document).ready(function() {
 });
 
 var $instructionCollectionHolder;
-
-// setup an "add a step" link
-var $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
-var $newStepButtonDiv = $('<div></div>').append($addStepButton);
-var pathname = window.location.pathname;
+var $addStepButton;
+var $newStepButtonDiv;
+var pathname;
 
 jQuery(document).ready(function() {
+    // setup an "add a step" link
+    $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
+    $newStepButtonDiv = $('<div></div>').append($addStepButton);
+    pathname = window.location.pathname;
     // Get the ul that holds the collection of steps
     $instructionCollectionHolder = $('div#recipe_instructions');
 
@@ -11688,13 +11692,17 @@ function addStepFormDeleteButton(stepFormDiv) {
         stepFormDiv.remove();
     });
 }
-var $tagCollectionHolder;
 
-// setup an "add a tag" link
-var $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn btn-sm">Add a tag</button>');
-var $newTagButtonDiv = $('<div></div>').append($addTagButton);
+var $tagCollectionHolder;
+var $addTagButton;
+var $newTagButtonDiv;
+
 
 jQuery(document).ready(function() {
+    // setup an "add a tag" link
+    $addTagButton = $('<button class="cb-ris-add-tag-button btn-default btn btn-sm">Add a tag</button>');
+    $newTagButtonDiv = $('<div></div>').append($addTagButton);
+
     // Get the ul that holds the collection of tags
     $tagCollectionHolder = $('div#recipe_tags');
 
@@ -11761,15 +11769,580 @@ jQuery(document).ready(function() {
 });
 
 /**
- * Created by Anna Kriener on 30.04.2015.
+ * INSTRUCTIONS - STEPS and their annotations
  */
-$('#cb-anna').on('click', function(){
-    alert("HELLO WORLD!");
+
+var $hideText = "hide";
+var $showText = "show";
+$( document ).ready(function() {
+
+    $('#crossout').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#yellow').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#cyan').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#pink').on('click', function(){
+        var cname = $(this).attr('class');
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', formatTxt(cname));
+    });
+
+    $('#takenote').on('click', function(){
+
+        $('#preparation').off('mouseup');
+        $('#preparation').on('mouseup', takeNote);
+    });
+    $('#save').on('click', function(){
+        saveAnnotations();
+    });
+
+    $('#rmAnnotations').on('click', function(){
+        removeAnnotations();
+    });
+
+
+    $('#hide').on('click', function(){
+        if ($('#hide').text() == $showText) {
+            $('#hide').text($hideText);
+            $(".cb-an-f-off").show();
+        } else {
+            hideCrossed();
+        }
+    });
+
 });
 
-function foo () {
-    alert('BAR');
+function hideCrossed(){
+    $('#hide').text($showText);
+    $(".cb-an-f-off").not("button").hide();
 }
+
+
+// hightlighting of text
+function formatTxt(fClassName) {
+    var txt = '';
+    var selObj;
+    if (window.getSelection)
+    {
+        selObj = window.getSelection(); // selObj ... Selection Object (https://developer.mozilla.org/en-US/docs/Web/API/Selection)
+        txt = selObj.toString();
+
+        if (selObj.anchorNode == selObj.focusNode && txt.length > 0 && txt != " ") { // is selection in same node? is at least one character selected?
+
+            var selNode = selObj.anchorNode;
+
+            if (selNode.nodeType == 3) {
+                var parent = selNode.parentNode;
+                if ($(parent).hasClass("cb-timer")) {return;}
+                // indices
+                var offset = selObj.anchorOffset;
+                var endStartIndex = offset + txt.length;
+
+                if (isBackwardsSelection(selObj)) { // if text was selected
+                    endStartIndex = offset;
+                    offset = offset - txt.length;
+                }
+
+                // strings
+                var originalString = selNode.nodeValue;
+                var startString = originalString.substring(0, offset);
+                var middleString = originalString.substr(offset, txt.length);
+                var endString = originalString.substr(endStartIndex);
+
+                // Deal with blanks at beginning or end of selection. Uncommented for textHighlight, comment when text color only changed
+                /*                if (middleString[0] == " ") {
+                 startString += " ";
+                 middleString = middleString.substr(1);
+                 }
+
+                 if (middleString[middleString.length-1] == " ") {
+                 endString = " " + endString;
+                 middleString = middleString.substr(0, middleString.length-1);
+                 }*/
+
+
+                // Create new Children from startString, middleString and endString and prepend them to selNode!
+                if (startString.length > 0){
+                    var startChild = document.createTextNode(startString);
+                    $(selNode).before(startChild);
+                }
+
+                middleString = "<span class=\"" + fClassName + "\">" + middleString + "</span>";
+                $(selNode).before(middleString);
+
+                if (endString.length > 0){
+                    var endChild = document.createTextNode(endString);
+                    $(selNode).before(endChild);
+                }
+
+                // remove selNode, we don't need it any more
+                parent.removeChild(selNode);
+                combineEqualElements(parent);
+            }
+        }
+    }
+    else if (document.getSelection)
+    {
+        txt = document.getSelection();
+    }
+    else if (document.selection)
+    {
+        txt = document.selection.createRange().text;
+    }
+    else return;
+};
+
+function isBackwardsSelection(selectionObject) {
+    position = selectionObject.anchorNode.compareDocumentPosition(selectionObject.focusNode);
+    backward = false;
+
+    if (!position && selectionObject.anchorOffset > selectionObject.focusOffset || position === Node.DOCUMENT_POSITION_PRECEDING) {
+        backward = true;
+    }
+    return backward;
+}
+
+function removeIfEmpty(){
+    if (this.innerHTML == "" || this.firstChild == undefined) {
+        var parent = this.parentNode;
+        parent.removeChild(this);
+        parent.normalize(); // glues separated textNodes back together - awesome!
+        return true;
+    }
+    return false;
+}
+
+function isEqualElement(nodeA, nodeB) {
+    if (nodeA == undefined || nodeB == undefined) {
+        return false;
+    }
+    if (nodeA.nodeType != nodeB.nodeType) {
+        return false;
+    }
+    return nodeA.className == nodeB.className;
+}
+
+function combineEqualElements(parent){
+    var children = parent.childNodes;
+    var index = 1;
+    var length = children.length;
+
+    while (index < length) {
+        if (isEqualElement(children[index-1], children[index])){
+            mergeNodes(children[index-1], children[index]);
+            length = children.length; // update length of NodeList
+        } else {
+            index++;
+        }
+    }
+}
+
+function mergeNodes(nodeA,nodeB) { // Note: use with care, does not check for undefined!!
+    nodeA.innerHTML += nodeB.innerHTML;
+    nodeA.parentNode.removeChild(nodeB);
+}
+
+// add notes to existing text
+function takeNote() {
+    var selObj;
+    if (window.getSelection) {
+        selObj = window.getSelection(); // selObj ... Selection Object (https://developer.mozilla.org/en-US/docs/Web/API/Selection)
+
+        if (selObj.anchorNode == selObj.focusNode) { // is selection in same node? is at least one character selected?
+
+            var selNode = selObj.anchorNode;
+
+            var parent = selNode.parentNode;
+            if ($(parent).hasClass("cb-timer")) {return;}
+            var isNote = parent.getAttribute("contenteditable");
+            // TODO: check here if somehow possible if there is a contenteditable span away by +/-1 offset? and then jump into this one?
+
+            if (selNode.nodeType == 3 && !isNote) { // in javascript null == false, so that's ok
+                if (isNote) { selNode.focus(); return; }
+                var noteStartIndex = selObj.anchorOffset;
+                var originalString = selNode.nodeValue;
+                var startString = originalString.substring(0, noteStartIndex);
+
+                var noteNode = $(document.createElement('span'));
+                $(noteNode).attr("contenteditable","true");
+
+                var endString = originalString.substr(noteStartIndex);
+
+                $(selNode).before(startString, noteNode, endString);
+
+                // remove selNode, we don't need it any more
+                selNode.parentNode.removeChild(selNode);
+
+                noteNode.on('blur', removeIfEmpty); // remove note node, if nothing was added
+                noteNode.focus(); // focus on the editable span, so we can start writing right away
+            }
+        }
+    }
+};
+// SAVE ANNOTATIONS into DB via AJAX
+function saveAnnotations(){
+
+    var annotation_id = $("#an-tools").attr("data-annotation-id");
+    var recipe_id = $("#recipe_container").attr("data-recipe-id");
+    var instructions = $('#preparation').children("li");
+    var ingredients = $('#ingredients').children("li");
+
+    // serializedInstructions is an array with JSON objects
+    var serializedInstructions = getSerializedChildren(instructions);
+    //console.log(JSON.stringify(serializedInstructions));
+
+    var hideCrossed = !($('#hide').text() == $hideText);
+    var serializedIngredients = getSerializedChildren(ingredients);
+
+    $.post('/saveAnnotations', {
+        annotation_id: annotation_id,
+        recipe_id : recipe_id,
+        instructions : serializedInstructions,
+        ingredients : serializedIngredients,
+        hideCrossed: hideCrossed
+    }).done(function(data){ // data is the response
+        $("#an-tools").attr("data-annotation-id", data); // NOTE: this may not be the best solution, probably need to check first if data is a number
+    });
+}
+
+// SAVE ANNOTATIONS into DB via AJAX
+function removeAnnotations(){
+
+    var annotation_id = $("#an-tools").attr("data-annotation-id");
+    var recipe_id = $("#recipe_container").attr("data-recipe-id");
+
+    $.post('/removeAnnotations', {
+        annotation_id: annotation_id
+    }).done(function(){ // data is the response
+        document.location.reload(true);
+    });
+}
+
+function r_serializeChild(child) {
+    /*
+     * Node Types:
+     * 0: indexNode, refers to part of original text, contains length of the part (startIndex = summation of lengths of preceding indexNodes)
+     * 1: textNode, is a text written by user
+     * 2: nestedNode, is a not contenteditable span with 1 or more child nodes that may have children themselves
+     * 3: noteNode, is a contenteditable span with 1 or more child nodes that may have children themselves
+     * 4: timerNode, is a not contenteditable span with a time value
+     * 5: pNode, is a paragraph
+     * 6: stepNode (li)
+     * */
+
+    if (child.nodeType == 3){ // RECURSION BASE ! ( check if its a textnode )
+        if (!child.nodeValue.length) { return { type: -1}; }
+
+        if ((child.parentNode).isContentEditable){
+            var jsonObj = { "type": 1, "txt": child.nodeValue };
+            return jsonObj; // JSON object mit Type:2, text: child.nodeValue;
+        }
+        else { // it's a recipe text
+            var jsonObj = { "type": 0, "len": child.nodeValue.length };
+            return jsonObj;
+        }
+    } else if (child.nodeType == 1) { // check if Element node to be on safe side
+
+
+        if (!child.childNodes.length && !$(child).is("input")){
+            return { type: -1};
+        }
+
+        if ($(child).is("p")) {
+            var serializedChildren = getSerializedChildren(child.childNodes);
+            var jsonObj = { "type": 5, "children": serializedChildren };
+            return jsonObj;
+        }
+
+        else if ($(child).is("li")) {
+            var serializedChildren = getSerializedChildren($(child).children("p"));
+            var jsonObj = { "type": 6, "children": serializedChildren };
+            return jsonObj;
+        }
+
+        else if ($(child).is("[contenteditable='true']")){
+            var serializedChildren = getSerializedChildren(child.childNodes);
+            var classname = $(child).attr('class');
+            var servingsData = $(child).attr('data-an-servings');
+            var jsonObj = { "type": 3, "children": serializedChildren, "class": classname, "servings": servingsData };
+            return jsonObj;
+
+        } else if ($(child).hasClass("cb-timer")) { // it's a timer! THIS IS ALSO A RECURSION BASE
+            var jsonObj = {"type": 4, "h": 0, "m": 5, "s": 0}; // TODO: use actual values derived from nodeValue
+            return jsonObj;
+
+        } else if ($(child).is("input")){//} && $(child).is(':checkbox')) { //$(child).is("input") && TODO check if first part is neccessary
+            var isChecked = child.checked;
+            var jsonObj = {"type": 7, "check": isChecked};
+            return jsonObj;
+
+        } else {
+            var serializedChildren = getSerializedChildren(child.childNodes);
+            var classname = $(child).attr('class');
+            var jsonObj = { "type": 2, "children": serializedChildren, "class": classname };
+            return jsonObj;
+        }
+    }
+}
+
+function getSerializedChildren(children) {
+
+    if (children == undefined || children == null) {
+        return null;
+    }
+    var serializedChildren = [];
+
+    // check if child itself has children - do this with a recursive function
+    for(var j=0; j < children.length; ++j) {
+        var serializedChild = r_serializeChild(children[j]);
+        if (serializedChild != null || serializedChild != undefined)
+            serializedChildren.push(serializedChild);
+    }
+
+    return serializedChildren;
+}
+
+
+
+/**
+ * INGREDIENTS - and their annotations
+ */
+var $original_servingsize;
+
+$( document ).ready(function() {
+
+    $original_servingsize = $("#servings").attr("data-orig-servings");
+
+    // handle user changes in ingredient amounts
+    $('span.cb-ingr-amount').on('mousedown', function(){
+        $(this).on('mouseup', function(){
+            $(this).attr("contenteditable","true");
+            $(this).focus();
+            $(this).on('blur', checkIfChanged);
+        });
+    });
+
+    // handle user changes in serving size !
+    $("#servings").on('change', function(){
+
+        var current = $("#servings").val();
+
+        if (!isNumber(current) || parseFloat(current) < 1.0){
+            current = $original_servingsize;
+            $("#servings").val($original_servingsize);
+        }
+
+        var currentAmounts = $('span.cb-ingr-amount'); // list of the ingredients (their amounts)
+
+        for (var i=0; i < currentAmounts.length; ++i){
+            // first define values for computation for default case (no changes)
+            var initalServings = $original_servingsize;
+            var amount = $(currentAmounts[i]).attr("data-orig-amount");
+
+            // deal with changes made by user, if there are any
+            if ($(currentAmounts[i]).is("[contenteditable='true']")){ // if amount was changed, use the amount that was typed in by user
+                amount = $(currentAmounts[i]).attr("data-an-amount");
+                if ($(currentAmounts[i]).attr("data-an-servings")){ // if the amount was changed with non-default servingsize, use servingsize at time user changed amount
+                    initalServings = $(currentAmounts[i]).attr("data-an-servings");
+                }
+            }
+            // compute and assign the new amount that shall be displayed
+            currentAmounts[i].innerHTML = computeNewAmount(amount, current, initalServings);
+        }
+    });
+});
+
+function computeNewAmount(amount, currentServings, originalServings){
+    var newAmount = parseFloat(amount)*parseFloat(currentServings);
+    newAmount = newAmount/parseFloat(originalServings);
+
+    return beautifyNumber(parseFloat(newAmount.toFixed(2)));
+}
+
+
+function checkIfChanged() {
+    var text = getTextContent(this);
+    var origAmount = $(this).attr("data-orig-amount");
+
+    if (origAmount == text || !isNumber(text)) { // unset contenteditable if amount has not changed or is not numeric
+        resetOriginal(this, origAmount);
+    } else {
+        this.innerHTML = parseFloat(text);
+        var currentServings = $("#servings").val(); // remember the currentServing size to do conversions correctly
+        $(this).attr("data-an-amount", parseFloat(text));
+        if (currentServings != $original_servingsize) {
+            $(this).attr("data-an-servings", currentServings);
+        }
+    }
+}
+
+function resetOriginal(amountNode, origAmount){
+    amountNode.innerHTML = origAmount;
+    $(amountNode).attr("contenteditable", "false");
+    $(amountNode).removeAttr( "data-an-amount" );
+    $(amountNode).removeAttr( "data-an-servings" );
+}
+// RENDER ANNOTATIONS
+
+function renderInstructions(original, annoted, hide) {
+    var parentNode = $('#preparation');
+    // first retrieve the instructions arrays from Database
+    var stepsOriginal = original.data; // TODO
+    var stepsAnnoted = annoted.data; //TODO
+
+    if (stepsOriginal.length == stepsAnnoted.length) {
+        for (var step = 0; step < stepsOriginal.length; ++step) {
+            var liNode = $('<li />');
+            parentNode.append(liNode);
+
+            var originalPs = stepsOriginal[step];
+            var annotedPs = stepsAnnoted[step].children;
+
+            for (var p = 0; p < originalPs.length; ++p) { // go through paragraphs per step
+                var pNode = $('<p />');
+                liNode.append(pNode);
+
+                var contentOriginal = originalPs[p];
+                var contentAnnoted = annotedPs[p].children;
+                var an_index = 0;
+
+                for (var c = 0; c < contentOriginal.length; ++c) {
+                    if (contentOriginal[c].type == 1) { // text
+
+                        var oC_index = 0;
+                        while (oC_index < contentOriginal[c].txt.length && an_index < contentAnnoted.length) {
+                            oC_index = r_appendChild(pNode, contentAnnoted[an_index], oC_index, contentOriginal[c].txt);
+                            ++an_index;
+                        }
+
+                    } else if (contentOriginal[c].type == 4) { // timer
+                        while (r_appendChild(pNode, contentAnnoted[an_index++], true, contentOriginal[c])){/*empty on purpose*/}
+                    }
+                }
+
+                while (contentAnnoted != undefined && an_index < contentAnnoted.length) { // don't forget contenteditable spans at the very end of a paragraph
+                    oC_index = r_appendChild(pNode, contentAnnoted[an_index], 0, "");
+                    ++an_index;
+                }
+            }
+        }
+    }
+
+    if (hide) {
+        hideCrossed();
+    }
+}
+
+function r_appendChild(parentNode, child, index, content){
+    var s = parseInt(child.type);
+    switch (s) {
+        case 0: // recursion base
+            var len = parseInt(child.len); // necessary since encoding the JSON objects turns integers to strings
+            var text = content.substr(index, len);
+            var textnode = document.createTextNode(text);
+            parentNode.append(textnode);
+            return (index + len);
+
+        case 1: // recursion base
+            var textnode = document.createTextNode(child.txt);
+            parentNode.append(textnode);
+            return index;
+
+        case 2: // span with class, not contenteditable
+            var span = $('<span />').addClass(child.class);
+            var children = child.children;
+
+            for (var i=0; i < children.length; ++i) {
+                index = r_appendChild(span, children[i], index, content);
+            }
+            parentNode.append(span);
+            return index;
+        case 3: // span with attribute contenteditable
+            var span = $('<span />').attr("contenteditable", "true");
+            var children = child.children;
+
+            for (var i=0; i < children.length; ++i) {
+                index = r_appendChild(span, children[i], index, content);
+            }
+            parentNode.append(span);
+            return index;
+        case 4: // timer
+            // alternatively: get timer values from content param
+            var span = $('<span />').addClass("cb-timer").html(child.h + ":" + child.m + ":" + child.s);
+            parentNode.append(span);
+            return false;
+        case 7: //checkbox
+            var checkbox = $('<input />').attr("type", "checkbox").addClass("cb-ingr-checkbox");
+            if (child.check != "0") {
+                $(checkbox).prop("checked", true);
+            }
+            parentNode.append(checkbox);
+        default:
+            return index;
+    }
+}
+
+
+function renderIngredients(annoted) {
+
+    var originalChildren = $('#ingredients').children("li");
+    var ingrAnnoted = annoted.data;
+
+    var li=0;
+    for (; li < ingrAnnoted.length; ++li) { // use ingrAnnoted because there might be additional ingredients // TODO: make safe
+        var originalP = $(originalChildren[li]).children("p")[0];
+        var annotedP = ingrAnnoted[li].children[0];
+
+        var contentOriginal = originalP.childNodes;
+        var contentAnnoted = annotedP.children;
+        var an_index = 0;
+
+// 1. checkbox node
+        if (contentAnnoted[0].check == "true") {
+            contentOriginal[0].checked = true;
+        }
+// 2. amount span
+        if (contentAnnoted[1].children[0].type == "3") {
+            var valueAmount = contentAnnoted[1].children[0].children[0].txt;
+            contentOriginal[1].childNodes[0].innerHTML = valueAmount;
+            $(contentOriginal[1].childNodes[0]).attr("contenteditable", "true");
+
+            if (contentAnnoted[1].children[0].servings){
+                $(contentOriginal[1].childNodes[0]).attr("data-an-servings", contentAnnoted[1].children[0].servings);
+                $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
+            }
+        }
+
+// 3. ingredienttext (textnode)
+        var originalTxt = contentOriginal[1].childNodes[1].nodeValue;
+
+        if (contentAnnoted[1].children[1].type == "0" && parseInt(contentAnnoted[1].children[1].len) == originalTxt.length) {/*no annotations*/}
+        else {
+
+            var an_index = 1;
+            var oC_index = 0;
+            while (oC_index < originalTxt.length && an_index < contentAnnoted[1].children.length) {
+                oC_index = r_appendChild($(contentOriginal[1]), contentAnnoted[1].children[an_index], oC_index, originalTxt);
+                ++an_index;
+            }
+            $(contentOriginal[1].childNodes[1]).remove(); // remove the original textnode (without annotations)
+        }
+    }
+}
+
 /**
  * Created by Anna Kriener on 15.06.2015.
  */
@@ -11970,3 +12543,43 @@ $(document).ready(function () {
         }
     }
 });
+
+function getTextContent(elementNode){ // innerText is not supported by Firefox (uses textContent instead)
+    var hasInnerText = (elementNode.innerText != undefined) ? true : false;
+
+    if(!hasInnerText){ return elementNode.textContent; }
+    else { return elementNode.innerText; }
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function beautifyNumber(number) {
+
+    if (number < 1.0) { // leave small numbers as they are
+        return number;
+    }
+    else if (number < 10.0) { // round to number in 0.5 steps
+        number = roundByFive(number*10);
+        return (parseFloat(number))*0.1;
+    }
+    else if (number < 100.0) { // round to integer
+        return Math.round(number);
+    } else {
+        return roundByFive(number); // use 5.0 steps for large values
+    }
+}
+
+function roundByFive (n) {
+    var rest = n%10;
+    if (rest < 3.0) {
+        n = n- rest;
+    } else if (rest < 8.0) {
+        n = n + (5 - rest);
+
+    } else {
+        n  = n + (10 - rest);
+    }
+    return parseInt(n);
+}

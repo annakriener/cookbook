@@ -1,11 +1,13 @@
 var $instructionCollectionHolder;
-
-// setup an "add a step" link
-var $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
-var $newStepButtonDiv = $('<div></div>').append($addStepButton);
-var pathname = window.location.pathname;
+var $addStepButton;
+var $newStepButtonDiv;
+var pathname;
 
 jQuery(document).ready(function() {
+    // setup an "add a step" link
+    $addStepButton = $('<button class="cb-ris-add-step-button btn-default btn btn-sm">Add a step</button>');
+    $newStepButtonDiv = $('<div></div>').append($addStepButton);
+    pathname = window.location.pathname;
     // Get the ul that holds the collection of steps
     $instructionCollectionHolder = $('div#recipe_instructions');
 
