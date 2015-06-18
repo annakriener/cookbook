@@ -21,7 +21,7 @@ $( document ).ready(function() {
 
         var current = $("#servings").val();
 
-        if (!isNumber(current)){
+        if (!isNumber(current) || parseFloat(current) < 1.0){
             current = $original_servingsize;
             $("#servings").val($original_servingsize);
         }
@@ -35,7 +35,7 @@ $( document ).ready(function() {
 
             // deal with changes made by user, if there are any
             if ($(currentAmounts[i]).is("[contenteditable='true']")){ // if amount was changed, use the amount that was typed in by user
-                amount = $(currentAmounts[i]).attr("data-an-amount");;//""
+                amount = $(currentAmounts[i]).attr("data-an-amount");
                 if ($(currentAmounts[i]).attr("data-an-servings")){ // if the amount was changed with non-default servingsize, use servingsize at time user changed amount
                     initalServings = $(currentAmounts[i]).attr("data-an-servings");
                 }
@@ -77,4 +77,3 @@ function resetOriginal(amountNode, origAmount){
     $(amountNode).removeAttr( "data-an-amount" );
     $(amountNode).removeAttr( "data-an-servings" );
 }
-
