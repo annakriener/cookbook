@@ -16,24 +16,13 @@ class RecipeOutputController extends Controller
      */
     public function getRecipesAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $resultByTime = $this->getResultByTime();
+        $recipesByTime = $resultByTime['recipes'];
+        $categoryByTime = $resultByTime['category'];
 
-        $endSnack = $startBreakfast = mktime(5, 0, 0);
-        $endBreakfast = $startMainDish = mktime(10, 0, 0);
-        $endMainDish = $startSnack = mktime(20, 0, 0);
-        $currentTime = localtime(time(), true);
-
-        var_dump($currentTime);
-
-        if($startBreakfast <= $currentTime && $endBreakfast > $currentTime) {
-            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory('breakfast', 3);
-        } else if ($startMainDish <= $currentTime && $endMainDish > $currentTime) {
-            $recipes =$em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory('main dish', 3);
-        } else if ($startSnack <= $currentTime && $endSnack > $currentTime) {
-            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory('snack', 3);
-        } else {
-            $recipes = $em->getRepository('CookbookBundle:Recipe')->findDefaultRecipes();
-        }
+        $resultBySeason = $this->getResultBySeason();
+        $recipesBySeason = $resultBySeason['recipes'];
+        $season = $resultBySeason['season'];
 
         $searchForm = $this->createForm(new SearchType(), null, array(
             'action' => $this->generateUrl('search'),
@@ -46,9 +35,12 @@ class RecipeOutputController extends Controller
         ));
 
         return $this->render('CookbookBundle:default:base.html.twig', array(
-            'recipes' => $recipes,
-            'searchForm' => $searchForm->createView(),
-            'searchRefineForm' =>$searchRefineForm->createView(),
+            'categoryByTime'    => $categoryByTime,
+            'recipesByTime'     => $recipesByTime,
+            'season'            => $season,
+            'recipesBySeason'   => $recipesBySeason,
+            'searchForm'        => $searchForm->createView(),
+            'searchRefineForm'  => $searchRefineForm->createView(),
         ));
     }
 
@@ -68,10 +60,10 @@ class RecipeOutputController extends Controller
             ->findOneBy(array('recipe' => $recipe, 'user_id' => $user));
 
         return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
-            'recipe' => $recipe,
-            'duration' => $duration,
-            'ingredients' => $ingredients,
-            'annotations' => $recipeAnnotations
+            'recipe'        => $recipe,
+            'duration'      => $duration,
+            'ingredients'   => $ingredients,
+            'annotations'   => $recipeAnnotations
         ));
     }
 
@@ -95,15 +87,10 @@ class RecipeOutputController extends Controller
                 $addToShoppingListFormData = $request->request->all();
 
                 foreach ($addToShoppingListFormData as $addToShoppingListItem) {
-                    // VERSION 2
-                    // prepared to store different data structure
                     $shoppingListEntry = array();
                     $shoppingListEntry[] = array("type" => 7, "checked" => false);
                     $shoppingListEntry[] = array("type" => 1, "txt" => $addToShoppingListItem);
                     $shoppingList[] = $shoppingListEntry;
-
-                    // VERSION 1
-                    //$shoppingList[] = $addToShoppingListItem;
                 }
 
                 $user->setShoppingList($shoppingList);
@@ -111,5 +98,88 @@ class RecipeOutputController extends Controller
             }
         }
         return $this->redirect('/recipe/' . $id);
+    }
+
+    private function getResultByTime()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /*
+        * breakfast: 5am - 9:59am
+        * main-dish: 10am - 19:59pm
+        * snack: 20pm - 4:59am
+        */
+        $endSnack = $startBreakfast = mktime(5, 0, 0);
+        $endBreakfast = $startMainDish = mktime(10, 0, 0);
+        $endMainDish = $startSnack = mktime(20, 0, 0);
+        $currentTime = time();
+        $recipes = null;
+        $category = null;
+        $resultLimit = 3;
+
+        /* query recipes according to time */
+        if ($startBreakfast <= $currentTime && $endBreakfast > $currentTime) {
+            $category = 'breakfast';
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($category, $resultLimit);
+        } else if ($startMainDish <= $currentTime && $endMainDish > $currentTime) {
+            $category = 'main dish';
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($category, $resultLimit);
+        } else if ($startSnack <= $currentTime && $endSnack > $currentTime) {
+            $category = 'snack';
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($category, $resultLimit);
+        }
+
+        /* if there are not enough recipes for any time - query default recipes*/
+        if (count($recipes) < 2) {
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findDefaultRecipes();
+        }
+
+        return array('category' => $category, 'recipes' => $recipes);
+    }
+
+    private function getResultBySeason()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $day = date("z");
+        $season = null;
+        $recipes = null;
+        $resultLimit = 3;
+
+        /*
+        * northern hemisphere
+        * spring: 21. march - 20. june
+        * summer: 21. june - 22. september
+        * autumn: 23. september - 21. december
+        * winter: 22. december - 20. march
+        */
+        $spring_starts = date("z", strtotime("March 21"));
+        $spring_ends = date("z", strtotime("June 20"));
+        $summer_starts = date("z", strtotime("June 21"));
+        $summer_ends = date("z", strtotime("September 22"));
+        $autumn_starts = date("z", strtotime("September 23"));
+        $autumn_ends = date("z", strtotime("December 21"));
+
+        //  If $day is between the days of spring, summer, autumn, and winter
+        if ($day >= $spring_starts && $day <= $spring_ends) {
+            $season = "spring";
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
+        } elseif ($day >= $summer_starts && $day <= $summer_ends) {
+            $season = "summer";
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
+        } elseif ($day >= $autumn_starts && $day <= $autumn_ends) {
+            $season = "autumn";
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
+        } else {
+            $season = "winter";
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
+        }
+
+        /* if there are not enough recipes for any season - query default recipes */
+        if (count($recipes) < 2) {
+            $recipes = $em->getRepository('CookbookBundle:Recipe')->findDefaultRecipes();
+        }
+
+        return array('season' => $season, 'recipes' => $recipes);
     }
 }

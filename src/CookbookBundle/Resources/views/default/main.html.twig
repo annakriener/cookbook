@@ -7,16 +7,80 @@
             {% include 'CookbookBundle:search:search.html.twig' %}
         </div>
 
-        <div class="container">
-            <div class="row cb-main">
+        <div class="container cb-main">
+            <div class="row">
 
-                {% for recipe in recipes %}
-                    <div class="col-md-3">
+                <!-- category by time box -->
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="cb-recipe-category-box">
+                        <div class="cb-category-box-thumbnail-img-wrapper">
+                            {% if categoryByTime == 'breakfast' %}
+                                {% set categoryImgPath = 'img/breakfast.jpg' %}
+                                {%  set categoryTitle = 'Breakfast' %}
+                            {% elseif categoryByTime == 'snack' %}
+                                {% set categoryImgPath = 'img/snack.jpg' %}
+                                {%  set categoryTitle = 'Snacks' %}
+                            {% else %}
+                                {% set categoryImgPath = 'img/main_dish.jpg' %}
+                                {%  set categoryTitle = 'Main Dishes' %}
+                            {% endif %}
+                            <div class="cb-category-box-thumbnail-img"
+                                 style="background-image: url({{ asset(categoryImgPath) }})"
+                                 title="{{ categoryTitle }}">
+                            </div>
+                        </div>
+
+                        <div class="caption cb-category-box-title">
+                            <h2>{{ categoryTitle }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- recipe preview boxes -->
+                {% for recipe in recipesByTime %}
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        {% include 'CookbookBundle:default:box.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="cb-recipe-category-box">
+                        <div class="cb-category-box-thumbnail-img-wrapper">
+                            {% if season == 'spring' %}
+                                {% set seasonImgPath = 'img/spring.jpg' %}
+                                {%  set seasonTitle = 'Spring' %}
+                            {% elseif season == 'summer' %}
+                                {% set seasonImgPath = 'img/summer.jpg' %}
+                                {%  set seasonTitle = 'Summer' %}
+                            {% elseif season == 'autumn' %}
+                                {% set seasonImgPath = 'img/autumn.jpg' %}
+                                {%  set seasonTitle = 'Autumn' %}
+                            {% else %}
+                                {% set seasonImgPath = 'img/winter.jpg' %}
+                                {%  set seasonTitle = 'Winter' %}
+                            {% endif %}
+                            <div class="cb-category-box-thumbnail-img"
+                                 style="background-image: url({{ asset(seasonImgPath) }})"
+                                 title="{{ seasonTitle }}">
+                            </div>
+                        </div>
+
+                        <div class="caption cb-category-box-title">
+                            <h2>{{ seasonTitle }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                {% for recipe in recipesBySeason %}
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                         {% include 'CookbookBundle:default:box.html.twig' %}
                     </div>
                 {% endfor %}
             </div>
         </div>
     </main>
-    <hr>
 {% endblock %}

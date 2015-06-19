@@ -99,6 +99,7 @@ class SearchRefineType extends AbstractType
                         ->groupBy('rt.tag');
                 },
                 'property' => 'tag.name',
+                'attr' => array('name' => 'tag.name'),
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,

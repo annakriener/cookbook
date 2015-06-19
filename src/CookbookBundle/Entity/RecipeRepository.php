@@ -32,6 +32,20 @@ class RecipeRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findRecipesBySeason($season, $limit) {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.tags','rt')
+            ->leftJoin('rt.classification', 'c')
+            ->leftJoin('rt.tag', 't')
+            ->where('c.name = :classificationName')
+            ->setParameter('classificationName', 'seasonal')
+            ->andWhere('t.name = :tagName')
+            ->setParameter('tagName', $season)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findRecipesByTitle($recipeTitle)
     {
         $splitPattern = '/[;, ]/';

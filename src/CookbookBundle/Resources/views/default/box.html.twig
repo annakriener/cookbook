@@ -1,7 +1,18 @@
 {% block box %}
     <a href="/recipe/{{ recipe.id }}">
-        <section class="cb-box">
-            {{ recipe.title }}
-        </section>
+        <div class="thumbnail cb-recipe-preview-box">
+            {% if recipe.webPath %}
+                {% set imagePath = recipe.webPath %}
+            {% else %}
+                {% set imagePath = '/img/search-result-image-default.png' %}
+            {% endif %}
+
+            <div class="cb-recipe-preview-box-thumbnail-img"
+                 style="background-image: url({{ asset(imagePath) }})"
+                 title="{{ recipe.title }}"></div>
+            <div class="caption cb-recipe-preview-box-title">
+                <p>{{ recipe.title }}</p>
+            </div>
+        </div>
     </a>
 {% endblock %}

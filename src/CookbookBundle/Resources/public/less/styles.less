@@ -1,12 +1,17 @@
 @import url(globals.less);
 
 /* GLOBAL DOCUMENT STYLES */
-html {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
   font-size: @default-font-size;
 }
 
 hr {
-  margin: 0;
+  margin: 30px 0 50px 0;
 }
 
 /* HEADER */
@@ -41,14 +46,58 @@ header {
 
 /* MAIN */
 .cb-main {
-  margin: 90px 0 120px 0;
+  padding: 90px 0 90px 0;
 }
 
-/* BOX */
-.cb-box {
-  margin-top: 30px;
-  background-color: lightgrey;
-  height: 400px;
+/* RECIPE BOX */
+/* category box */
+div.cb-recipe-category-box {
+ margin-bottom: 20px;
+}
+
+div.cb-category-box-thumbnail-img-wrapper {
+  width: 100%;
+  height: 250px;
+  position: relative;
+}
+div.cb-category-box-thumbnail-img {
+  margin: 0;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: center center no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+div.cb-category-box-title > h2 {
+  text-align: center;
+  margin: 0;
+}
+
+/* recipe boxes */
+div.cb-recipe-preview-box:hover {
+  -webkit-box-shadow: 0 0 10px 0 rgba(50, 50, 50, 0.5);
+  -moz-box-shadow:    0 0 10px 0 rgba(50, 50, 50, 0.5);
+  box-shadow:         0 0 10px 0 rgba(50, 50, 50, 0.5);
+}
+
+div.cb-recipe-preview-box-thumbnail-img {
+  width: 100%;
+  height: 250px;
+  background: center center no-repeat;
+  background-size: cover;
+}
+
+div.cb-recipe-preview-box-title > p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 5px 0 0 0;
+  font-size: 1em;
 }
 
 /* FOOTER */
