@@ -4,8 +4,10 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid cb-search">
+        <div class="container-fluid">
+            <div  class="cb-search">
             {% include 'CookbookBundle:search:search.html.twig' %}
+            </div>
         </div>
 
         <div class="container">
@@ -43,5 +45,4 @@
             </div>
         </div>
     </main>
-    <hr>
 {% endblock %}

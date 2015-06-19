@@ -46,7 +46,7 @@ header {
 
 /* MAIN */
 .cb-main {
-  padding: 90px 0 90px 0;
+  padding: 20px 0 20px 0;
 }
 
 /* RECIPE BOX */
@@ -59,6 +59,7 @@ div.cb-category-box-thumbnail-img-wrapper {
   width: 100%;
   height: 250px;
   position: relative;
+  display:none;
 }
 div.cb-category-box-thumbnail-img {
   margin: 0;
@@ -66,8 +67,8 @@ div.cb-category-box-thumbnail-img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
-  height: 80%;
+  width: 31%;
+  height: 90%;
   background: center center no-repeat;
   background-size: cover;
   border-radius: 50%;
@@ -87,7 +88,8 @@ div.cb-recipe-preview-box:hover {
 
 div.cb-recipe-preview-box-thumbnail-img {
   width: 100%;
-  height: 250px;
+  //height: 250px;
+  height: 100px;
   background: center center no-repeat;
   background-size: cover;
 }
@@ -110,4 +112,40 @@ div.cb-recipe-preview-box-title > p {
 /* ALIGNMENT & FLOATING */
 .cb-clear-both {
   clear:both;
+}
+
+/* MEDIA QUERIES */
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .cb-main {
+    padding: 50px 0 50px 0;
+  }
+
+  div.cb-recipe-preview-box-thumbnail-img {
+    height: 250px;
+  }
+
+  div.cb-category-box-thumbnail-img-wrapper {
+    display:block;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  .cb-main {
+    padding: 90px 0 90px 0;
+  }
+
+  div.cb-category-box-thumbnail-img {
+    width: 80%;
+    height: 71%;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+  div.cb-category-box-thumbnail-img {
+    width: 80%;
+    height: 85%;
+  }
 }

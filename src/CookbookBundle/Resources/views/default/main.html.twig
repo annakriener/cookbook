@@ -3,15 +3,17 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid cb-search">
-            {% include 'CookbookBundle:search:search.html.twig' %}
+        <div class="container-fluid">
+            <div class="cb-search">
+                {% include 'CookbookBundle:search:search.html.twig' %}
+            </div>
         </div>
 
         <div class="container cb-main">
             <div class="row">
 
                 <!-- category by time box -->
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="cb-recipe-category-box">
                         <div class="cb-category-box-thumbnail-img-wrapper">
                             {% if categoryByTime == 'breakfast' %}
@@ -38,7 +40,7 @@
 
                 <!-- recipe preview boxes -->
                 {% for recipe in recipesByTime %}
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                         {% include 'CookbookBundle:default:box.html.twig' %}
                     </div>
                 {% endfor %}
@@ -47,7 +49,7 @@
             <hr>
 
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="cb-recipe-category-box">
                         <div class="cb-category-box-thumbnail-img-wrapper">
                             {% if season == 'spring' %}
@@ -76,7 +78,7 @@
                 </div>
 
                 {% for recipe in recipesBySeason %}
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                         {% include 'CookbookBundle:default:box.html.twig' %}
                     </div>
                 {% endfor %}
