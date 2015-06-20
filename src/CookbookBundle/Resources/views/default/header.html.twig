@@ -10,10 +10,11 @@
             <div class="col-lg-3 col-lg-push-6">
                 <div class="cb-header-links">
 
+                    <!--
                     <button class="btn btn-default"><img src="{{ asset('img/my_recipes.png') }}" width="20" alt="My Recipes" title="My Recipes"></button>
                     <button class="btn btn-default"><img src="{{ asset('img/my_menu_planner.png') }}" width="20" alt="Menu" title="My Menu Planner"></button>
                     <a class="btn btn-default" href="/shoppinglist"><img src="{{ asset('img/my_shopping_list.png') }}" width="20" alt="My Shopping List" title="My Shopping List"></a>
-
+                    -->
                     {% if app.user %}
                         <div class="dropdown" id="cb-um-user-dropdown">
                             <button class="btn btn-default" id="cb-um-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,7 +25,9 @@
 
                             <ul class="dropdown-menu" role="menu" aria-labelledby="cb-um-dropdown">
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                    <a role="menuitem" href="/shoppinglist"><img src="{{ asset('img/my_shopping_list.png') }}" width="20" alt="My Shopping List" title="My Shopping List">
+                                        Shopping List
+                                    </a>
                                 </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">

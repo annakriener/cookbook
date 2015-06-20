@@ -4,7 +4,7 @@
     <main>
         <div id="recipe_container" class="container cb-recipe" data-recipe-id="{{ recipe.id }}">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
 
                     {% if recipe.webPath %}
                         {% set imagePath = recipe.webPath %}
@@ -13,26 +13,34 @@
                     {% endif %}
 
                     <div class="img-thumbnail">
+                        <a href="#cb-img-lightbox">
                         <div class="cb-ros-thumbnail-img"
                              style="background-image: url({{ asset(imagePath) }})"
                              title="{{ recipe.title }}"></div>
+                        </a>
                     </div>
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
                     {% include 'CookbookBundle:recipe-output-system:recipeInfo.html.twig' %}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     {% include 'CookbookBundle:recipe-output-system:ingredients.html.twig' %}
                 </div>
-                <div class="col-md-8">
+
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     {% include 'CookbookBundle:recipe-output-system:preparation.html.twig' %}
                     {% include 'CookbookBundle:recipe-output-system:instructions.html.twig' %}
                 </div>
             </div>
         </div>
+
+        <!-- lightbox container hidden with CSS -->
+        <a href="#" class="cb-img-lightbox" id="cb-img-lightbox">
+            <img src="{{ asset(imagePath) }}">
+        </a>
     </main>
 {% endblock %}
