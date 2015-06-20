@@ -12365,7 +12365,7 @@ $(document).ready(function () {
     /**
      * SHOPPING LIST
      */
-    var userShoppingListItem = $('li.cb-sl-userShoppingListItem'); //li-element
+    var userShoppingListItem = $('p.cb-sl-userShoppingListItem'); //li-element
     var buttonHideUserShoppingListItem = $('#cb-sl-hideUserShoppingListItem'); // button-element
 
     // cross out already checked items
@@ -12448,7 +12448,7 @@ $(document).ready(function () {
 
         $(this).addClass('active');
 
-        var label = $(this).prev('li.cb-sl-userShoppingListItem').children('label.cb-sl-userShoppingListItemText');
+        var label = $(this).prev('p.cb-sl-userShoppingListItem').children('label.cb-sl-userShoppingListItemText');
         label.prop("contenteditable", true);
         label.focus();
     });

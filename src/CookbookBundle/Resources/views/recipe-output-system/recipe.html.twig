@@ -6,8 +6,19 @@
             <div class="row">
                 <div class="col-md-3">
 
-                    <img class="cb-recipe-image img-responsive" src="{% if recipe.webPath %}{{ asset(recipe.webPath) }}{% else %}{{ asset('/img/search-result-image-default.png') }}{% endif %}" alt="{{ recipe.title }}" title="{{ recipe.title }}">
+                    {% if recipe.webPath %}
+                        {% set imagePath = recipe.webPath %}
+                    {% else %}
+                        {% set imagePath = '/img/search-result-image-default.png' %}
+                    {% endif %}
+
+                    <div class="img-thumbnail">
+                        <div class="cb-ros-thumbnail-img"
+                             style="background-image: url({{ asset(imagePath) }})"
+                             title="{{ recipe.title }}"></div>
+                    </div>
                 </div>
+
                 <div class="col-md-9">
                     {% include 'CookbookBundle:recipe-output-system:recipeInfo.html.twig' %}
                 </div>

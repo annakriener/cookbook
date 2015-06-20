@@ -20,13 +20,13 @@
                     {% if deleteShoppingListItemForm.items is not empty %}
                         <ul class="cb-sl-userShoppingList">
                             {% for item in deleteShoppingListItemForm.items %}
-                                <div class="cb-sl-userShoppingListItemContainer">
-                                    <li class="cb-sl-userShoppingListItem">
+                                <li class="cb-sl-userShoppingListItemContainer">
+                                    <p class="cb-sl-userShoppingListItem">
                                         {{ form_widget(item,  { 'attr': {'class': 'cb-sl-userShoppingListItemCheckbox'}}) }}
                                         {{ form_label(item, null, { 'label_attr': {'class': 'cb-sl-userShoppingListItemText'}}) }}
-                                    </li>
+                                    </p>
                                     <button class="btn btn-default cb-sl-editUserShoppingListItem" title="Edit Item"><span class="glyphicon glyphicon-edit"></span></button>
-                                </div>
+                                </li>
                             {% endfor %}
                         </ul>
                     {% else %}

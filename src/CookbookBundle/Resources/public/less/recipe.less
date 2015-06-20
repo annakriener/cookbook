@@ -1,13 +1,131 @@
 @import url(globals.less);
+@import url(http://fonts.googleapis.com/css?family=Oswald);
 
 .cb-recipe {
-  margin-top: 60px;
-  margin-bottom: 60px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   color: rgba(0, 0, 0, 0.99);
 }
 
-.cb-recipe-image {
+/* recipe image */
+div.img-thumbnail {
+  display: block;
+}
+
+.cb-ros-thumbnail-img {
   width: 100%;
+  height: 250px;
+  background: center center no-repeat;
+  background-size: cover;
+}
+
+/* recipe title */
+.cb-ros-recipe-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8em;
+  color: @headlines-font-color;
+  line-height: 1em;
+}
+
+/* recipe info */
+div.cb-ros-recipe-info {
+  background-color: @border-color;
+  padding: 10px;
+  border: solid 1px #cccccc;
+  border-radius: @border-radius;
+}
+
+div.cb-ros-recipe-info > p {
+  margin: 0;
+  font-size: 0.85em;
+}
+
+span.cb-ros-recipe-bold-txt {
+  font-weight: bold;
+}
+
+/* recipe ingredients*/
+h2.cb-ros-recipe-subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.4em;
+  color: @headlines-font-color;
+  line-height: 1em;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cb-ingr-checkbox {
+  float: left;
+  width: 8%;
+}
+
+.cb-ingr {
+  float: left;
+  width: 90%;
+  padding-bottom: 5px;
+}
+
+.cb-ingr-amount {
+  font-weight: 600;
+}
+
+button#cb-sl-addItemsToShoppingListButton {
+  float: left;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+button#cb-sl-checkAllShoppingListItemsButton {
+  margin-top: 5px;
+}
+
+
+/* instructions */
+ol#preparation {
+  list-style-type: none;
+  list-style-type: decimal !ie; /*IE 7- hack*/
+
+  margin: 0 0 0 1.5em;
+  padding: 0;
+
+  counter-reset: li-counter;
+}
+
+ol#preparation > li{
+  position: relative;
+  margin-bottom: 20px;
+  padding-left: 0.5em;
+  min-height: 2em;
+  border-left: 2px solid @border-color;
+}
+
+ol#preparation > li:before {
+  position: absolute;
+  top: 0;
+  left: -1em;
+  width: 0.8em;
+
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.4em;
+  line-height: 1em;
+  font-weight: bold;
+  text-align: right;
+  color: @headlines-font-color;
+
+  content: counter(li-counter);
+  counter-increment: li-counter;
+}
+
+/* annotations */
+div#an-tools {
+  border: solid 1px @border-color;
+  border-radius: @border-radius;
+
+  padding: 10px;
+  margin: 20px 0 10px 0;
 }
 
 .cb-an-f-highlight {
@@ -38,21 +156,22 @@
 [contenteditable="true"] {
   color: #4985ff;
   font-size: 1.2em;
+  line-height: 1em;
   font-family: 'Courgette', cursive;
 }
 
-
+/* timer */
 .cb-timer {
-  background-color:#44c767;
-  -moz-border-radius:8px;
-  -webkit-border-radius:8px;
-  border-radius:8px;
-  display:inline-block;
-  cursor:pointer;
-  color:#ffffff;
+  background-color: #44c767;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
   font-size: 1em;
-  padding:0px 6px 0px 30px;
-  text-decoration:none;
+  padding: 0 6px 0 30px;
+  text-decoration: none;
   margin-left: 4px;
   margin-right: 4px;
 
@@ -68,25 +187,25 @@
   background-color:#5cbf2a;
 }
 .cb-timer:active {
-  position:relative;
-  top:1px;
+  position: relative;
+  top: 1px;
 }
 
-// INGREDIENTS
+/* MEDIA QUERIES */
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
 
-ul {
-  list-style-type: none;
-  padding: 0;
 }
 
-
-.cb-ingr-checkbox {
-  float: left;
-  width: 8%;
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  .cb-recipe {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
 }
 
-.cb-ingr {
-  float: left;
-  width: 90%;
-  padding-bottom: 10px;
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+
 }

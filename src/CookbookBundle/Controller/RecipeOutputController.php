@@ -51,7 +51,9 @@ class RecipeOutputController extends Controller
     {
         $recipe = $this->getDoctrine()->getRepository('CookbookBundle:Recipe')->find($id);
         $duration = $recipe->getDuration();
-        $duration = date_format($duration, 'H:i:s');
+        $duration_hours = date_format($duration, 'G');
+        $duration_minutes = intval(date_format($duration, 'i'));
+
         $ingredients = $recipe->getIngredients();
 
         $user = $this->getUser();
@@ -61,7 +63,8 @@ class RecipeOutputController extends Controller
 
         return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
             'recipe'        => $recipe,
-            'duration'      => $duration,
+            'duration_hours'      => $duration_hours,
+            'duration_minutes'      => $duration_minutes,
             'ingredients'   => $ingredients,
             'annotations'   => $recipeAnnotations
         ));

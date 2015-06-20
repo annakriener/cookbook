@@ -1,27 +1,40 @@
 {% block recipeinfo %}
     <section>
-        {%- if recipe.author -%}
-            <p>
-                {{- recipe.author -}}
+        <h1 class="cb-ros-recipe-title">{{ recipe.title }}</h1>
+
+        <div class="cb-ros-recipe-info">
+            {%- if recipe.author -%}
+                <p>Recipe by {{- " "~recipe.author -}}</p>
+            {%- endif -%}
+
+            <p>Ready in
+                {% if duration_hours == 01 %}
+                    {{ duration_hours }} hour
+                {% elseif duration_hours > 01 %}
+                    {{ duration_hours }} hours
+                {% endif %}
+                {% if duration_minutes == 01 %}
+                    {{ duration_minutes }} minute
+                {% elseif duration_minutes > 01 %}
+                    {{ duration_minutes }} minutes
+                {% endif %}
             </p>
-        {%- endif -%}
 
-        <h1>{{ recipe.title }}</h1>
+            <p><span class="cb-ros-recipe-bold-txt">Category</span> {{ recipe.category.name }}</p>
 
-        <p>Ready in <time>{{ duration }}</time></p>
-        <p>serves <input type="number" id="servings" data-orig-servings="{{ recipe.servings }}" value="{{ recipe.servings }}" name="quantity" min="1" max="100"></p>
-
-        <p>Category: {{ recipe.category.name }}</p>
-        {%- if recipe.tags|length > 0 -%}
-            <p>Tags:<br>
-            {%- for tag in recipe.tags -%}
-                {%- if tag.classification -%}
-                    {{- tag.classification.name -}}:
-                {% endif -%}
-                {{- tag.tag.name -}}
-            {%- endfor -%}
-            </p>
-        {% endif %}
-
+            {%- if recipe.tags|length > 0 -%}
+                <p><span class="cb-ros-recipe-bold-txt">Tags </span>
+                    {%- for tag in recipe.tags -%}
+                        {#
+                            {%- if tag.classification -%}
+                                {{- tag.classification.name -}}:
+                            {% endif -%}
+                        #}
+                        {{- tag.tag.name -}}
+                        {%- if loop.index < recipe.tags|length -%}, {% endif -%}
+                    {%- endfor -%}
+                </p>
+            {% endif %}
+        </div>
     </section>
 {% endblock %}

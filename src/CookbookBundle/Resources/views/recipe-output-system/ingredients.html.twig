@@ -1,58 +1,73 @@
 {% block ingredients %}
-    <h2>Ingredients</h2>
-    <form method="post" action="/recipe/{{ recipe.id }}/add/to/shoppinglist" name="addToShoppingListForm"
-          id="cb-sl-addItemsToShoppingListForm">
+    <h2 class="cb-ros-recipe-subtitle">Ingredients</h2>
+    <p>serves
+        <input type="number" id="servings" data-orig-servings="{{ recipe.servings }}" value="{{ recipe.servings }}" name="quantity" min="1" max="100">
+    </p>
+
+    <form method="post" action="/recipe/{{ recipe.id }}/add/to/shoppinglist" name="addToShoppingListForm" id="cb-sl-addItemsToShoppingListForm">
         <ul id="ingredients">
-            {% for ingr in ingredients %}{%- spaceless -%}
-                <li>
-                    {%- set amount = "  " -%}
-                    {%- if ingr.amount -%}
-                        {%- set amount = ingr.amount -%}
-                    {%- endif -%}
+            {% for ingr in ingredients %}
+                {%- spaceless -%}
+                    <li>
+                        {%- set amount = "  " -%}
+                        {%- if ingr.amount -%}
+                            {%- set amount = ingr.amount -%}
+                        {%- endif -%}
 
-                    {%- set measurement = "" -%}
-                    {%- if ingr.measurement -%}
-                        {%- set measurement = " " ~ ingr.measurement.name -%}
-                    {%- endif -%}
+                        {%- set measurement = "" -%}
+                        {%- if ingr.measurement -%}
+                            {%- set measurement = " " ~ ingr.measurement.name -%}
+                        {%- endif -%}
 
-                    {%- set ingredient = " " ~ ingr.ingredient.name -%}
-                    <p>
-                    <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}' name="addToShoppingListItem{{ loop.index }}" class="cb-ingr-checkbox cb-sl-addToShoppingListItemCheckbox">
-                    <span class="cb-ingr cb-sl-addToShoppingListItem">
-                    <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}</span>
+                        {%- set ingredient = " " ~ ingr.ingredient.name -%}
+                        <p>
+                            <input type="checkbox" value='{{ amount ~ " " ~ measurement ~ " " ~ ingredient }}'
+                                   name="addToShoppingListItem{{ loop.index }}"
+                                   class="cb-ingr-checkbox cb-sl-addToShoppingListItemCheckbox">
+                            <span class="cb-ingr cb-sl-addToShoppingListItem">
+                                <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}
+                            </span>
                         </p>
-                </li>{%- endspaceless -%}
+                    </li>
+                {%- endspaceless -%}
             {%- endfor -%}
         </ul>
+
+        <div class="cb-clear-both"></div>
+
         {%- if annotations -%}
             {#- -#}
 
             <script>{#- -#}
                 {% set arrayIngreds = recipe.ingredients %}
-                renderIngredients({"data": {{ annotations.ingredients|json_encode|raw }} });
+                renderIngredients({"data": {{ annotations.ingredients|json_encode|raw }}});
                 {#- -#}
             </script>
         {%- endif -%}
-        <button class="btn btn-default" id="cb-sl-addItemsToShoppingListButton"><span
-                    class="glyphicon glyphicon-plus"></span> Add to Shopping List
+
+        <button class="btn btn-default btn-sm" id="cb-sl-addItemsToShoppingListButton">
+            <span class="glyphicon glyphicon-plus"></span> Add to Shopping List
         </button>
     </form>
 
-    <button class="btn btn-default" id="cb-sl-checkAllShoppingListItemsButton">
+    <button class="btn btn-default btn-sm" id="cb-sl-checkAllShoppingListItemsButton">
         <span class="glyphicon glyphicon-check"></span> Check all
     </button>
 
     <!-- Confirmation modal add items -->
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="cb-sl-confirmAddItemsToShoppingListModal"
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+         aria-labelledby="cb-sl-confirmAddItemsToShoppingListModal"
          aria-hidden="true" id="cb-sl-confirmAddItemsToShoppingListModal">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="cb-sl-confirmAddItemsToShoppingListModalTitle">Confirm</h4>
                 </div>
                 <div class="modal-body">
                     <p>Do you really want to add these items to your shopping list?</p>
+
                     <div id="cb-sl-itemsAddToShoppingList"></div>
                 </div>
                 <div class="modal-footer">
@@ -65,7 +80,8 @@
     </div>
 
     <!-- Check at least one item modal -->
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="cb-sl-checkAtLeastOneItemModal"
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+         aria-labelledby="cb-sl-checkAtLeastOneItemModal"
          aria-hidden="true" id="cb-sl-checkAtLeastOneItemModal">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
