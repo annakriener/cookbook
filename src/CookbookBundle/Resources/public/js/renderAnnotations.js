@@ -122,10 +122,10 @@ function renderIngredients(annoted) {
             var valueAmount = contentAnnoted[1].children[0].children[0].txt;
             contentOriginal[1].childNodes[0].innerHTML = valueAmount;
             $(contentOriginal[1].childNodes[0]).attr("contenteditable", "true");
+            $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
 
             if (contentAnnoted[1].children[0].servings){
                 $(contentOriginal[1].childNodes[0]).attr("data-an-servings", contentAnnoted[1].children[0].servings);
-                $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
             }
         }
 

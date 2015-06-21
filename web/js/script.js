@@ -12077,6 +12077,12 @@ function r_serializeChild(child) {
             var serializedChildren = getSerializedChildren(child.childNodes);
             var classname = $(child).attr('class');
             var servingsData = $(child).attr('data-an-servings');
+
+            var amount = $(child).attr('data-an-amount');
+            if (amount) {
+                serializedChildren = [{ "type": 1, "txt": amount }];
+            }
+
             var jsonObj = { "type": 3, "children": serializedChildren, "class": classname, "servings": servingsData };
             return jsonObj;
 
@@ -12319,10 +12325,10 @@ function renderIngredients(annoted) {
             var valueAmount = contentAnnoted[1].children[0].children[0].txt;
             contentOriginal[1].childNodes[0].innerHTML = valueAmount;
             $(contentOriginal[1].childNodes[0]).attr("contenteditable", "true");
+            $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
 
             if (contentAnnoted[1].children[0].servings){
                 $(contentOriginal[1].childNodes[0]).attr("data-an-servings", contentAnnoted[1].children[0].servings);
-                $(contentOriginal[1].childNodes[0]).attr("data-an-amount", parseFloat(valueAmount));
             }
         }
 

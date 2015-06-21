@@ -25,7 +25,11 @@
                                    name="addToShoppingListItem{{ loop.index }}"
                                    class="cb-ingr-checkbox cb-sl-addToShoppingListItemCheckbox">
                             <span class="cb-ingr cb-sl-addToShoppingListItem">
-                                <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}
+                                {%- if amount != "  " -%}
+                                    <span class="cb-ingr-amount" data-orig-amount="{{ amount }}">{{ amount }}</span>{{ measurement }}{{ ingredient }}
+                                {%- else -%}
+                                    <span></span>{{ measurement }}{{ ingredient }}
+                                {%- endif -%}
                             </span>
                         </p>
                     </li>

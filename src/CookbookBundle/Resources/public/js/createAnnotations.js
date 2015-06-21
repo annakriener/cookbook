@@ -307,6 +307,12 @@ function r_serializeChild(child) {
             var serializedChildren = getSerializedChildren(child.childNodes);
             var classname = $(child).attr('class');
             var servingsData = $(child).attr('data-an-servings');
+
+            var amount = $(child).attr('data-an-amount');
+            if (amount) {
+                serializedChildren = [{ "type": 1, "txt": amount }];
+            }
+
             var jsonObj = { "type": 3, "children": serializedChildren, "class": classname, "servings": servingsData };
             return jsonObj;
 
