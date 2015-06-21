@@ -13,10 +13,10 @@
                     {% endif %}
 
                     <div class="img-thumbnail">
-                        <a href="#cb-img-lightbox">
-                        <div class="cb-ros-thumbnail-img"
-                             style="background-image: url({{ asset(imagePath) }})"
-                             title="{{ recipe.title }}"></div>
+                        <a href="{{ asset(imagePath) }}" class="cb-lightbox-trigger">
+                            <div class="cb-ros-thumbnail-img"
+                                 style="background-image: url({{ asset(imagePath) }})"
+                                 title="{{ recipe.title }}"></div>
                         </a>
                     </div>
                 </div>
@@ -38,9 +38,11 @@
             </div>
         </div>
 
-        <!-- lightbox container hidden with CSS -->
-        <a href="#" class="cb-img-lightbox" id="cb-img-lightbox">
-            <img src="{{ asset(imagePath) }}">
-        </a>
+        <!-- lightbox container -->
+        <div id="cb-lightbox">
+            <div id="cb-lightbox-content">
+                <img src="#" alt="{{ recipe.title }}">
+            </div>
+        </div>
     </main>
 {% endblock %}

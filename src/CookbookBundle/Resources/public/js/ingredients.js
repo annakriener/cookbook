@@ -41,8 +41,9 @@ $( document ).ready(function() {
                 }
             }
             // compute and assign the new amount that shall be displayed
-            currentAmounts[i].innerHTML = computeNewAmount(amount, current, initalServings);
-        }
+            if (isNumber(amount)){
+                currentAmounts[i].innerHTML = computeNewAmount(amount, current, initalServings);
+            }        }
     });
 });
 
