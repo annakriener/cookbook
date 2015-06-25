@@ -35,6 +35,15 @@
                     {%- endfor -%}
                 </p>
             {% endif %}
+            {% if source.text %}
+                <p><span class="cb-ros-recipe-bold-txt">Source</span>
+                    {% if source.isURL %}
+                        <a class="cb-ros-source" href="{{ source.text }}" target="_blank">{{ source.text }}</a>
+                    {% else %}
+                        {{ source.text }}
+                    {% endif %}
+                </p>
+            {% endif %}
         </div>
     </section>
 {% endblock %}

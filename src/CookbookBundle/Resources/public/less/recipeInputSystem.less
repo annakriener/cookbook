@@ -13,30 +13,38 @@ div.cb-ris-form-field-1, div.cb-ris-form-field-2, div.cb-ris-form-field-3 {
   border-radius: 4px;
 }
 
+/* title, author, source */
 form#cb-ris-form > div.cb-ris-form-field-2 > div {
   margin-right: 10px;
-  float: left;
+  float: none;
 }
 
 /* category width */
 form#cb-ris-form > div.cb-ris-form-field-2 > div:first-child {
-  width: 50%;
+  width: 100%;
 }
 
 /* duration width */
 form#cb-ris-form > div.cb-ris-form-field-2 > div:nth-child(2) {
-  width: auto;
+  width: 100%;
+  max-width: 252px;
+}
+
+div#recipe_duration > select {
+  width: 49%;
+  margin: 0;
+  display: inline;
+}
+
+div#recipe_duration > select#recipe_duration_hour {
+  float: left;
+
 }
 
 /* servings width*/
 form#cb-ris-form > div.cb-ris-form-field-2 > div:last-child {
-  width: 20%;
+  width: 100%;
   margin-right: 0;
-}
-
-div.cb-ris-form-field-2 {
-  clear: both;
-  height: 90px;
 }
 
 div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
@@ -45,7 +53,6 @@ div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
 
 /* NEW INGREDIENTS */
 .cb-ris-new-ingredient, div#recipe_ingredients > div.form-group {
-  height: 90px;
   padding: 10px;
   margin: 10px 0 10px 0;
   border: 1px solid #ddd;
@@ -55,10 +62,8 @@ div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
 }
 
 .cb-ris-new-ingredient > div > div > div, div#recipe_ingredients > div.form-group > div > div  {
-  width: 30%;
-  float: left;
   margin-right: 9px;
-  margin-bottom: 0;
+  margin-bottom: 15px;
 }
 
 .cb-ris-delete-new-ingredient-button {
@@ -67,12 +72,11 @@ div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
 
 .cb-ris-new-ingredient > button.cb-ris-delete-new-ingredient-button {
   position: relative;
-  top: -15px;
+  top: -230px;
 }
 
 /* NEW TAGS */
 .cb-ris-new-tag, div#recipe_tags > div.form-group {
-  height: 90px;
   padding: 10px;
   margin: 10px 0 10px 0;
   border: 1px solid #ddd;
@@ -82,8 +86,7 @@ div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
 }
 
 .cb-ris-new-tag > div > div > div, div#recipe_tags > div.form-group > div > div  {
-  width: 45%;
-  float: left;
+  float: none;
   margin-right: 10px;
   margin-bottom: 0;
 }
@@ -94,7 +97,7 @@ div.cb-ris-form-field-tags, div.cb-ris-form-field-ingredients {
 
 .cb-ris-new-tag > button.cb-ris-delete-new-tag-button {
   position: relative;
-  top: -15px;
+  top: -155px;
 }
 
 div.has-error > span.help-block {
@@ -113,7 +116,7 @@ div.cb-ris-new-step  {
 
 div.cb-ris-new-step > div, div#recipe_instructions > div.form-group > textarea{
   float:left;
-  width: 95%;
+  width: 90%;
 }
 
 div#recipe_instructions > div.form-group > textarea {
@@ -130,4 +133,85 @@ div#recipe_instructions > div.form-group > button.cb-ris-delete-new-step {
   top: -25px;
   position: relative;
   float: left;
+}
+
+/* MEDIA QUERIES */
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  /* form-field 2: category, duration, servings*/
+  div.cb-ris-form-field-2 {
+    height: 90px;
+  }
+
+  form#cb-ris-form > div.cb-ris-form-field-2 > div {
+    margin-right: 10px;
+    float: left;
+  }
+
+  /* category width */
+  form#cb-ris-form > div.cb-ris-form-field-2 > div:first-child {
+    width: 50%;
+  }
+
+  /* duration width */
+  form#cb-ris-form > div.cb-ris-form-field-2 > div:nth-child(2) {
+    width: auto;
+  }
+
+  div#recipe_duration > select {
+    width: auto;
+  }
+
+
+  /* servings width*/
+  form#cb-ris-form > div.cb-ris-form-field-2 > div:last-child {
+    width: 20%;
+    margin-right: 0;
+  }
+
+  /* new TAG */
+  .cb-ris-new-tag, div#recipe_tags > div.form-group {
+    height: 90px;
+  }
+
+  .cb-ris-new-tag > div > div > div, div#recipe_tags > div.form-group > div > div  {
+    width: 45%;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+
+  .cb-ris-new-tag > button.cb-ris-delete-new-tag-button {
+    top: -15px;
+  }
+
+  /* new INGREDIENT */
+  .cb-ris-new-ingredient, div#recipe_ingredients > div.form-group {
+    height: 90px;
+  }
+
+  .cb-ris-new-ingredient > div > div > div, div#recipe_ingredients > div.form-group > div > div  {
+    width: 30%;
+    float: left;
+    margin-bottom: 0;
+  }
+
+  .cb-ris-new-ingredient > button.cb-ris-delete-new-ingredient-button {
+    top: -15px;
+  }
+
+  /* new STEP */
+  div.cb-ris-new-step > div, div#recipe_instructions > div.form-group > textarea {
+    width: 95%;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+
 }

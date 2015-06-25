@@ -35,6 +35,10 @@ class SearchRefineType extends AbstractType
             ->add('category', 'entity', array(
                 'class' => 'CookbookBundle:Category',
                 'property' => 'name',
+                'query_builder'      => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'label' => 'Category: ',
                 'placeholder' => 'Choose a category',
                 'empty_data' => null,

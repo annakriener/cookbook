@@ -1,31 +1,50 @@
 {% block header %}
-    <header class="container-fluid">
-        <div class="row cb-header">
+    <header>
+        <nav class="cb-navbar-nav navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">
+                        <img class="cb-logo" src="{{ asset('img/logo.png') }}" title="Cookbook" alt="Cookbook">
 
-            <div class="col-lg-3 col-md-3">
-                <img class="cb-logo" src="{{ asset('img/logo.png') }}" title="Logo" alt="Logo" width="75">
-                <h1 class="cb-h1" id="cb-anna">Cookbook</h1>
-            </div>
+                        <h1 class="cb-title">Cookbook</h1>
+                    </a>
 
-            <div class="col-lg-3 col-lg-push-6">
-                <div class="cb-header-links">
-
-                    <!--
-                    <button class="btn btn-default"><img src="{{ asset('img/my_recipes.png') }}" width="20" alt="My Recipes" title="My Recipes"></button>
-                    <button class="btn btn-default"><img src="{{ asset('img/my_menu_planner.png') }}" width="20" alt="Menu" title="My Menu Planner"></button>
-                    <a class="btn btn-default" href="/shoppinglist"><img src="{{ asset('img/my_shopping_list.png') }}" width="20" alt="My Shopping List" title="My Shopping List"></a>
-                    -->
                     {% if app.user %}
-                        <div class="dropdown" id="cb-um-user-dropdown">
-                            <button class="btn btn-default" id="cb-um-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target="#cb-navbar" aria-expanded="false">
+                            <img src="{{ asset('img/user.png') }}" width="20" alt="user">
+                            <span class="hidden-xs">{{ app.user.username }} </span>
+                            <span class="caret"></span>
+                        </button>
+                </div> <!-- end navbar-header -->
+
+                    <div class="collapse navbar-collapse" id="cb-navbar">
+                        <ul class="cb-header-links nav navbar-nav hidden-sm hidden-md hidden-lg">
+                            <li>
+                                <a href="/shoppinglist">
+                                    <img src="{{ asset('img/my_shopping_list.png') }}" width="20"
+                                         alt="My Shopping List" title="My Shopping List">
+                                    Shopping List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout">Logout</a>
+                            </li>
+                        </ul>
+
+                        <div class="dropdown hidden-xs" id="cb-um-user-dropdown">
+                            <button class="btn btn-default" id="cb-um-dropdown" type="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('img/user.png') }}" width="20" alt="user">
-                                {{ app.user.username }}
+                                <span class="hidden-xs">{{ app.user.username }} </span>
                                 <span class="caret"></span>
                             </button>
 
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="cb-um-dropdown">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="cb-um-dropdown">
                                 <li role="presentation">
-                                    <a role="menuitem" href="/shoppinglist"><img src="{{ asset('img/my_shopping_list.png') }}" width="20" alt="My Shopping List" title="My Shopping List">
+                                    <a role="menuitem" href="/shoppinglist"><img
+                                                src="{{ asset('img/my_shopping_list.png') }}" width="20"
+                                                alt="My Shopping List" title="My Shopping List">
                                         Shopping List
                                     </a>
                                 </li>
@@ -35,14 +54,27 @@
                                 </li>
                             </ul>
                         </div>
-                    {% endif %}
+                    </div>
+                {% elseif not app.user %}
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#cb-navbar" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div> <!-- end navbar-header -->
 
-                    {% if not app.user %}
-                        <a href="/login" class="btn btn-default">Login</a>
-                        <a href="/register" class="btn btn-default">Register</a>
-                    {% endif %}
-                </div>
+                    <div class="collapse navbar-collapse" id="cb-navbar">
+                        <ul class="cb-header-links nav navbar-nav">
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Register</a></li>
+                        </ul>
+                    </div>
+
+                {% endif %}
+
             </div>
-        </div>
+        </nav>
     </header>
 {% endblock %}

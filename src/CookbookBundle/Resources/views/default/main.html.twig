@@ -3,10 +3,8 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid">
-            <div class="cb-search">
-                {% include 'CookbookBundle:search:search.html.twig' %}
-            </div>
+        <div class="cb-search">
+            {% include 'CookbookBundle:search:search.html.twig' %}
         </div>
 
         <div class="container cb-main">
@@ -18,13 +16,13 @@
                         <div class="cb-category-box-thumbnail-img-wrapper">
                             {% if categoryByTime == 'breakfast' %}
                                 {% set categoryImgPath = 'img/breakfast.jpg' %}
-                                {%  set categoryTitle = 'Breakfast' %}
+                                {% set categoryTitle = 'Breakfast' %}
                             {% elseif categoryByTime == 'snack' %}
                                 {% set categoryImgPath = 'img/snack.jpg' %}
-                                {%  set categoryTitle = 'Snacks' %}
+                                {% set categoryTitle = 'Snacks' %}
                             {% else %}
                                 {% set categoryImgPath = 'img/main_dish.jpg' %}
-                                {%  set categoryTitle = 'Main Dishes' %}
+                                {% set categoryTitle = 'Main Dishes' %}
                             {% endif %}
                             <div class="cb-category-box-thumbnail-img"
                                  style="background-image: url({{ asset(categoryImgPath) }})"
@@ -54,16 +52,16 @@
                         <div class="cb-category-box-thumbnail-img-wrapper">
                             {% if season == 'spring' %}
                                 {% set seasonImgPath = 'img/spring.jpg' %}
-                                {%  set seasonTitle = 'Spring' %}
+                                {% set seasonTitle = 'Spring' %}
                             {% elseif season == 'summer' %}
                                 {% set seasonImgPath = 'img/summer.jpg' %}
-                                {%  set seasonTitle = 'Summer' %}
+                                {% set seasonTitle = 'Summer' %}
                             {% elseif season == 'autumn' %}
                                 {% set seasonImgPath = 'img/autumn.jpg' %}
-                                {%  set seasonTitle = 'Autumn' %}
+                                {% set seasonTitle = 'Autumn' %}
                             {% else %}
                                 {% set seasonImgPath = 'img/winter.jpg' %}
-                                {%  set seasonTitle = 'Winter' %}
+                                {% set seasonTitle = 'Winter' %}
                             {% endif %}
                             <div class="cb-category-box-thumbnail-img"
                                  style="background-image: url({{ asset(seasonImgPath) }})"

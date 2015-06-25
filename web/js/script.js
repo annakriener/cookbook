@@ -11530,11 +11530,13 @@ if (typeof jQuery === 'undefined') {
 var $ingredientCollectionHolder;
 var $addIngredientButton;
 var $newIngredientButtonDiv;
+var pathname;
 
 jQuery(document).ready(function() {
     // setup an "add a ingredient" link
     $addIngredientButton = $('<button class="cb-ris-add-ingredient-button btn-default btn-sm btn">Add a ingredient</button>');
     $newIngredientButtonDiv = $('<div></div>').append($addIngredientButton);
+    pathname = window.location.pathname;
 
     // Get the ul that holds the collection of ingredients
     $ingredientCollectionHolder = $('div#recipe_ingredients');
@@ -11566,7 +11568,6 @@ jQuery(document).ready(function() {
         // get the new index
         var index = $ingredientCollectionHolder.data('index');
 
-        console.log(index);
         // Replace '__name__' in the prototype's HTML to
         // instead be a number based on how many items we have
         var newIngredientForm = prototype.replace(/__name__/g, index);

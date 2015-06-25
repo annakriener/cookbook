@@ -35,12 +35,12 @@ class RecipeOutputController extends Controller
         ));
 
         return $this->render('CookbookBundle:default:base.html.twig', array(
-            'categoryByTime'    => $categoryByTime,
-            'recipesByTime'     => $recipesByTime,
-            'season'            => $season,
-            'recipesBySeason'   => $recipesBySeason,
-            'searchForm'        => $searchForm->createView(),
-            'searchRefineForm'  => $searchRefineForm->createView(),
+            'categoryByTime' => $categoryByTime,
+            'recipesByTime' => $recipesByTime,
+            'season' => $season,
+            'recipesBySeason' => $recipesBySeason,
+            'searchForm' => $searchForm->createView(),
+            'searchRefineForm' => $searchRefineForm->createView(),
         ));
     }
 
@@ -53,7 +53,10 @@ class RecipeOutputController extends Controller
         $duration = $recipe->getDuration();
         $duration_hours = date_format($duration, 'G');
         $duration_minutes = intval(date_format($duration, 'i'));
+        $source = $recipe->getSource();
+        $isSourceURL = filter_var($source, FILTER_VALIDATE_URL);
 
+        $source = ['text' => $source, 'isURL' => $isSourceURL];
         $ingredients = $recipe->getIngredients();
 
         $user = $this->getUser();
@@ -62,11 +65,12 @@ class RecipeOutputController extends Controller
             ->findOneBy(array('recipe' => $recipe, 'user_id' => $user));
 
         return $this->render('CookbookBundle:recipe-output-system:recipe.html.twig', array(
-            'recipe'        => $recipe,
-            'duration_hours'      => $duration_hours,
-            'duration_minutes'      => $duration_minutes,
-            'ingredients'   => $ingredients,
-            'annotations'   => $recipeAnnotations
+            'recipe' => $recipe,
+            'duration_hours' => $duration_hours,
+            'duration_minutes' => $duration_minutes,
+            'source' => $source,
+            'ingredients' => $ingredients,
+            'annotations' => $recipeAnnotations
         ));
     }
 
@@ -121,13 +125,13 @@ class RecipeOutputController extends Controller
         $resultLimit = 3;
 
         /* query recipes according to time */
-        if ($startBreakfast <= $currentTime && $endBreakfast > $currentTime) {
+        if ($this->isTimeBetween($startBreakfast, $endBreakfast, $currentTime)) {
             $category = 'breakfast';
             $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($category, $resultLimit);
-        } else if ($startMainDish <= $currentTime && $endMainDish > $currentTime) {
+        } else if ($this->isTimeBetween($startMainDish, $endMainDish, $currentTime)) {
             $category = 'main dish';
             $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($category, $resultLimit);
-        } else if ($startSnack <= $currentTime && $endSnack > $currentTime) {
+        } else if ($this->isTimeBetween($startSnack, $endSnack, $currentTime)) {
             $category = 'snack';
             $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesByCategory($category, $resultLimit);
         }
@@ -164,13 +168,13 @@ class RecipeOutputController extends Controller
         $autumn_ends = date("z", strtotime("December 21"));
 
         //  If $day is between the days of spring, summer, autumn, and winter
-        if ($day >= $spring_starts && $day <= $spring_ends) {
+        if ($this->isTimeBetween($spring_starts, $spring_ends, $day)) {
             $season = "spring";
             $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
-        } elseif ($day >= $summer_starts && $day <= $summer_ends) {
+        } elseif ($this->isTimeBetween($summer_starts, $summer_ends, $day)) {
             $season = "summer";
             $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
-        } elseif ($day >= $autumn_starts && $day <= $autumn_ends) {
+        } elseif ($this->isTimeBetween($autumn_starts, $autumn_ends, $day)) {
             $season = "autumn";
             $recipes = $em->getRepository('CookbookBundle:Recipe')->findRecipesBySeason($season, $resultLimit);
         } else {
@@ -184,5 +188,13 @@ class RecipeOutputController extends Controller
         }
 
         return array('season' => $season, 'recipes' => $recipes);
+    }
+
+    private function isTimeBetween($from, $to, $now)
+    {
+        if ($from > $to) {
+            $to += strtotime('+1 day');
+        }
+        return ($from <= $now && $now < $to);
     }
 }

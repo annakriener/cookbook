@@ -4,22 +4,33 @@
 * HIDE CHECKED ITEMS
 */
 button#cb-sl-hideUserShoppingListItem {
-  float: left !important;
+  background: url('../img/hide.png') 5px center no-repeat;
 }
 
 .cb-sl-userShoppingListItemHidden {
   display: none;
 }
 
+button#cb-sl-hideUserShoppingListItem,
+button#deleteShoppingListItem_deleteAll,
+button#deleteShoppingListItem_deleteItem {
+  float: left;
+  margin: 5px 0;
+  padding-left: 30px;
+}
+
 /*
 * DELETE BUTTONS
 */
-button#deleteShoppingListItem_deleteAll, button#deleteShoppingListItem_deleteItem {
-  float: right;
+button#deleteShoppingListItem_deleteAll {
+  margin-right: 70%;
+  background: url('../img/trash.png') 5px center no-repeat;
+  background-size: 20px 20px;
 }
 
-button#deleteShoppingListItem_deleteItem {
-  margin-right: 10px;
+button#deleteShoppingListItem_deleteItem{
+  background: url('../img/remove_checked.svg') 2px center no-repeat;
+  background-size: 28px 28px;
 }
 
 /*
@@ -32,23 +43,27 @@ ul.cb-sl-userShoppingList {
 }
 
 li.cb-sl-userShoppingListItemContainer {
-  height: 44px;
+  min-height: 44px;
   margin: 10px 0;
+  float: none;
+  clear: both;
 }
 
 p.cb-sl-userShoppingListItem {
   float: left;
-  width: 90%;
-  margin: 0 10px 0 0;
-  padding: 10px 15px 10px 15px;
+  width: 80%;
+  margin: 0 10px 10px 0;
+  padding: 14px 4px 10px 6px;
 
   border: 1px solid grey;
   border-radius: 4px;
-  background-color: lightgoldenrodyellow;
+  background-color: rgba(153, 153, 153, 0.25);
 
-  height: auto;
+  min-height: 44px;
   vertical-align: middle;
   font-size: 0;
+
+  word-break: break-all;
 }
 
 input.cb-sl-userShoppingListItemCheckbox {
@@ -62,10 +77,10 @@ input.cb-sl-userShoppingListItemCheckbox {
 
 label.cb-sl-userShoppingListItemText {
   margin: 0;
-  width: 95%;
+  width: 90%;
 
   font-size: @default-font-size;
-
+  line-height: @default-font-size;
   display: inline-block;
   vertical-align: middle;
 }
@@ -106,4 +121,42 @@ input#addShoppingListItem_item, button#addShoppingListItem_save {
   color: grey;
 }
 
+/* MEDIA QUERIES */
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  button#deleteShoppingListItem_deleteAll, button#deleteShoppingListItem_deleteItem {
+    float: right;
+    margin: 0;
+  }
+
+  button#deleteShoppingListItem_deleteItem {
+    margin-right: 10px;
+  }
+
+  button#deleteShoppingListItem_deleteAll {
+    margin-right: 5px;
+  }
+
+  p.cb-sl-userShoppingListItem {
+    margin: 0 10px 10px 0;
+    padding: 14px 15px 10px 15px;
+    width: 92%;
+  }
+
+  label.cb-sl-userShoppingListItemText {
+    width: 95%;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  p.cb-sl-userShoppingListItem {
+    width: 90%;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+
+}
 
