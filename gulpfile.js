@@ -13,6 +13,7 @@ var basePath = 'src/CookbookBundle/Resources/public';
 //JAVASCRIPT TASK: write one minified js file out of jquery.js, bootstrap.js and all of my custom js files
 gulp.task('js', function () {
     return gulp.src(['bower_components/jquery/dist/jquery.js',
+        'bower_components/jquery-ui/jquery-ui.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
         basePath + '/js/**/*.js'])
         .pipe(concat('script.js'))

@@ -1,0 +1,25 @@
+{
+  "name": "cookbook",
+  "version": "0.0.0",
+  "homepage": "https://github.com/annakriener/cookbook",
+  "authors": [
+    "Anna Kriener <anna.kriener@students.fh-hagenberg.at>",
+    "Tina Schuh <tina.schuh@students.fh-hagenberg.at>"
+  ],
+  "description": "Semesterproject IM PRO2 2015",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "jquery": "~2.1.4"
+  },
+  "devDependencies": {
+    "jquery-ui": "~1.11.4"
+  }
+}

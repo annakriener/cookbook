@@ -151,77 +151,6 @@ ol#preparation > li:before {
   counter-increment: li-counter;
 }
 
-/* annotations */
-div#an-tools {
-  border: solid 1px @border-color;
-  border-radius: @border-radius;
-
-  padding: 15px;
-  margin: 20px 0 10px 0;
-}
-
-.cb-an-f-highlight {
-  background-color: #fffe70;
-}
-
-.cb-an-c-yellow{
-  background-color: #fffe70;
-}
-
-.cb-an-c-cyan{
-  background-color: #a5fffa;
-}
-
-.cb-an-c-pink{
-  background-color: #f0b7ff;
-}
-
-.cb-an-f-bold{
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.cb-an-f-off{
-  text-decoration: line-through;
-}
-
-[contenteditable="true"] {
-  color: #4985ff;
-  font-size: 1.2em;
-  line-height: 1em;
-  font-family: 'Courgette', cursive;
-}
-
-/* timer */
-.cb-timer {
-  background-color: #44c767;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-  display: inline-block;
-  cursor: pointer;
-  color: #ffffff;
-  font-size: 1em;
-  padding: 0 6px 0 30px;
-  text-decoration: none;
-  margin-left: 4px;
-  margin-right: 4px;
-
-  // TODO: fix image display for firefox + opera (works great with chrome & safari)
-  background-image: url('../img/cb_timer.png');
-  background-size: 15px 15px;
-  background-position-x: 6px;
-  background-position-y: center;
-  background-repeat: no-repeat;
-
-}
-.cb-timer:hover {
-  background-color:#5cbf2a;
-}
-.cb-timer:active {
-  position: relative;
-  top: 1px;
-}
 
 /* MEDIA QUERIES */
 /* Small devices (tablets, 768px and up) */
@@ -232,7 +161,7 @@ div#an-tools {
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md-min) {
   .cb-recipe {
-    margin-top: 60px;
+    margin-top: 15px;
     margin-bottom: 60px;
   }
 }

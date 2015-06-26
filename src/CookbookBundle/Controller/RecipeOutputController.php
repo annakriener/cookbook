@@ -195,6 +195,11 @@ class RecipeOutputController extends Controller
         if ($from > $to) {
             $to += strtotime('+1 day');
         }
+
+        if($now < $from) {
+            $now += strtotime('+1 day');
+        }
+
         return ($from <= $now && $now < $to);
     }
 }

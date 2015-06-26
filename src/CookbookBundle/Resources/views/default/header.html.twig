@@ -3,7 +3,7 @@
         <nav class="cb-navbar-nav navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand" href="/" title="Home">
                         <img class="cb-logo" src="{{ asset('img/logo.png') }}" title="Cookbook" alt="Cookbook">
 
                         <h1 class="cb-title">Cookbook</h1>
@@ -21,10 +21,16 @@
                     <div class="collapse navbar-collapse" id="cb-navbar">
                         <ul class="cb-header-links nav navbar-nav hidden-sm hidden-md hidden-lg">
                             <li>
-                                <a href="/shoppinglist">
+                                <a href="/shoppinglist" title="my shopping list">
                                     <img src="{{ asset('img/my_shopping_list.png') }}" width="20"
                                          alt="My Shopping List" title="My Shopping List">
                                     Shopping List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/addRecipe" title="add recipe">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    Add Recipe
                                 </a>
                             </li>
                             <li>
@@ -42,15 +48,21 @@
 
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="cb-um-dropdown">
                                 <li role="presentation">
-                                    <a role="menuitem" href="/shoppinglist"><img
+                                    <a role="menuitem" href="/shoppinglist" title="shopping list"><img
                                                 src="{{ asset('img/my_shopping_list.png') }}" width="20"
                                                 alt="My Shopping List" title="My Shopping List">
                                         Shopping List
                                     </a>
                                 </li>
+                                <li role="presentation">
+                                    <a role="menuitem" href="/addRecipe" tile="add recipe">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add Recipe
+                                    </a>
+                                </li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="/logout">Logout</a>
+                                    <a role="menuitem" tabindex="-1" href="/logout" title="logout">Logout</a>
                                 </li>
                             </ul>
                         </div>

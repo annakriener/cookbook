@@ -1,0 +1,180 @@
+@import url(globals.less);
+
+/* ANNOTATIONS */
+div#an-tools {
+  border: solid 1px @border-color;
+  border-radius: @border-radius;
+  background-color: grey;
+  padding: 5px 10px;
+  margin: 20px 0 10px 0;
+  z-index: 10;
+  display: block;
+}
+
+/* buttons */
+div#an-tools > div button {
+  /* bootstrap btn */
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* yellow button hover */
+div#an-tools div.cb-an-marker-buttons > button:first-child:hover {
+  background-color: #FFF9AA;
+}
+
+/* cyan button hover */
+div#an-tools div.cb-an-marker-buttons > button:nth-child(2):hover {
+  background-color: #c3fffc;
+}
+
+/* pink button hover */
+div#an-tools div.cb-an-marker-buttons > button:nth-child(3):hover {
+  background-color: #facbff;
+}
+
+/* other buttons hover */
+div#an-tools > div > button:hover {
+  /* bootsrap button:hover */
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+/* yellow button border */
+div#an-tools div.cb-an-marker-buttons > button:first-child {
+  border-color: #eedf5e;
+}
+
+/* cyan button border */
+div#an-tools div.cb-an-marker-buttons > button:nth-child(2) {
+  border-color: #7ce5f4;
+}
+
+/* pink button border */
+div#an-tools div.cb-an-marker-buttons > button:nth-child(3) {
+  border-color: #f6a2fd;
+}
+
+/* DO NOT CHANGE marker buttons -> used for annotations */
+.cb-an-f-highlight {
+  background-color: #fffe70;
+}
+
+.cb-an-c-yellow{
+  background-color: #fffe70;
+}
+
+.cb-an-c-cyan{
+  background-color: #a5fffa;
+}
+
+.cb-an-c-pink{
+  background-color: #f0b7ff;
+}
+
+.cb-an-f-bold{
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.cb-an-f-off{
+  text-decoration: line-through;
+}
+
+[contenteditable="true"] {
+  color: #4985ff;
+  font-size: 1.2em;
+  line-height: 1em;
+  font-family: 'Courgette', cursive;
+}
+
+
+/* align buttons xs */
+div.cb-an-marker-buttons,
+div.cb-an-note-buttons,
+div.cb-an-save-reset-buttons {
+  margin: 10px 0;
+}
+
+div#an-tools div.cb-an-save-reset-buttons > button:first-child {
+  /* bootstrap success-button */
+}
+
+/* timer */
+.cb-timer {
+  background-color: #44c767;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1em;
+  padding: 0 6px 0 30px;
+  text-decoration: none;
+  margin-left: 4px;
+  margin-right: 4px;
+
+  // TODO: fix image display for firefox + opera (works great with chrome & safari)
+  background-image: url('../img/cb_timer.png');
+  background-size: 15px 15px;
+  background-position-x: 6px;
+  background-position-y: center;
+  background-repeat: no-repeat;
+
+}
+.cb-timer:hover {
+  background-color:#5cbf2a;
+}
+.cb-timer:active {
+  position: relative;
+  top: 1px;
+}
+
+/* MEDIA QUERIES */
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  div#an-tools {
+    padding: 5px 15px;
+  }
+
+  div#an-tools:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+
+  /* align buttons sm */
+  div.cb-an-marker-buttons,
+  div.cb-an-note-buttons,
+  div.cb-an-save-reset-buttons {
+    margin: 10px 10px;
+    float: left;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+
+}

@@ -7,14 +7,20 @@
     {% if app.user %}
         <div id="an-tools" data-annotation-id="{{ annotationID }}">
             <div>
-                <button id="yellow" class="cb-an-c-yellow">y</button>
-                <button id="cyan" class="cb-an-c-cyan">c</button>
-                <button id="pink" class="cb-an-c-pink">p</button>
-                <button id="crossout" class="cb-an-f-off">cross out</button>
-                <button id="takenote">take notes</button>
-                <button id="hide">hide</button>
-                <button id="save">Save</button>
-                <button id="rmAnnotations">Reset</button>
+                <div class="cb-an-marker-buttons">
+                    <button id="yellow" class="cb-an-c-yellow">y</button>
+                    <button id="cyan" class="cb-an-c-cyan">c</button>
+                    <button id="pink" class="cb-an-c-pink">p</button>
+                </div>
+                <div class="cb-an-note-buttons">
+                    <button id="crossout" class="cb-an-f-off">cross out</button>
+                    <button id="takenote">take notes</button>
+                    <button id="hide">hide</button>
+                </div>
+                <div class="cb-an-save-reset-buttons">
+                    <button id="save">Save</button>
+                    <button id="rmAnnotations">Reset</button>
+                </div>
             </div>
         </div>
     {% endif %}
