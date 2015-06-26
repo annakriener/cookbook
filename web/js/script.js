@@ -28512,16 +28512,7 @@ function formatTxt(fClassName) {
             }
         }
     }
-    else if (document.getSelection)
-    {
-        txt = document.getSelection();
-    }
-    else if (document.selection)
-    {
-        txt = document.selection.createRange().text;
-    }
-    else return;
-};
+}
 
 function isBackwardsSelection(selectionObject) {
     position = selectionObject.anchorNode.compareDocumentPosition(selectionObject.focusNode);
@@ -28610,6 +28601,7 @@ function takeNote() {
         }
     }
 };
+
 // SAVE ANNOTATIONS into DB via AJAX
 function saveAnnotations(){
 
@@ -28636,11 +28628,11 @@ function saveAnnotations(){
     });
 }
 
-// SAVE ANNOTATIONS into DB via AJAX
+// REMOVE ANNOTATIONS from DB via AJAX
 function removeAnnotations(){
 
     var annotation_id = $("#an-tools").attr("data-annotation-id");
-    var recipe_id = $("#recipe_container").attr("data-recipe-id");
+    // var recipe_id = $("#recipe_container").attr("data-recipe-id");
 
     $.post('/removeAnnotations', {
         annotation_id: annotation_id
@@ -28708,7 +28700,7 @@ function r_serializeChild(child) {
             var jsonObj = {"type": 4, "h": 0, "m": 5, "s": 0}; // TODO: use actual values derived from nodeValue
             return jsonObj;
 
-        } else if ($(child).is("input")){//} && $(child).is(':checkbox')) { //$(child).is("input") && TODO check if first part is neccessary
+        } else if ($(child).is("input")){
             var isChecked = child.checked;
             var jsonObj = {"type": 7, "check": isChecked};
             return jsonObj;
@@ -28738,9 +28730,6 @@ function getSerializedChildren(children) {
 
     return serializedChildren;
 }
-
-
-
 /**
  * INGREDIENTS - and their annotations
  */
@@ -28820,39 +28809,6 @@ function resetOriginal(amountNode, origAmount){
     $(amountNode).removeAttr( "data-an-amount" );
     $(amountNode).removeAttr( "data-an-servings" );
 }
-/**
- * Created by Anna Kriener on 21.06.2015.
- */
-$(document).ready(function() {
-
-    $('#cb-lightbox').hide();
-
-    $('.cb-lightbox-trigger').click(function(event) {
-        event.preventDefault();
-
-        var imgHref = $(this).attr('href');
-        var lightbox = $('#cb-lightbox');
-
-        if(lightbox.length > 0) {
-            $('#cb-lightbox-content').html('<img src="'+imgHref+'">');
-            lightbox.fadeIn();
-        } else {
-            var test =
-                '<div id="lightbox">' +
-                '<p>Click to close</p>' +
-                '<div id="content">' + //insert clicked link's href into img src
-                '<img src="' + image_href +'" />' +
-                '</div>' +
-                '</div>';
-
-            //insert lightbox HTML into page
-            $('body').append(test);
-        }
-    });
-
-
-
-});
 // RENDER ANNOTATIONS
 
 function renderInstructions(original, annoted, hide) {

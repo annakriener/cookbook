@@ -6730,22 +6730,6 @@ div#an-tools div.cb-an-save-reset-buttons > button:first-child {
 /* Large devices (large desktops, 1200px and up) */
 
 
-#cb-lightbox {
-  position: fixed;
-  /* keeps the lightbox window in the current viewport */
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  text-align: center;
-}
-#cb-lightbox img {
-  box-shadow: 0 0 25px #111;
-  -webkit-box-shadow: 0 0 25px #111;
-  -moz-box-shadow: 0 0 25px #111;
-  max-width: 940px;
-}
-
 @import url(http://fonts.googleapis.com/css?family=Oswald);
 .cb-recipe {
   margin-top: 20px;
@@ -7328,13 +7312,17 @@ main {
   width: 50px;
   height: auto;
   float: left;
-  transform: rotate(180deg);
+  /*transform: rotate(180deg);*/
   margin-right: -5px;
 }
 .cb-title {
+  color: #b30e0e;
+  margin-left: 10px;
+  margin-top: 20px;
   font-family: 'Homemade Apple', cursive;
   float: left;
   font-size: 1.5em;
+  text-shadow: 0 0 8px #FF6100;
 }
 /* NAV */
 .cb-navbar-nav {
