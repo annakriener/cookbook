@@ -4,16 +4,14 @@
 
 {% block main %}
     <main>
-        <div class="container-fluid">
-            <div  class="cb-search">
+        <div class="cb-search">
             {% include 'CookbookBundle:search:search.html.twig' %}
-            </div>
         </div>
 
         <div class="container">
             <div class="row cb-main">
                 {% if recipes|length > 0 %}
-                    <div class="col-md-12"><h1 class="cb-h1">Results</h1></div>
+                    <div  id="show-recipes" class="col-md-12"><h1 class="cb-h1">Results</h1></div>
 
                     {% for recipe in recipes %}
                         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
@@ -38,7 +36,8 @@
                     {% endfor %}
                 {% else %}
                     <div class="col-md-12">
-                        <h1>Sorry, no results ...</h1>
+                        <h1 class="cb-h1">Sorry, no results ...</h1>
+
                         <p>Please change your filter settings.</p>
                     </div>
                 {% endif %}

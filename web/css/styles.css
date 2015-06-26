@@ -6585,7 +6585,7 @@ button.close {
 
 /* ANNOTATIONS */
 div#an-tools {
-  border: solid 1px #dddddd;
+  border: solid 1px rgba(221, 221, 221, 0.8);
   border-radius: 4px;
   background-color: grey;
   padding: 5px 10px;
@@ -6772,7 +6772,7 @@ div.img-thumbnail {
 }
 /* recipe info */
 div.cb-ros-recipe-info {
-  background-color: #dddddd;
+  background-color: rgba(221, 221, 221, 0.8);
   padding: 10px;
   border: solid 1px #cccccc;
   border-radius: 4px;
@@ -6855,7 +6855,7 @@ ol#preparation > li {
   margin-bottom: 20px;
   padding-left: 0.5em;
   min-height: 2em;
-  border-left: 2px solid #dddddd;
+  border-left: 2px solid rgba(221, 221, 221, 0.8);
 }
 ol#preparation > li:before {
   position: absolute;
@@ -7143,6 +7143,9 @@ div.cb-search-result-recipe-title > p {
 /* MEDIA QUERIES */
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  #cb-search {
+    height: auto;
+  }
   #cb-search-form {
     width: 85%;
   }
@@ -7322,11 +7325,11 @@ main {
   min-width: 65%;
 }
 .cb-logo {
-  width: 70px;
+  width: 50px;
   height: auto;
   float: left;
   transform: rotate(180deg);
-  margin-right: -10px;
+  margin-right: -5px;
 }
 .cb-title {
   font-family: 'Homemade Apple', cursive;
@@ -7335,7 +7338,7 @@ main {
 }
 /* NAV */
 .cb-navbar-nav {
-  min-height: 80px;
+  min-height: 40px;
   background-color: white;
   border-radius: 0;
   border: none;
@@ -7361,6 +7364,23 @@ div#cb-um-user-dropdown > button {
 /* MAIN */
 .cb-main {
   padding: 20px 0 20px 0;
+}
+.cb-scroll-down {
+  float: right;
+  padding: 25px 28px;
+  margin: -20px 15px 15px 0;
+  border: solid 1px rgba(221, 221, 221, 0.8);
+  border-radius: 50%;
+  background-color: rgba(221, 221, 221, 0.6);
+}
+.cb-scroll-down:hover {
+  background-color: rgba(221, 221, 221, 0.8);
+}
+.cb-scroll-down {
+  color: rgba(0, 0, 0, 0.7);
+}
+.cb-scroll-down:hover {
+  color: black;
 }
 /* RECIPE BOX */
 /* category box */
@@ -7447,14 +7467,14 @@ div.cb-recipe-preview-box-title > p {
     padding: 0;
   }
   .cb-title {
-    font-size: 2.2em;
+    font-size: 2.1em;
   }
   .cb-logo {
-    width: 100px;
+    width: 50px;
     height: auto;
   }
   .cb-navbar-nav {
-    min-height: 110px;
+    min-height: 50px;
   }
 }
 /* Medium devices (desktops, 992px and up) */
