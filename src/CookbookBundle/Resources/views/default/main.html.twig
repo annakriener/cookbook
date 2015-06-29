@@ -15,13 +15,13 @@
                     <div class="cb-recipe-category-box">
                         <div class="cb-category-box-thumbnail-img-wrapper">
                             {% if categoryByTime == 'breakfast' %}
-                                {% set categoryImgPath = 'img/breakfast.jpg' %}
+                                {% set categoryImgPath = 'img/timeOfDay/breakfast.jpg' %}
                                 {% set categoryTitle = 'Breakfast' %}
                             {% elseif categoryByTime == 'snack' %}
-                                {% set categoryImgPath = 'img/snack.jpg' %}
+                                {% set categoryImgPath = 'img/timeOfDay/snack.jpg' %}
                                 {% set categoryTitle = 'Snacks' %}
                             {% else %}
-                                {% set categoryImgPath = 'img/main_dish.jpg' %}
+                                {% set categoryImgPath = 'img/timeOfDay/main_dish.jpg' %}
                                 {% set categoryTitle = 'Main Dishes' %}
                             {% endif %}
                             <div class="cb-category-box-thumbnail-img"
@@ -51,16 +51,16 @@
                     <div class="cb-recipe-category-box">
                         <div class="cb-category-box-thumbnail-img-wrapper">
                             {% if season == 'spring' %}
-                                {% set seasonImgPath = 'img/spring.jpg' %}
+                                {% set seasonImgPath = 'img/season/spring.jpg' %}
                                 {% set seasonTitle = 'Spring' %}
                             {% elseif season == 'summer' %}
-                                {% set seasonImgPath = 'img/summer.jpg' %}
+                                {% set seasonImgPath = 'img/season/summer.jpg' %}
                                 {% set seasonTitle = 'Summer' %}
                             {% elseif season == 'autumn' %}
-                                {% set seasonImgPath = 'img/autumn.jpg' %}
+                                {% set seasonImgPath = 'img/season/autumn.jpg' %}
                                 {% set seasonTitle = 'Autumn' %}
                             {% else %}
-                                {% set seasonImgPath = 'img/winter.jpg' %}
+                                {% set seasonImgPath = 'img/season/winter.jpg' %}
                                 {% set seasonTitle = 'Winter' %}
                             {% endif %}
                             <div class="cb-category-box-thumbnail-img"

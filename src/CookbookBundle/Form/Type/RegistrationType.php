@@ -20,11 +20,6 @@ class RegistrationType extends AbstractType
             ->add('user', new UserType(), array(
                 'label' => false
             ))
-            /*
-            ->add('terms', 'checkbox', array(
-                    'property_path' => 'termsAccepted')
-            )
-            */
             ->add('Register', 'submit');
     }
 

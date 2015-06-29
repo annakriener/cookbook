@@ -10,7 +10,7 @@
                     {% if app.user %}
                         <button type="button" class="navbar-toggle" data-toggle="collapse"
                                 data-target="#cb-navbar" aria-expanded="false">
-                            <img src="{{ asset('img/user.png') }}" width="20" alt="user">
+                            <img src="{{ asset('img/icons/user.png') }}" width="20" alt="user">
                             <span class="hidden-xs">{{ app.user.username }} </span>
                             <span class="caret"></span>
                         </button>
@@ -20,7 +20,7 @@
                         <ul class="cb-header-links nav navbar-nav hidden-sm hidden-md hidden-lg">
                             <li>
                                 <a href="/shoppinglist" title="my shopping list">
-                                    <img src="{{ asset('img/my_shopping_list.png') }}" width="20"
+                                    <img src="{{ asset('img/icons/my_shopping_list.png') }}" width="20"
                                          alt="My Shopping List" title="My Shopping List">
                                     Shopping List
                                 </a>
@@ -39,7 +39,7 @@
                         <div class="dropdown hidden-xs" id="cb-um-user-dropdown">
                             <button class="btn btn-default" id="cb-um-dropdown" type="button" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('img/user.png') }}" width="20" alt="user">
+                                <img src="{{ asset('img/icons/user.png') }}" width="20" alt="user">
                                 <span class="hidden-xs">{{ app.user.username }} </span>
                                 <span class="caret"></span>
                             </button>
@@ -47,7 +47,7 @@
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="cb-um-dropdown">
                                 <li role="presentation">
                                     <a role="menuitem" href="/shoppinglist" title="shopping list"><img
-                                                src="{{ asset('img/my_shopping_list.png') }}" width="20"
+                                                src="{{ asset('img/icons/my_shopping_list.png') }}" width="20"
                                                 alt="My Shopping List" title="My Shopping List">
                                         Shopping List
                                     </a>

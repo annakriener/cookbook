@@ -25,11 +25,6 @@
             {%- if recipe.tags|length > 0 -%}
                 <p><span class="cb-ros-recipe-bold-txt">Tags </span>
                     {%- for tag in recipe.tags -%}
-                        {#
-                            {%- if tag.classification -%}
-                                {{- tag.classification.name -}}:
-                            {% endif -%}
-                        #}
                         {{- tag.tag.name -}}
                         {%- if loop.index < recipe.tags|length -%}, {% endif -%}
                     {%- endfor -%}

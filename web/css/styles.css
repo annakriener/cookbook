@@ -6694,7 +6694,7 @@ div#an-tools div.cb-an-save-reset-buttons > button:first-child {
   text-decoration: none;
   margin-left: 4px;
   margin-right: 4px;
-  background-image: url('../img/cb_timer.png');
+  background-image: url('../img/icons/cb_timer.png');
   background-size: 15px 15px;
   background-position-x: 6px;
   background-position-y: center;
@@ -7154,7 +7154,7 @@ div.cb-search-result-recipe-title > p {
 * HIDE CHECKED ITEMS
 */
 button#cb-sl-hideUserShoppingListItem {
-  background: url('../img/hide.png') 5px center no-repeat;
+  background: url('../img/icons/hide.png') 5px center no-repeat;
 }
 .cb-sl-userShoppingListItemHidden {
   display: none;
@@ -7171,11 +7171,11 @@ button#deleteShoppingListItem_deleteItem {
 */
 button#deleteShoppingListItem_deleteAll {
   margin-right: 70%;
-  background: url('../img/trash.png') 5px center no-repeat;
+  background: url('../img/icons/trash.png') 5px center no-repeat;
   background-size: 20px 20px;
 }
 button#deleteShoppingListItem_deleteItem {
-  background: url('../img/remove_checked.svg') 2px center no-repeat;
+  background: url('../img/icons/remove_checked.svg') 2px center no-repeat;
   background-size: 28px 28px;
 }
 /*

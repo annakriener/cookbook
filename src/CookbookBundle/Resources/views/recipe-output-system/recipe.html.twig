@@ -13,11 +13,9 @@
                     {% endif %}
 
                     <div class="img-thumbnail">
-                        <a href="{{ asset(imagePath) }}" class="cb-lightbox-trigger">
-                            <div class="cb-ros-thumbnail-img"
-                                 style="background-image: url({{ asset(imagePath) }})"
-                                 title="{{ recipe.title }}"></div>
-                        </a>
+                        <div class="cb-ros-thumbnail-img"
+                             style="background-image: url({{ asset(imagePath) }})"
+                             title="{{ recipe.title }}"></div>
                     </div>
                 </div>
 
